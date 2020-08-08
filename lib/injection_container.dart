@@ -5,3 +5,4 @@ GetIt sl = GetIt.instance;
 Future<void> init() async {
   //TODO: register required singeltones
 }
+
