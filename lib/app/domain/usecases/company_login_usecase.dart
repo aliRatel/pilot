@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pilot/app/domain/entities/company.dart';
-import 'package:pilot/app/domain/repositories/CompanyRepository.dart';
+import 'package:pilot/app/domain/repositories/company_repository.dart';
 import 'package:pilot/core/error/failures.dart';
 import 'package:pilot/core/usecases/usecase.dart';
 import 'package:meta/meta.dart';
