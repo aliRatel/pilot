@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pilot/presentation/pages/login/login_page.dart';
-import 'package:pilot/presentation/pages/splash_page.dart';
+
 import 'package:provider/provider.dart';
-import 'package:pilot/presentation/providers/selected_radio_button.dart';
+
+import 'app/presentation/pages/login/login_page.dart';
+import 'app/presentation/pages/splash_page.dart';
+import 'app/presentation/providers/selected_radio_button.dart';
 
 void main() {
   runApp(MyApp());
