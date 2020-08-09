@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-part 'job.g.dart';
+part '../generated/job.g.dart';
 @JsonSerializable()
 class Job extends Equatable {
   int id;

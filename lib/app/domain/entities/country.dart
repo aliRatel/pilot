@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'country.g.dart';
-
+part '../generated/country.g.dart';
 @JsonSerializable()
 class Country extends Equatable {
   int id;

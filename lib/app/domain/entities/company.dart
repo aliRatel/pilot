@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'company.g.dart';
+part '../generated/company.g.dart';
 
 @JsonSerializable()
 // ignore: must_be_immutable

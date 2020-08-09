@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'company.dart';
+part of '../entities/company.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
