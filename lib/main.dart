@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:provider/provider.dart';
-
 import 'app/presentation/pages/login/login_page.dart';
 import 'app/presentation/pages/splash_page.dart';
 import 'app/presentation/providers/selected_radio_button.dart';
@@ -30,9 +28,11 @@ class MyApp extends StatelessWidget {
           // this to change the field border color
           inputDecorationTheme: InputDecorationTheme(
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.green)),
+              borderSide: BorderSide(color: Colors.green),
+            ),
             enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.green)),
+              borderSide: BorderSide(color: Colors.green),
+            ),
           ),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,

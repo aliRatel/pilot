@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 Row getRadioButtons(bloc) {
+  // 1 > company  ||  2 >  job seeker
   return Row(
     children: [
       Expanded(
