@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pilot/app/presentation/pages/register_company/complete-register_company.dart';
-import 'package:pilot/app/presentation/pages/register_company/register_button.dart';
-import 'package:pilot/app/presentation/pages/register_company/text_form_field.dart';
+import 'package:pilot/app/presentation/pages/login/login_page.dart';
+import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/register_button.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/text_form_field.dart';
+import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
 import 'package:provider/provider.dart';
-
-import '../../providers/selected_radio_button.dart';
-import '../login/login_page.dart';
-import '../login/radio_buttons.dart';
 
 class BaseRegisterPage extends StatefulWidget {
   @override

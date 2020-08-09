@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pilot/app/presentation/pages/register_company/register_button.dart';
-import 'package:pilot/app/presentation/pages/register_company/text_form_field.dart';
+import 'package:pilot/app/presentation/pages/login/login_page.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/register_button.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/text_form_field.dart';
 
-import '../login/login_page.dart';
 
 class CompleteRegisterCompany extends StatefulWidget {
   @override
