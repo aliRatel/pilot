@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
                 padding: EdgeInsets.only(top: height / 50),
                 child: getPasswordField(width)),
-            getLoginButton(width, height),
+            getLoginButton(width, height,context),
             SizedBox(height: height / 60),
             Text('Forget Password?',
                 style: TextStyle(color: Colors.green, fontSize: width / 30)),
