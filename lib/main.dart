@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 20),(){
+    Future.delayed(Duration(milliseconds: 1000),(){
       setState(() {
         isLoading=false;
       });
