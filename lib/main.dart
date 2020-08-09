@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -28,11 +30,9 @@ class MyApp extends StatelessWidget {
           // this to change the field border color
           inputDecorationTheme: InputDecorationTheme(
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.green)
-            ),
+                borderSide: BorderSide(color: Colors.green)),
             enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.green)
-            ),
+                borderSide: BorderSide(color: Colors.green)),
           ),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -49,20 +49,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool isLoading= true;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 1000),(){
+    Future.delayed(Duration(milliseconds: 1000), () {
       setState(() {
-        isLoading=false;
+        isLoading = false;
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return isLoading? SplashPage(): LoginPage();
+    return isLoading ? SplashPage() : LoginPage();
   }
 }
-

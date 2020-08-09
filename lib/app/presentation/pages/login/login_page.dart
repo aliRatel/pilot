@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 SizedBox(
-                  height: height*0.25,
+                  height: height * 0.25,
                   child: ClipPath(
                     clipper: MyClipper(),
                     child: Container(
@@ -38,8 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(
-
-                  height: height*.75,
+                  height: height * .75,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -67,15 +66,19 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(
                                 color: Colors.green, fontSize: width / 30)),
                         SizedBox(height: height / 50),
-                        Text('You Are:',
-                            style: TextStyle(
-                                color: Colors.green, fontSize: width / 30)),
+                        Text(
+                          'You Are:',
+                          style: TextStyle(
+                              color: Colors.green, fontSize: width / 30),
+                        ),
                         getRadioButtons(bloc),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("Don't have an account?  ",
-                                style: TextStyle(fontSize: width / 30,fontStyle: FontStyle.italic)),
+                                style: TextStyle(
+                                    fontSize: width / 30,
+                                    fontStyle: FontStyle.italic)),
                             Text("  Register Now",
                                 style: TextStyle(
                                     color: Colors.green, fontSize: width / 30)),
@@ -99,9 +102,6 @@ class MyClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = Path();
     path.lineTo(0, size.height);
-
-
-
     path.lineTo(size.width, 0);
     return path;
   }
