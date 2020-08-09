@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pilot/presentation/pages/login/login_page.dart';
-import 'package:pilot/presentation/pages/splash_page.dart';
 import 'package:provider/provider.dart';
-import 'package:pilot/presentation/providers/selected_radio_button.dart';
+import 'app/presentation/pages/login/login_page.dart';
+import 'app/presentation/pages/splash_page.dart';
+import 'app/presentation/providers/selected_radio_button.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,10 +28,10 @@ class MyApp extends StatelessWidget {
           // this to change the field border color
           inputDecorationTheme: InputDecorationTheme(
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.green)
+              borderSide: BorderSide(color: Colors.green),
             ),
             enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.green)
+              borderSide: BorderSide(color: Colors.green),
             ),
           ),
           primarySwatch: Colors.blue,
@@ -47,20 +49,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool isLoading= true;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 20),(){
+    Future.delayed(Duration(milliseconds: 1000), () {
       setState(() {
-        isLoading=false;
+        isLoading = false;
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return isLoading? SplashPage(): LoginPage();
+    return isLoading ? SplashPage() : LoginPage();
   }
 }
-
