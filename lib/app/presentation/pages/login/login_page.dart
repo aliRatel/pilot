@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: EdgeInsets.only(top: height / 50),
                           child: getPasswordField(width),
                         ),
-                        getLoginButton(width, height),
+                        getLoginButton(width, height,context),
                         SizedBox(height: height / 60),
                         Text(
                           'Forget Password?',

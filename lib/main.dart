@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company.dart';
 import 'package:provider/provider.dart';
 import 'app/presentation/pages/login/login_page.dart';
 import 'app/presentation/pages/splash_page.dart';
@@ -54,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(Duration(milliseconds: 5000), () {
       setState(() {
         isLoading = false;
       });
@@ -63,6 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ? SplashPage() : LoginPage();
+    return isLoading ? SplashPage() :CompleteRegisterCompany();
   }
 }
