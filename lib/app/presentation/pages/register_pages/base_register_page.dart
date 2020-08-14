@@ -6,10 +6,11 @@ import 'package:pilot/app/presentation/pages/register_pages/register_company/com
 import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
-import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/my_button.dart';
-import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/text_form_field.dart';
-import 'file:///C:/Users/ali/Desktop/pilot/lib/core/util/consts.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../core/util/consts.dart';
+import '../../widgets/my_button.dart';
+import '../../widgets/text_form_field.dart';
 
 class BaseRegisterPage extends StatefulWidget {
   @override
@@ -30,7 +31,8 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                ClipPath(clipper: BaseCLipper(),
+                ClipPath(
+                  clipper: BaseCLipper(),
                   child: Container(
                     height: ScreenUtil().setHeight(130),
                     decoration: BoxDecoration(color: mainColor),

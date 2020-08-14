@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/ali/Desktop/pilot/lib/core/util/consts.dart';
+import '../../../../core/util/consts.dart';
 
 Widget getRadioButtons(bloc) {
   // 1 > company  ||  2 >  job seeker

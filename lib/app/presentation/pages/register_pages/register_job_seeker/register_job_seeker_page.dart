@@ -13,11 +13,12 @@ import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pilot/app/presentation/providers/gender_radio_button.dart';
-import 'package:pilot/app/presentation/widgets/gender_type.dart';
-import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/my_button.dart';
-import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/text_form_field.dart';
-import 'file:///C:/Users/ali/Desktop/pilot/lib/core/util/consts.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../core/util/consts.dart';
+import '../../../widgets/gender_type.dart';
+import '../../../widgets/my_button.dart';
+import '../../../widgets/text_form_field.dart';
 
 class RegisterJobSeekerPage extends StatefulWidget {
   @override
@@ -32,6 +33,23 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
   File userImage;
   File cvFile;
+
+  List<String> countries = [];
+  List<String> cities = [];
+
+  String selectedCountry = '';
+  String selectedCity = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    countries = countries_cities.keys.toList();
+    cities = countries_cities[countries_cities.keys.first];
+
+    selectedCountry = countries[0];
+    selectedCity = cities[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +180,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                     name = input;
                     setState(() {});
                   },
-                  title: 'Surname',
+                  title: 'Sur name',
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 Padding(
@@ -298,14 +316,105 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
-                MyTextFormField(
-                  hint: 'United States',
-                  title: 'Country/Region',
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setWidth(12),
+                  ),
+                  child: Align(
+                    child: Text('Country/Region'),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ),
+                SizedBox(height: ScreenUtil().setHeight(8)),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setWidth(12),
+                  ),
+                  child: Container(
+                    height: ScreenUtil().setHeight(55),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil().setWidth(12),
+                    ),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: mainColor,
+                        width: 1,
+                      ),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        value: selectedCountry,
+                        hint: Text("Select a country"),
+                        items: countries
+                            .map(
+                              (country) => DropdownMenuItem<String>(
+                                child: Text('$country'),
+                                value: country,
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (newCountry) {
+                          setState(() {
+                            selectedCountry = newCountry;
+                          });
+
+                          cities = countries_cities[newCountry];
+                          selectedCity = cities[0];
+                        },
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
-                MyTextFormField(
-                  hint: 'City',
-                  title: 'City',
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setWidth(12),
+                  ),
+                  child: Align(
+                    child: Text('City'),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ),
+                SizedBox(height: ScreenUtil().setHeight(8)),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setWidth(12),
+                  ),
+                  child: Container(
+                    height: ScreenUtil().setHeight(55),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil().setWidth(12),
+                    ),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: mainColor,
+                        width: 1,
+                      ),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        value: selectedCity,
+                        hint: Text("Select a city"),
+                        items: cities
+                            .map(
+                              (city) => DropdownMenuItem<String>(
+                                child: Text('$city'),
+                                value: city,
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (newCity) {
+                          setState(() {
+                            selectedCity = newCity;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
