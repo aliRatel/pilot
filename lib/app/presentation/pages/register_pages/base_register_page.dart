@@ -20,6 +20,9 @@ class BaseRegisterPage extends StatefulWidget {
 class _BaseRegisterPageState extends State<BaseRegisterPage> {
   final formKey = GlobalKey<FormState>();
 
+  bool hidePassword = true;
+  bool hideCofirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<TypeRadioProvider>(context);
@@ -59,16 +62,26 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                     MyTextFormField(
                       hint: 'Enter your Password',
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.visibility),
-                        onPressed: () {},
+                        icon: Icon(hidePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          hidePassword = !hidePassword;
+                          setState(() {});
+                        },
                       ),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(
                       hint: 'Confirm your password',
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.visibility),
-                        onPressed: () {},
+                        icon: Icon(hideCofirmPassword
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          hideCofirmPassword = !hideCofirmPassword;
+                          setState(() {});
+                        },
                       ),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(20)),
@@ -152,21 +165,30 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(
-                            FontAwesomeIcons.twitter,
-                            color: Color(0xff1A8FD7),
-                            size: 40,
+                          GestureDetector(
+                            child: Icon(
+                              FontAwesomeIcons.twitter,
+                              color: Color(0xff1A8FD7),
+                              size: 40,
+                            ),
+                            onTap: () {},
                           ),
-                          Icon(
-                            FontAwesomeIcons.facebook,
-                            color: Color(0xff3B5DA0),
-                            size: 40,
+                          GestureDetector(
+                            onTap: () {},
+                            child: Icon(
+                              FontAwesomeIcons.facebook,
+                              color: Color(0xff3B5DA0),
+                              size: 40,
+                            ),
                           ),
-                          Icon(
-                            FontAwesomeIcons.instagram,
-                            size: 40,
-                            color: Color(
-                              0xff6B1D4C,
+                          GestureDetector(
+                            onTap: () {},
+                            child: Icon(
+                              FontAwesomeIcons.instagram,
+                              size: 40,
+                              color: Color(
+                                0xff6B1D4C,
+                              ),
                             ),
                           ),
                         ],
@@ -176,7 +198,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          // go to login page
+                          Navigator.of(context).pop();
                         },
                         child: RichText(
                           text: TextSpan(

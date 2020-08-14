@@ -1,11 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pilot/app/presentation/pages/login/password_field.dart';
+import 'package:flutter_screenutil/screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
+import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company_page.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
-import 'email_field.dart';
-import 'login_button.dart';
+import 'package:pilot/app/presentation/widgets/base_clipper.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../core/util/consts.dart';
+import '../../widgets/my_button.dart';
+import '../../widgets/text_form_field.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,101 +19,194 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final formKey = GlobalKey<FormState>();
+
+  bool hidePassword = true;
+
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     final bloc = Provider.of<TypeRadioProvider>(context);
     return Scaffold(
       body: Container(
         child: SingleChildScrollView(
-          child: SizedBox(
-            height: height,
-            width: width,
+          child: Form(
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                SizedBox(
-                  height: height * 0.25,
-                  child: ClipPath(
-                    clipper: MyClipper(),
-                    child: Container(
-                      height: 400,
-                      decoration: BoxDecoration(color: Colors.purpleAccent),
+                ClipPath(
+                  clipper: BaseCLipper(),
+                  child: Container(
+                    height: ScreenUtil().setHeight(130),
+                    decoration: BoxDecoration(color: mainColor),
+                    child: Center(
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                          fontSize: 26,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: height * .75,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: ScreenUtil().setHeight(20)),
+                    MyTextFormField(
+                      hint: 'Enter your email',
+                    ),
+                    // SizedBox(height: ScreenUtil().setHeight(3)),
+                    MyTextFormField(
+                      hint: 'Enter your Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(hidePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          hidePassword = !hidePassword;
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(16)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(12),
+                      ),
+                      child: Text(
+                        'Work Nature',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    getRadioButtons(bloc),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: ScreenUtil().setWidth(12),
+                        left: ScreenUtil().setWidth(12),
+                      ),
+                      child: myButton(
+                        context: context,
+                        title: 'Sign In',
+                        onTap: () {
+                          if (bloc.selected == 1) {
+                            // go to job seeker home page
+                          }
+                          if (bloc.selected == 2) {
+                            // go to company home page
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(35)),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'Login',
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                              fontSize: width / 13),
-                        ),
-                        SizedBox(height: height / 80),
-                        Text(
-                          'Sign Into Your Account',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: width / 23,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: height / 20),
-                        ),
-                        getEmailField(width),
-                        Padding(
-                          padding: EdgeInsets.only(top: height / 50),
-                          child: getPasswordField(width),
-                        ),
-                        getLoginButton(width, height,context),
-                        SizedBox(height: height / 60),
-                        Text(
-                          'Forget Password?',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: width / 30,
-                          ),
-                        ),
-                        SizedBox(height: height / 50),
-                        Text(
-                          'You Are:',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: width / 30,
-                          ),
-                        ),
-                        getRadioButtons(bloc),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Don't have an account?  ",
-                              style: TextStyle(
-                                fontSize: width / 30,
-                                fontStyle: FontStyle.italic,
-                              ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: ScreenUtil().setWidth(20),
+                              right: ScreenUtil().setWidth(10),
                             ),
-                            Text(
-                              "  Register Now",
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontSize: width / 30,
-                              ),
+                            height: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          'or connect with',
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            margin: EdgeInsets.only(
+                              right: ScreenUtil().setWidth(20),
+                              left: ScreenUtil().setWidth(10),
                             ),
-                          ],
+                            color: Colors.grey,
+                          ),
                         ),
                       ],
                     ),
-                  ),
+                    SizedBox(height: ScreenUtil().setHeight(35)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            child: Icon(
+                              FontAwesomeIcons.twitter,
+                              color: Color(0xff1A8FD7),
+                              size: 40,
+                            ),
+                            onTap: () {},
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Icon(
+                              FontAwesomeIcons.facebook,
+                              color: Color(0xff3B5DA0),
+                              size: 40,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Icon(
+                              FontAwesomeIcons.instagram,
+                              size: 40,
+                              color: Color(
+                                0xff6B1D4C,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(40)),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => BaseRegisterPage(),
+                            ),
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'have an account? ',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '  Sign Up',
+                                style: TextStyle(
+                                  color: mainColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: ScreenUtil().setHeight(45),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -115,20 +214,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-}
-
-class MyClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, 0);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper oldClipper) {
-    return true;
   }
 }

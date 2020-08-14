@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilot/app/presentation/pages/login/login_page.dart';
 import 'package:provider/provider.dart';
-import 'app/presentation/pages/register_pages/base_register_page.dart';
+
 import 'app/presentation/pages/splash_page.dart';
 import 'app/presentation/providers/gender_radio_button.dart';
 import 'app/presentation/providers/selected_radio_button.dart';
@@ -73,6 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final width = MediaQuery.of(context).size.width;
     ScreenUtil.init(context,
         width: width, height: height, allowFontScaling: true);
-    return isLoading ? SplashPage() : BaseRegisterPage();
+    return isLoading ? SplashPage() : LoginPage();
   }
 }
