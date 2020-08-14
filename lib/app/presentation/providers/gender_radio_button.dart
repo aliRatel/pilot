@@ -1,7 +1,7 @@
 
 import 'package:flutter/foundation.dart';
 
-class TypeRadioProvider with ChangeNotifier {
+class GenderRadioProvider with ChangeNotifier {
   int selected;
 
   changeState(val) {

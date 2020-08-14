@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pilot/utils/consts.dart';
 
-Widget getRadioButtons(bloc) {
-  // 1 > company  ||  2 >  job seeker
+Widget getGenderRadioButtons(bloc) {
+  // 1 > Male  ||  2 >  Female
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       RadioListTile(
-        title: Text('Company'),
+        title: Text('Male'),
         value: 1,
         onChanged: (val) {
           bloc.changeState(val);
@@ -17,7 +17,7 @@ Widget getRadioButtons(bloc) {
         groupValue: bloc.selected,
       ),
       RadioListTile(
-        title: Text('Job seeker'),
+        title: Text('Female'),
         value: 2,
         onChanged: (val) {
           bloc.changeState(val);

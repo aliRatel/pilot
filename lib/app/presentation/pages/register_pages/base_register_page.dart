@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pilot/app/presentation/pages/login/login_page.dart';
+import 'package:flutter_screenutil/screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_company/register_button.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_company/text_form_field.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company_page.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
+import 'file:///D:/bebo_flutter/pilot/lib/presentation/widgets/text_form_field.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
+import 'package:pilot/presentation/widgets/my_button.dart';
+import 'package:pilot/utils/consts.dart';
 import 'package:provider/provider.dart';
 
 class BaseRegisterPage extends StatefulWidget {
@@ -17,9 +20,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    final bloc = Provider.of<RadioProvider>(context);
+    final bloc = Provider.of<TypeRadioProvider>(context);
     return Scaffold(
       body: Container(
         child: SingleChildScrollView(
@@ -28,53 +29,67 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                SizedBox(
-                  height: height * 0.25,
-                  child: ClipPath(
-                    clipper: MyClipper(),
-                    child: Container(
-                      height: 400,
-                      decoration: BoxDecoration(color: Colors.purpleAccent),
+                Container(
+                  height: ScreenUtil().setHeight(130),
+                  decoration: BoxDecoration(color: mainColor),
+                  child: Center(
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        fontSize: 26,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Register',
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: ScreenUtil().setHeight(20)),
+                    MyTextFormField(
+                      hint: 'Enter your email',
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(3)),
+                    MyTextFormField(
+                      hint: 'Enter your Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.visibility),
+                        onPressed: () {},
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(3)),
+                    MyTextFormField(
+                      hint: 'Confirm your password',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.visibility),
+                        onPressed: () {},
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(20)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(12),
+                      ),
+                      child: Text(
+                        'Work Nature',
                         style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: width / 13),
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      SizedBox(height: height / 80),
-                      Text(
-                        'Create Your Account',
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: width / 23),
+                    ),
+                    getRadioButtons(bloc),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: ScreenUtil().setWidth(12),
+                        left: ScreenUtil().setWidth(12),
                       ),
-                      Padding(padding: EdgeInsets.only(top: height / 20)),
-                      RegisterCompanyTextFormField(
-                        hint: 'Enter your email',
-                        leadingIcon: Icons.email,
-                      ),
-                      RegisterCompanyTextFormField(
-                        hint: 'Enter your Password',
-                        leadingIcon: Icons.lock,
-                      ),
-                      RegisterCompanyTextFormField(
-                        hint: 'Confirm your password',
-                        leadingIcon: Icons.redo,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: getRegisterButton(width, height, 'Register', () {
-                          print(bloc.selected);
+                      child: myButton(
+                        context: context,
+                        title: 'Sign Up',
+                        onTap: () {
                           if (bloc.selected == 1) {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -82,31 +97,106 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                               ),
                             );
                           }
-                        }),
-                      ),
-                      SizedBox(height: height / 60),
-                      Text(
-                        'You Are:',
-                        style: TextStyle(
-                            color: Colors.green, fontSize: width / 30),
-                      ),
-                      getRadioButtons(bloc),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
+                          if (bloc.selected == 2) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => RegisterJobSeekerPage(),
+                              ),
+                            );
+                          }
                         },
-                        child: Text(
-                          'HAVE ACCOUNT?  LOGIN',
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(35)),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: ScreenUtil().setWidth(20),
+                              right: ScreenUtil().setWidth(10),
+                            ),
+                            height: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          'or connect with',
                           style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 15,
-                            letterSpacing: 2,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            margin: EdgeInsets.only(
+                              right: ScreenUtil().setWidth(20),
+                              left: ScreenUtil().setWidth(10),
+                            ),
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(35)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setWidth(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.twitter,
+                            color: Color(0xff1A8FD7),
+                            size: 40,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.facebook,
+                            color: Color(0xff3B5DA0),
+                            size: 40,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.instagram,
+                            size: 40,
+                            color: Color(
+                              0xff6B1D4C,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(40)),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          // go to login page
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'have an account? ',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '  Signin',
+                                style: TextStyle(
+                                  color: mainColor,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 50),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: ScreenUtil().setHeight(45),
+                    ),
+                  ],
                 ),
               ],
             ),

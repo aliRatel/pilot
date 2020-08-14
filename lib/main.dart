@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilot/utils/consts.dart';
 import 'package:provider/provider.dart';
 import 'app/presentation/pages/login/login_page.dart';
 import 'app/presentation/pages/splash_page.dart';
+import 'app/presentation/providers/gender_radio_button.dart';
 import 'app/presentation/providers/selected_radio_button.dart';
 
 void main() {
@@ -20,8 +21,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => RadioProvider(),
-        )
+          create: (_) => TypeRadioProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => GenderRadioProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -30,10 +34,10 @@ class MyApp extends StatelessWidget {
           // this to change the field border color
           inputDecorationTheme: InputDecorationTheme(
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.green),
+              borderSide: BorderSide(color: mainColor),
             ),
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.green),
+              borderSide: BorderSide(color: mainColor),
             ),
           ),
           primarySwatch: Colors.blue,
@@ -65,6 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ? SplashPage() :CompleteRegisterCompany();
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    ScreenUtil.init(context,
+        width: width, height: height, allowFontScaling: true);
+    return isLoading ? SplashPage() : LoginPage();
   }
 }
