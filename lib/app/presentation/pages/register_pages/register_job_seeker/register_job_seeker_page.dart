@@ -13,10 +13,10 @@ import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pilot/app/presentation/providers/gender_radio_button.dart';
-import 'package:pilot/presentation/widgets/gender_type.dart';
-import 'package:pilot/presentation/widgets/my_button.dart';
-import 'package:pilot/presentation/widgets/text_form_field.dart';
-import 'package:pilot/utils/consts.dart';
+import 'package:pilot/app/presentation/widgets/gender_type.dart';
+import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/my_button.dart';
+import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/text_form_field.dart';
+import 'file:///C:/Users/ali/Desktop/pilot/lib/core/util/consts.dart';
 import 'package:provider/provider.dart';
 
 class RegisterJobSeekerPage extends StatefulWidget {
@@ -162,7 +162,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                     name = input;
                     setState(() {});
                   },
-                  title: 'Sur name',
+                  title: 'Surname',
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 Padding(

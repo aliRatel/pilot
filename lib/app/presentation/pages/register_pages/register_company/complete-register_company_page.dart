@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
-import 'file:///D:/bebo_flutter/pilot/lib/presentation/widgets/text_form_field.dart';
-import 'package:pilot/presentation/widgets/my_button.dart';
-import 'package:pilot/utils/consts.dart';
+import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/my_button.dart';
+import 'file:///C:/Users/ali/Desktop/pilot/lib/app/presentation/widgets/text_form_field.dart';
+import 'file:///C:/Users/ali/Desktop/pilot/lib/core/util/consts.dart';
 
 class CompleteRegisterCompany extends StatefulWidget {
   @override

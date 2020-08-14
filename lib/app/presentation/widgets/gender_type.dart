@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pilot/utils/consts.dart';
+import 'file:///C:/Users/ali/Desktop/pilot/lib/core/util/consts.dart';
 
 Widget getGenderRadioButtons(bloc) {
   // 1 > Male  ||  2 >  Female
