@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilot/app/presentation/pages/login/login_page.dart';
+import 'package:pilot/app/presentation/pages/on%20boarding/main_onbaording_page.dart';
 import 'package:provider/provider.dart';
 
 import 'app/presentation/pages/splash_page.dart';
@@ -74,6 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final width = MediaQuery.of(context).size.width;
     ScreenUtil.init(context,
         width: width, height: height, allowFontScaling: true);
-    return isLoading ? SplashPage() : LoginPage();
+    return isLoading ? SplashPage() : onBoarding();
   }
 }
