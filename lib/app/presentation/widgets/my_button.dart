@@ -5,9 +5,9 @@ import '../../../core/util/consts.dart';
 
 Widget myButton({
   @required BuildContext context,
-  @required String title,
   Function onTap,
   Widget child,
+  bool isEnabled
 }) {
   return Container(
     width: MediaQuery.of(context).size.width,
@@ -21,16 +21,11 @@ Widget myButton({
       borderRadius: BorderRadius.circular(5.0),
     ),
     child: FlatButton(
+
       onPressed: onTap,
       child: Center(
-        child: child ??
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        child: child
+
       ),
     ),
   );

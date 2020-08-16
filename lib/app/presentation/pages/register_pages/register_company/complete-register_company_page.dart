@@ -230,7 +230,13 @@ class _CompleteRegisterCompanyState extends State<CompleteRegisterCompany> {
                 Padding(
                   padding: EdgeInsets.all(12.0),
                   child: myButton(
-                      context: context, title: 'Continue', onTap: () {}),
+                      context: context, child: Text(
+                    'Continue',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ), onTap: () {}),
                 ),
                 SizedBox(height: 50),
               ],

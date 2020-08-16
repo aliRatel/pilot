@@ -14,6 +14,7 @@ class MyTextFormField extends StatefulWidget {
   final TextInputType keyboardType;
   final EdgeInsets padding;
   final String title;
+  final String errorText;
 
   MyTextFormField({
     Key key,
@@ -22,6 +23,7 @@ class MyTextFormField extends StatefulWidget {
     this.validator,
     this.onTextChange,
     this.keyboardType,
+    this.errorText ='',
     this.obscureText = false,
     this.suffixIcon,
     this.prefixIcon,
@@ -59,6 +61,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
             controller: widget.controller,
             style: TextStyle(color: mainColor),
             decoration: InputDecoration(
+              errorText: widget.errorText,
               focusedBorder: OutlineInputBorder(
                 borderRadius: (BorderRadius.circular(10)),
                 borderSide: BorderSide(

@@ -1,10 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
 import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company_page.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
+
+import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,46 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
 
-  bool hidePassword = true;
+  bool _hidePassword = true;
+  int _workNature = 0;
+
+  TextEditingController _emailController = TextEditingController();
+  String _emailErrorMessage;
+  TextEditingController _passwordController = TextEditingController();
+  String _passwordErrorMessage;
+
+  void _login() {
+    if (_emailController.text == '') {
+      setState(() {
+        _emailErrorMessage = 'this field is required';
+      });
+//      Provider.of<CompanyProvider>(context,listen: false).setMessage(
+//          'Please Enter your Email');
+    } else if (_passwordController.text == '') {
+      setState(() {
+        _emailErrorMessage = null;
+
+        _passwordErrorMessage = 'this field is required';
+      });
+    } else {
+      setState(() {
+        _passwordErrorMessage = null;
+        _emailErrorMessage = null;
+      });
+      Provider.of<CompanyProvider>(context, listen: false).setMessage(null);
+      Provider.of<CompanyProvider>(context, listen: false)
+          .registerCompany(
+              email: _emailController.text,
+              password: _passwordController.text,
+              userType: 'company')
+          .then((value) {
+        if (value) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => BaseRegisterPage()));
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,17 +96,21 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     SizedBox(height: ScreenUtil().setHeight(20)),
                     MyTextFormField(
+                      errorText: _emailErrorMessage,
+                      controller: _emailController,
                       hint: 'Enter your email',
                     ),
                     // SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(
+                      controller: _passwordController,
                       hint: 'Enter your Password',
+                      errorText: _passwordErrorMessage,
                       suffixIcon: IconButton(
-                        icon: Icon(hidePassword
+                        icon: Icon(_hidePassword
                             ? Icons.visibility_off
                             : Icons.visibility),
                         onPressed: () {
-                          hidePassword = !hidePassword;
+                          _hidePassword = !_hidePassword;
                           setState(() {});
                         },
                       ),
@@ -93,8 +137,23 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: myButton(
                         context: context,
-                        title: 'Sign In',
+                        child: Provider.of<CompanyProvider>(context).Loading
+                            ? CircularProgressIndicator(
+                                backgroundColor: Colors.white,
+                                strokeWidth: 2,
+                              )
+                            : Text(
+                                'Sign in',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                         onTap: () {
+                          if (Provider.of<CompanyProvider>(context,
+                                  listen: false)
+                              .isLoading()) return;
+                          _login();
                           if (bloc.selected == 1) {
                             // go to job seeker home page
                           }
@@ -177,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
+                          Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (_) => BaseRegisterPage(),
                             ),

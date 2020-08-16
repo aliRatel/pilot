@@ -8,7 +8,6 @@ abstract class UserRepository {
   Future<Either<Failure,User>> registerUser({String email,String password});
   Future<Either<Failure,User>> fetchUser({int id});
   Future<Either<Failure,User>> completeProfile({User user});
-  Future<Either<Failure,User>> logIn({String email,String password});
-
+  Future<Either<Failure,User>> logIn({String email,String password,String userType});
 
 }

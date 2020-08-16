@@ -21,7 +21,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
   final formKey = GlobalKey<FormState>();
 
   bool hidePassword = true;
-  bool hideCofirmPassword = true;
+  bool hideConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +75,11 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                     MyTextFormField(
                       hint: 'Confirm your password',
                       suffixIcon: IconButton(
-                        icon: Icon(hideCofirmPassword
+                        icon: Icon(hideConfirmPassword
                             ? Icons.visibility_off
                             : Icons.visibility),
                         onPressed: () {
-                          hideCofirmPassword = !hideCofirmPassword;
+                          hideConfirmPassword = !hideConfirmPassword;
                           setState(() {});
                         },
                       ),
@@ -106,7 +106,13 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                       ),
                       child: myButton(
                         context: context,
-                        title: 'Sign Up',
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         onTap: () {
                           if (bloc.selected == 1) {
                             Navigator.of(context).push(

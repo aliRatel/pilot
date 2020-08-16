@@ -435,7 +435,13 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   padding: EdgeInsets.all(12.0),
                   child: myButton(
                       context: context,
-                      title: 'Continue',
+                      child: Text(
+                        'Continue',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       onTap: () {
                         if (bloc.selected == 1) {
                           print('male');
