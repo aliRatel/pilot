@@ -36,8 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _emailErrorMessage = 'this field is required';
       });
-//      Provider.of<CompanyProvider>(context,listen: false).setMessage(
-//          'Please Enter your Email');
+
     } else if (_passwordController.text == '') {
       setState(() {
         _emailErrorMessage = null;
@@ -150,10 +149,10 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                        onTap: () {
-                          if (Provider.of<LogInProvider>(context,
-                                  listen: false)
-                              .isLoading()) return;
+                        onTap: !Provider.of<LogInProvider>(context,
+                            listen: false)
+                            .isLoading()? () {
+
                           _login();
                           if (bloc.selected == 1) {
                             // go to job seeker home page
@@ -161,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                           if (bloc.selected == 2) {
                             // go to company home page
                           }
-                        },
+                        }:null,
                       ),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(35)),
