@@ -34,6 +34,7 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<Failure, bool>> logIn(
       {String email, String password, UserType userType}) async {
     try {
+
       var credential = await apiDataSource.postLogIn(
           email: email, password: password, userType: userType);
       await sharedPreferencesDataSource.cacheToken(credential['jwt']);
@@ -48,6 +49,8 @@ class UserRepositoryImpl extends UserRepository {
       return Left(ServerFailure());
     } on CacheException {
       return Left(CacheFailure());
+    }catch(e){
+      return left(UnknownFailure());
     }
   }
 

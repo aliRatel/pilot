@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
 import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
 
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
           .registerCompany(
               email: _emailController.text,
               password: _passwordController.text,
-              userType: 'company')
+              userType: UserType.company)
           .then((value) {
         if (value) {
           Navigator.push(context,

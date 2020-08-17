@@ -18,8 +18,12 @@ class ApiDataSourceImpl extends ApiDataSource {
   @override
   Future<Map<String, dynamic>> postLogIn(
       {String email, String password, UserType userType}) async {
-    var body = {'email': email, 'password': password, 'userType': userType};
+    print('*******************');
+
+    var body = {'email': email, 'password': password, 'userType': userType.toString()};
     var response = await userRemoteService.postLogin(body);
+    print('//////////////////////////////////////');
+print(response.statusCode);
     if (response.statusCode == 202) {
       int id = response.body['id'];
       String jwt = response.body['jwtToken'];

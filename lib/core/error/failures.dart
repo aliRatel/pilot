@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
  class Failure extends Equatable {
@@ -10,3 +11,4 @@ import 'package:equatable/equatable.dart';
 class ServerFailure extends Failure {}
 
 class CacheFailure extends Failure {}
+class UnknownFailure extends Failure{}

@@ -6,7 +6,7 @@ part  'generated/user_remote_service.chopper.dart';
 abstract class UserRemoteService extends ChopperService {
   static UserRemoteService create() {
     final client = ChopperClient(
-        baseUrl: 'http://serviceUrl:8000',
+        baseUrl: 'http://192.168.1.100:8000',
         services: [
           _$UserRemoteService(),
         ],

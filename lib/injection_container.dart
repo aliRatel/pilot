@@ -11,6 +11,8 @@ import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite_dev.dart';
 
+import 'app/data/datasources/local/local_data_source.dart';
+
 GetIt sl = GetIt.instance;
 
 Future<void> init() async {
@@ -29,11 +31,14 @@ Future<void> init() async {
       apiDataSource: sl(), sharedPreferencesDataSource: sl()));
 
   ///remote data sources
-sl.registerLazySingleton<ApiDataSource>(() => ApiDataSourceImpl(userRemoteService: sl()));
+  final UserRemoteService userRemoteService =  UserRemoteService.create();
+
+  sl.registerLazySingleton<ApiDataSource>(() => ApiDataSourceImpl(userRemoteService: userRemoteService));
 
 ///remote services
-  final UserRemoteService userRemoteService =  UserRemoteService.create();
   /// local data sources
+  sl.registerLazySingleton<SharedPreferencesDataSource>(
+          () => SharedPreferencesDataSourceImpl(sharedPreferences: sl()));
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
