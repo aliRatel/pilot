@@ -7,13 +7,13 @@ import 'package:pilot/core/error/failures.dart';
 import 'package:pilot/core/usecases/usecase.dart';
 import 'package:meta/meta.dart';
 
-class UserLoginUseCase extends UseCase<JobSeeker, UserLoginParams> {
+class UserLoginUseCase extends UseCase<bool, UserLoginParams> {
   final UserRepository userRepository;
 
   UserLoginUseCase({@required this.userRepository});
 
   @override
-  Future<Either<Failure, JobSeeker>> call(UserLoginParams params) async {
+  Future<Either<Failure, bool>> call(UserLoginParams params) async {
     return await userRepository.logIn(
         email: params.email, password: params.password,userType:params.userType);
   }
