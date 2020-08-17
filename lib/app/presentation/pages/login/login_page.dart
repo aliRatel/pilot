@@ -48,8 +48,8 @@ class _LoginPageState extends State<LoginPage> {
         _passwordErrorMessage = null;
         _emailErrorMessage = null;
       });
-      Provider.of<CompanyProvider>(context, listen: false).setMessage(null);
-      Provider.of<CompanyProvider>(context, listen: false)
+      Provider.of<LogInProvider>(context, listen: false).setMessage(null);
+      Provider.of<LogInProvider>(context, listen: false)
           .registerCompany(
               email: _emailController.text,
               password: _passwordController.text,
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: myButton(
                         context: context,
-                        child: Provider.of<CompanyProvider>(context).Loading
+                        child: Provider.of<LogInProvider>(context).loading
                             ? CircularProgressIndicator(
                                 backgroundColor: Colors.white,
                                 strokeWidth: 2,
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                         onTap: () {
-                          if (Provider.of<CompanyProvider>(context,
+                          if (Provider.of<LogInProvider>(context,
                                   listen: false)
                               .isLoading()) return;
                           _login();

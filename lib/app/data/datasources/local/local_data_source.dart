@@ -1,5 +1,5 @@
 import 'package:pilot/app/domain/entities/company.dart';
-import 'package:pilot/app/domain/entities/user.dart';
+import 'package:pilot/app/domain/entities/job_seeker.dart';
 import 'package:pilot/core/error/exceptions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meta/meta.dart';
@@ -10,7 +10,7 @@ const CACHED_CREDENTIALS = 'CACHED_CREDENTIALS';
 const CACHED_USER_TYPE = 'CACHED_USER_TYPE';
 
 abstract class SharedPreferencesDataSource {
-  Future<User> fetchCachedUser();
+  Future<JobSeeker> fetchCachedUser();
 
   Future<Company> fetchCachedCompany();
 
@@ -18,7 +18,7 @@ abstract class SharedPreferencesDataSource {
 
   Future<bool> deleteCachedCompany();
 
-  Future<bool> cacheUser(User user);
+  Future<bool> cacheUser(JobSeeker user);
 
   Future<bool> cacheCompany(Company company);
 
@@ -52,7 +52,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   }
 
   @override
-  Future<bool> cacheUser(User user) {
+  Future<bool> cacheUser(JobSeeker user) {
     // TODO: implement cacheUser
     throw UnimplementedError();
   }
@@ -101,7 +101,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   }
 
   @override
-  Future<User> fetchCachedUser() {
+  Future<JobSeeker> fetchCachedUser() {
     // TODO: implement fetchCachedUser
     throw UnimplementedError();
   }

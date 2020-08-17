@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           create: (_) => sl<UserProvider>(),
         ),
         ChangeNotifierProvider(
-          create: (_) =>sl<CompanyProvider>(),
+          create: (_) =>sl<LogInProvider>(),
         ),
         ChangeNotifierProvider(
           create: (_) => TypeRadioProvider(),

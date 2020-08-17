@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pilot/app/domain/entities/company.dart';
-import 'package:pilot/app/domain/entities/user.dart';
+import 'package:pilot/app/domain/entities/job_seeker.dart';
 import 'package:pilot/app/domain/usecases/check_for_available_users_usecase.dart';
 import 'package:meta/meta.dart';
 import 'package:pilot/core/usecases/usecase.dart';
@@ -12,7 +12,7 @@ class UserProvider with ChangeNotifier {
   dynamic user;
 
   String userState;  //fully registered or needs to complete profile
-  User jobSeeker;
+  JobSeeker jobSeeker;
   Company company;
   String token;
 

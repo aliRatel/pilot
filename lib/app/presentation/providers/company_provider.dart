@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pilot/app/domain/usecases/user_login_usecase.dart';
 
-class CompanyProvider with ChangeNotifier{
-  bool Loading = false;
+class LogInProvider with ChangeNotifier{
+  bool loading = false;
   String errorMessage;
 
   final UserLoginUseCase userLoginUseCase ;
 
 
-  CompanyProvider({@required this.userLoginUseCase});
+  LogInProvider({@required this.userLoginUseCase});
 
 
   Future<bool> registerCompany({email,password,userType}) async {
@@ -32,10 +32,10 @@ class CompanyProvider with ChangeNotifier{
     notifyListeners();
   }
   void setLoading(value){
-    Loading = value;
+    loading = value;
     notifyListeners();
   }
   bool isLoading(){
-    return Loading;
+    return loading;
   }
 }

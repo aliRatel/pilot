@@ -14,7 +14,7 @@ GetIt sl = GetIt.instance;
 Future<void> init() async {
   ///providers
   sl.registerFactory(() => UserProvider(checkForAvailableUsersUseCase: sl()));
-  sl.registerFactory(() => CompanyProvider(userLoginUseCase: sl()));
+  sl.registerFactory(() => LogInProvider(userLoginUseCase: sl()));
 
   ///usecases
   sl.registerLazySingleton<CheckForAvailableUsersUseCase>(() => CheckForAvailableUsersUseCase());
