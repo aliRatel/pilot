@@ -4,7 +4,7 @@ import 'package:pilot/core/error/failures.dart';
 abstract class UtilitiesRepository {
 
   Future<Either<Failure,List<Country>>> getCountries();
-  Future<Either<Failure,List<Country>>> getCountryById({int id});
+  Future<Either<Failure,Country>> getCountryById({int id});
 
 
 }
