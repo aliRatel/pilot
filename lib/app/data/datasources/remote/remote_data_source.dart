@@ -20,7 +20,7 @@ class ApiDataSourceImpl extends ApiDataSource {
       {String email, String password, UserType userType}) async {
     print('*******************');
 
-    var body = {'email': email, 'password': password, 'userType': userType.toString()};
+    var body = {'email': email, 'password': password, 'userType': userType.toShortString()};
     var response = await userRemoteService.postLogin(body);
     print('//////////////////////////////////////');
     print(response.statusCode);

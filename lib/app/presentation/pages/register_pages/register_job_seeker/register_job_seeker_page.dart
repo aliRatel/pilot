@@ -30,13 +30,10 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
   String name = '';
   String email = '';
-
   File userImage;
   File cvFile;
-
   List<String> countries = [];
   List<String> cities = [];
-
   String selectedCountry = '';
   String selectedCity = '';
 

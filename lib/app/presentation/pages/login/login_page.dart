@@ -10,6 +10,7 @@ import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/
 import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
+import 'package:pilot/core/util/required_fielded_validator.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/util/consts.dart';
@@ -22,33 +23,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   bool _hidePassword = true;
   int _workNature = 0;
 
   TextEditingController _emailController = TextEditingController();
-  String _emailErrorMessage;
   TextEditingController _passwordController = TextEditingController();
-  String _passwordErrorMessage;
 
   void _login() {
-    if (_emailController.text == '') {
-      setState(() {
-        _emailErrorMessage = 'this field is required';
-      });
+    if (!_formKey.currentState.validate()) return;
 
-    } else if (_passwordController.text == '') {
-      setState(() {
-        _emailErrorMessage = null;
 
-        _passwordErrorMessage = 'this field is required';
-      });
-    } else {
-      setState(() {
-        _passwordErrorMessage = null;
-        _emailErrorMessage = null;
-      });
+
       Provider.of<LogInProvider>(context, listen: false).setMessage(null);
       Provider.of<LogInProvider>(context, listen: false)
           .registerCompany(
@@ -62,7 +49,8 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     }
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         child: SingleChildScrollView(
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -97,15 +85,15 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     SizedBox(height: ScreenUtil().setHeight(20)),
                     MyTextFormField(
-                      errorText: _emailErrorMessage,
+                      validator: (value)=>isValid(value)?null:'this field is required',
                       controller: _emailController,
                       hint: 'Enter your email',
                     ),
                     // SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(
+                      validator: (value)=>isValid(value)?null:'this field is required',
                       controller: _passwordController,
                       hint: 'Enter your Password',
-                      errorText: _passwordErrorMessage,
                       suffixIcon: IconButton(
                         icon: Icon(_hidePassword
                             ? Icons.visibility_off
