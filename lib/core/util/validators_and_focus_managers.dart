@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-bool validateRequiredTextField(String value) {
-  if (value.length > 0) return true;
-  return false;
+String validateRequiredTextField(String value) {
+  if (value.length > 0) return null;
+  return 'this field is required';
 }
 
 void fieldFocusChange(BuildContext context, FocusNode currentFocus,

@@ -87,21 +87,19 @@ class _LoginPageState extends State<LoginPage> {
                           context, _emailFocus, _passwordFocus),
                       textInputAction: TextInputAction.next,
                       validator: (value) => validateRequiredTextField(value)
-                          ? null
-                          : 'this field is required',
+                          ,
                       controller: _emailController,
                       hint: 'Enter your email',
                     ),
                     // SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(
-                      onFieldSubmitted: (term) => fieldFocusChange(
-                          context, _passwordFocus, null),
+                      onFieldSubmitted: (term) =>
+                          fieldFocusChange(context, _passwordFocus, null),
                       focusNode: _passwordFocus,
                       textInputAction: TextInputAction.done,
                       obscureText: _hidePassword,
                       validator: (value) => validateRequiredTextField(value)
-                          ? null
-                          : 'this field is required',
+                          ,
                       controller: _passwordController,
                       hint: 'Enter your Password',
                       suffixIcon: IconButton(
@@ -128,7 +126,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    getRadioButtons((selected)=>setState(()=>_userType=selected),_userType),
+                    getRadioButtons(
+                        (selected) => setState(() => _userType = selected),
+                        _userType),
                     Padding(
                       padding: EdgeInsets.only(
                         right: ScreenUtil().setWidth(12),
