@@ -98,7 +98,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                         ),
                       ),
                     ),
-                    getRadioButtons(bloc),
+                    //getRadioButtons(bloc),
                     Padding(
                       padding: EdgeInsets.only(
                         right: ScreenUtil().setWidth(12),

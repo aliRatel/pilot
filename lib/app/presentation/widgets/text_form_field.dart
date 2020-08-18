@@ -15,7 +15,9 @@ class MyTextFormField extends StatefulWidget {
   final EdgeInsets padding;
   final String title;
   final String errorText;
-
+  final TextInputAction textInputAction;
+  var onFieldSubmitted;
+   FocusNode focusNode;
   MyTextFormField({
     Key key,
     this.hint = '',
@@ -23,12 +25,15 @@ class MyTextFormField extends StatefulWidget {
     this.validator,
     this.onTextChange,
     this.keyboardType,
-    this.errorText ='',
+    this.errorText = '',
     this.obscureText = false,
     this.suffixIcon,
     this.prefixIcon,
     this.padding,
     this.title,
+    this.textInputAction,
+    this.onFieldSubmitted,
+    this.focusNode
   }) : super(key: key);
 
   @override
@@ -55,27 +60,30 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
             height: ScreenUtil().setHeight(8),
           ),
           TextFormField(
+            onFieldSubmitted: widget.onFieldSubmitted,
+            focusNode: widget.focusNode,
+            textInputAction: widget.textInputAction,
+            obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
             validator: widget.validator,
             onChanged: widget.onTextChange,
             controller: widget.controller,
-
             style: TextStyle(color: mainColor),
             decoration: InputDecoration(
-              errorBorder:  OutlineInputBorder(
+              errorBorder: OutlineInputBorder(
                 borderRadius: (BorderRadius.circular(10)),
                 borderSide: BorderSide(
                   width: 1,
                   color: mainColor,
                 ),
-              )
-              ,focusedErrorBorder: OutlineInputBorder(
-              borderRadius: (BorderRadius.circular(10)),
-              borderSide: BorderSide(
-                width: 1,
-                color: mainColor,
               ),
-            ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: (BorderRadius.circular(10)),
+                borderSide: BorderSide(
+                  width: 1,
+                  color: mainColor,
+                ),
+              ),
               errorText: widget.errorText,
               focusedBorder: OutlineInputBorder(
                 borderRadius: (BorderRadius.circular(10)),

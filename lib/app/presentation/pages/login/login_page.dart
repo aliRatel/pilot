@@ -1,3 +1,4 @@
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
@@ -10,7 +11,7 @@ import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/
 import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
-import 'package:pilot/core/util/required_fielded_validator.dart';
+import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/util/consts.dart';
@@ -24,33 +25,30 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
   bool _hidePassword = true;
-  int _workNature = 0;
-
+  UserType _userType = UserType.company;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
   void _login() {
+    print(_userType);
     if (!_formKey.currentState.validate()) return;
 
-
-
-      Provider.of<LogInProvider>(context, listen: false).setMessage(null);
-      Provider.of<LogInProvider>(context, listen: false)
-          .registerCompany(
-              email: _emailController.text,
-              password: _passwordController.text,
-              userType: UserType.company)
-          .then((value) {
-        if (value) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => RegisterJobSeekerPage()));
-        }
-      });
-    }
-
-
+    Provider.of<LogInProvider>(context, listen: false).setMessage(null);
+    Provider.of<LogInProvider>(context, listen: false)
+        .registerCompany(
+            email: _emailController.text,
+            password: _passwordController.text,
+            userType: UserType.company)
+        .then((value) {
+      if (value) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => RegisterJobSeekerPage()));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +83,26 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     SizedBox(height: ScreenUtil().setHeight(20)),
                     MyTextFormField(
-                      validator: (value)=>isValid(value)?null:'this field is required',
+                      focusNode: _emailFocus,
+                      onFieldSubmitted: (term) => fieldFocusChange(
+                          context, _emailFocus, _passwordFocus),
+                      textInputAction: TextInputAction.next,
+                      validator: (value) => validateRequiredTextField(value)
+                          ? null
+                          : 'this field is required',
                       controller: _emailController,
                       hint: 'Enter your email',
                     ),
                     // SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(
-                      validator: (value)=>isValid(value)?null:'this field is required',
+                      onFieldSubmitted: (term) => fieldFocusChange(
+                          context, _passwordFocus, null),
+                      focusNode: _passwordFocus,
+                      textInputAction: TextInputAction.done,
+                      obscureText: _hidePassword,
+                      validator: (value) => validateRequiredTextField(value)
+                          ? null
+                          : 'this field is required',
                       controller: _passwordController,
                       hint: 'Enter your Password',
                       suffixIcon: IconButton(
@@ -118,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    getRadioButtons(bloc),
+                    getRadioButtons((selected)=>setState(()=>_userType=selected),_userType),
                     Padding(
                       padding: EdgeInsets.only(
                         right: ScreenUtil().setWidth(12),
@@ -138,18 +149,19 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                        onTap: !Provider.of<LogInProvider>(context,
-                            listen: false)
-                            .isLoading()? () {
-
-                          _login();
-                          if (bloc.selected == 1) {
-                            // go to job seeker home page
-                          }
-                          if (bloc.selected == 2) {
-                            // go to company home page
-                          }
-                        }:null,
+                        onTap:
+                            !Provider.of<LogInProvider>(context, listen: false)
+                                    .isLoading()
+                                ? () {
+                                    _login();
+                                    if (bloc.selected == 1) {
+                                      // go to job seeker home page
+                                    }
+                                    if (bloc.selected == 2) {
+                                      // go to company home page
+                                    }
+                                  }
+                                : null,
                       ),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(35)),
