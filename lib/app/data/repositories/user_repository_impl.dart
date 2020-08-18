@@ -34,9 +34,9 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<Failure, bool>> logIn(
       {String email, String password, UserType userType}) async {
     try {
-await Future.delayed(Duration(seconds: 5),(){});
       var credential = await apiDataSource.postLogIn(
           email: email, password: password, userType: userType);
+      print(credential);
       await sharedPreferencesDataSource.cacheToken(credential['jwt']);
       await sharedPreferencesDataSource.cacheUserType(userType);
       await sharedPreferencesDataSource.cacheUserByType(
@@ -50,6 +50,7 @@ await Future.delayed(Duration(seconds: 5),(){});
     } on CacheException {
       return Left(CacheFailure());
     }catch(e){
+      print(e);
       return left(UnknownFailure());
     }
   }

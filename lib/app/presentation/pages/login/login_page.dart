@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
 import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 
 import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
@@ -56,8 +57,8 @@ class _LoginPageState extends State<LoginPage> {
               userType: UserType.company)
           .then((value) {
         if (value) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => BaseRegisterPage()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => RegisterJobSeekerPage()));
         }
       });
     }

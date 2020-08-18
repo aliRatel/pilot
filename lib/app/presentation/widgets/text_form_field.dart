@@ -59,8 +59,23 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
             validator: widget.validator,
             onChanged: widget.onTextChange,
             controller: widget.controller,
+
             style: TextStyle(color: mainColor),
             decoration: InputDecoration(
+              errorBorder:  OutlineInputBorder(
+                borderRadius: (BorderRadius.circular(10)),
+                borderSide: BorderSide(
+                  width: 1,
+                  color: mainColor,
+                ),
+              )
+              ,focusedErrorBorder: OutlineInputBorder(
+              borderRadius: (BorderRadius.circular(10)),
+              borderSide: BorderSide(
+                width: 1,
+                color: mainColor,
+              ),
+            ),
               errorText: widget.errorText,
               focusedBorder: OutlineInputBorder(
                 borderRadius: (BorderRadius.circular(10)),
