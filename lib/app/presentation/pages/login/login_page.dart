@@ -33,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = TextEditingController();
 
   void _login() {
-    print(_userType);
     if (!_formKey.currentState.validate()) return;
 
     Provider.of<LogInProvider>(context, listen: false).setMessage(null);
