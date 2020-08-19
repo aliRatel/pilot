@@ -17,24 +17,24 @@ class MyTextFormField extends StatefulWidget {
   final String errorText;
   final TextInputAction textInputAction;
   var onFieldSubmitted;
-   FocusNode focusNode;
-  MyTextFormField({
-    Key key,
-    this.hint = '',
-    this.controller,
-    this.validator,
-    this.onTextChange,
-    this.keyboardType,
-    this.errorText = '',
-    this.obscureText = false,
-    this.suffixIcon,
-    this.prefixIcon,
-    this.padding,
-    this.title,
-    this.textInputAction,
-    this.onFieldSubmitted,
-    this.focusNode
-  }) : super(key: key);
+  FocusNode focusNode;
+  MyTextFormField(
+      {Key key,
+      this.hint = '',
+      this.controller,
+      this.validator,
+      this.onTextChange,
+      this.keyboardType,
+      this.errorText = '',
+      this.obscureText = false,
+      this.suffixIcon,
+      this.prefixIcon,
+      this.padding,
+      this.title,
+      this.textInputAction,
+      this.onFieldSubmitted,
+      this.focusNode})
+      : super(key: key);
 
   @override
   _MyTextFormFieldState createState() => _MyTextFormFieldState();

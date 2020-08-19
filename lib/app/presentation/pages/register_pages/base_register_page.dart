@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_company/complete-register_company_page.dart';
+
+import 'package:pilot/app/presentation/pages/register_pages/register_company/register_company_page.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
-import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
-import 'package:provider/provider.dart';
+import 'package:pilot/core/util/validate_patterns.dart';
+import 'package:pilot/core/util/validators_and_focus_managers.dart';
 
 import '../../../../core/util/consts.dart';
 import '../../widgets/my_button.dart';
@@ -18,19 +20,26 @@ class BaseRegisterPage extends StatefulWidget {
 }
 
 class _BaseRegisterPageState extends State<BaseRegisterPage> {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
-  bool hidePassword = true;
-  bool hideConfirmPassword = true;
+  bool _hidePassword = true;
+  bool _hideConfirmPassword = true;
+
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _confirmPasswordFocus = FocusNode();
+  UserType _userType = UserType.company;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<TypeRadioProvider>(context);
     return Scaffold(
       body: Container(
         child: SingleChildScrollView(
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -57,29 +66,81 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                     SizedBox(height: ScreenUtil().setHeight(20)),
                     MyTextFormField(
                       hint: 'Enter your email',
+                      controller: _emailController,
+                      focusNode: _emailFocus,
+                      validator: (String input) {
+                        if (input.isEmpty) {
+                          return 'required';
+                        } else if (!PatternUtils.emailIsValid(email: input)) {
+                          return 'invalid email';
+                        } else {
+                          return null;
+                        }
+                      },
+                      onFieldSubmitted: (input) => fieldFocusChange(
+                        context,
+                        _emailFocus,
+                        _passwordFocus,
+                      ),
+                      textInputAction: TextInputAction.next,
                     ),
-                    SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(
+                      obscureText: _hidePassword,
+                      validator: (String input) {
+                        if (input.isEmpty) {
+                          return 'required';
+                        } else if (input.length < 6) {
+                          return 'password length must not be less than 6 digits';
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: _passwordController,
+                      onFieldSubmitted: (input) => fieldFocusChange(
+                        context,
+                        _passwordFocus,
+                        _confirmPasswordFocus,
+                      ),
+                      textInputAction: TextInputAction.next,
+                      focusNode: _passwordFocus,
                       hint: 'Enter your Password',
                       suffixIcon: IconButton(
-                        icon: Icon(hidePassword
+                        icon: Icon(_hidePassword
                             ? Icons.visibility_off
                             : Icons.visibility),
                         onPressed: () {
-                          hidePassword = !hidePassword;
+                          _hidePassword = !_hidePassword;
                           setState(() {});
                         },
                       ),
                     ),
-                    SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(
+                      obscureText: _hideConfirmPassword,
+                      focusNode: _confirmPasswordFocus,
+                      controller: _confirmPasswordController,
+                      validator: (String input) {
+                        if (input.isEmpty) {
+                          return 'required';
+                        } else if (_passwordController.text != input) {
+                          return 'not match with your password';
+                        } else {
+                          return null;
+                        }
+                      },
+                      onFieldSubmitted: (input) => fieldFocusChange(
+                        context,
+                        _confirmPasswordFocus,
+                        null,
+                      ),
                       hint: 'Confirm your password',
                       suffixIcon: IconButton(
-                        icon: Icon(hideConfirmPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility),
+                        icon: Icon(
+                          _hideConfirmPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                         onPressed: () {
-                          hideConfirmPassword = !hideConfirmPassword;
+                          _hideConfirmPassword = !_hideConfirmPassword;
                           setState(() {});
                         },
                       ),
@@ -98,38 +159,29 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                         ),
                       ),
                     ),
-                    //getRadioButtons(bloc),
+                    getRadioButtons(
+                      (selected) => setState(
+                        () => _userType = selected,
+                      ),
+                      _userType,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(
                         right: ScreenUtil().setWidth(12),
                         left: ScreenUtil().setWidth(12),
                       ),
                       child: myButton(
-                        context: context,
-                        child: Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                          context: context,
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        onTap: () {
-                          if (bloc.selected == 1) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => CompleteRegisterCompany(),
-                              ),
-                            );
-                          }
-                          if (bloc.selected == 2) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => RegisterJobSeekerPage(),
-                              ),
-                            );
-                          }
-                        },
-                      ),
+                          onTap: () {
+                            validateAndContinue();
+                          }),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(35)),
                     Row(
@@ -237,5 +289,39 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
         ),
       ),
     );
+  }
+
+  void validateAndContinue() {
+    if (_formKey.currentState.validate()) {
+      if (_userType == UserType.jobSeeker) {
+        Navigator.of(context)
+            .push(
+          MaterialPageRoute(
+            builder: (_) => RegisterJobSeekerPage(),
+          ),
+        )
+            .then((value) {
+          _emailController.clear();
+          _passwordController.clear();
+          _confirmPasswordController.clear();
+          _hideConfirmPassword = true;
+          _hidePassword = true;
+        });
+      } else {
+        Navigator.of(context)
+            .push(
+          MaterialPageRoute(
+            builder: (_) => RegisterCompanyPage(),
+          ),
+        )
+            .then((value) {
+          _emailController.clear();
+          _passwordController.clear();
+          _confirmPasswordController.clear();
+          _hideConfirmPassword = true;
+          _hidePassword = true;
+        });
+      }
+    }
   }
 }

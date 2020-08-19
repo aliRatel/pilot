@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -86,8 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                       onFieldSubmitted: (term) => fieldFocusChange(
                           context, _emailFocus, _passwordFocus),
                       textInputAction: TextInputAction.next,
-                      validator: (value) => validateRequiredTextField(value)
-                          ,
+                      validator: (value) => validateRequiredTextField(value),
                       controller: _emailController,
                       hint: 'Enter your email',
                     ),
@@ -98,8 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                       focusNode: _passwordFocus,
                       textInputAction: TextInputAction.done,
                       obscureText: _hidePassword,
-                      validator: (value) => validateRequiredTextField(value)
-                          ,
+                      validator: (value) => validateRequiredTextField(value),
                       controller: _passwordController,
                       hint: 'Enter your Password',
                       suffixIcon: IconButton(

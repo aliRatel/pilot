@@ -12,9 +12,9 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:pilot/app/presentation/providers/gender_radio_button.dart';
-import 'package:provider/provider.dart';
-
+import 'package:pilot/app/domain/entities/enums/user_type.dart';
+import 'package:pilot/core/util/validate_patterns.dart';
+import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import '../../../../../core/util/consts.dart';
 import '../../../widgets/gender_type.dart';
 import '../../../widgets/my_button.dart';
@@ -26,12 +26,28 @@ class RegisterJobSeekerPage extends StatefulWidget {
 }
 
 class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
-  String name = '';
-  String email = '';
-  File userImage;
-  File cvFile;
+  final FocusNode _zipFocus = FocusNode();
+  final FocusNode _streetFocus = FocusNode();
+  final FocusNode _buildingNumberFocus = FocusNode();
+  final FocusNode _phoneFocus = FocusNode();
+  final FocusNode _mobileFocus = FocusNode();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _nameFocus = FocusNode();
+
+  TextEditingController _zipController = TextEditingController();
+  TextEditingController _streetController = TextEditingController();
+  TextEditingController _buildingNumberController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+
+  UserGender _userGender = UserGender.male;
+
+  File _userImage;
+  File _cvFile;
   List<String> countries = [];
   List<String> cities = [];
   String selectedCountry = '';
@@ -50,14 +66,13 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<GenderRadioProvider>(context);
     final format = DateFormat("yyyy-MM-dd");
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -72,12 +87,12 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
                           image: DecorationImage(
-                            image: userImage == null
+                            image: _userImage == null
                                 ? AssetImage(
                                     'assets/images/account_placeholder.jpg',
                                   )
                                 : FileImage(
-                                    userImage,
+                                    _userImage,
                                   ),
                           ),
                         ),
@@ -94,20 +109,20 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                       CircleAvatar(
                         radius: 60,
                         backgroundColor: Colors.white,
-                        backgroundImage: userImage == null
+                        backgroundImage: _userImage == null
                             ? AssetImage(
                                 'assets/images/account_placeholder.jpg',
                               )
                             : FileImage(
-                                userImage,
+                                _userImage,
                               ),
                       ),
                       Positioned(
-                        right: MediaQuery.of(context).size.width / 4.5,
+                        right: MediaQuery.of(context).size.width / 4,
                         top: MediaQuery.of(context).size.height / 10.5,
                         child: Container(
-                          width: 40,
-                          height: 40,
+                          width: 30,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(60),
@@ -117,7 +132,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                             child: FlatButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () async {
-                                userImage = await FilePicker.getFile(
+                                _userImage = await FilePicker.getFile(
                                   allowCompression: true,
                                   type: FileType.image,
                                 );
@@ -125,7 +140,10 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                                   setState(() {});
                                 }
                               },
-                              child: Icon(Icons.edit),
+                              child: Icon(
+                                Icons.edit,
+                                size: 18,
+                              ),
                             ),
                           ),
                         ),
@@ -143,7 +161,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                       ),
                       Positioned(
                         child: Text(
-                          '$name',
+                          '${_nameController.text}',
                           style: TextStyle(
                             color: Colors.black,
                           ),
@@ -152,8 +170,11 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                       ),
                       Positioned(
                         child: Text(
-                          '$email',
-                          style: TextStyle(color: Colors.black),
+                          '${_emailController.text}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         bottom: ScreenUtil().setHeight(5),
                       ),
@@ -163,23 +184,52 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 SizedBox(height: ScreenUtil().setHeight(20)),
                 MyTextFormField(
                   hint: 'user@example.com',
+                  controller: _emailController,
+                  title: 'Email',
                   onTextChange: (String input) {
-                    email = input;
                     setState(() {});
                   },
-                  title: 'Email',
+                  validator: (String input) {
+                    if (input.isEmpty) {
+                      return 'required';
+                    } else if (!PatternUtils.emailIsValid(email: input)) {
+                      return 'invalid email';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _emailFocus,
+                    _nameFocus,
+                  ),
+                  textInputAction: TextInputAction.next,
+                  focusNode: _emailFocus,
                   keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(8)),
                 MyTextFormField(
-                  hint: 'ex: Max',
                   onTextChange: (String input) {
-                    name = input;
                     setState(() {});
                   },
+                  hint: 'ex: Max',
+                  controller: _nameController,
                   title: 'Sur name',
+                  validator: (String input) {
+                    if (input.isEmpty) {
+                      return 'required';
+                    } else if (input.length < 2) {
+                      return 'invalid name';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onFieldSubmitted: (input) =>
+                      fieldFocusChange(context, _nameFocus, null),
+                  textInputAction: TextInputAction.done,
+                  focusNode: _nameFocus,
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(8)),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -190,14 +240,39 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                     ),
                   ),
                 ),
-                getGenderRadioButtons(bloc),
+                getGenderRadioButtons(
+                    (selected) => setState(
+                          () => _userGender = selected,
+                        ),
+                    _userGender),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setWidth(12),
                   ),
                   child: DateTimeField(
+                    validator: (DateTime input) {
+                      if (input == null || input.toString().isEmpty) {
+                        return 'required';
+                      } else {
+                        return null;
+                      }
+                    },
                     decoration: InputDecoration(
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: (BorderRadius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: mainColor,
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: (BorderRadius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: mainColor,
+                        ),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: (BorderRadius.circular(10)),
                         borderSide: BorderSide(
@@ -230,6 +305,21 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
+                  validator: (String input) {
+                    if (input.isEmpty) {
+                      return 'required';
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: _phoneController,
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _phoneFocus,
+                    _mobileFocus,
+                  ),
+                  textInputAction: TextInputAction.next,
+                  focusNode: _phoneFocus,
                   hint: 'Phone Number',
                   keyboardType: TextInputType.phone,
                   prefixIcon: Column(
@@ -245,8 +335,23 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   ),
                   title: 'Phone Number',
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(8)),
                 MyTextFormField(
+                  validator: (String input) {
+                    if (input.isEmpty) {
+                      return 'required';
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: _mobileController,
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _mobileFocus,
+                    null,
+                  ),
+                  textInputAction: TextInputAction.done,
+                  focusNode: _mobileFocus,
                   keyboardType: TextInputType.phone,
                   hint: 'Mobile Number',
                   prefixIcon: Padding(
@@ -288,7 +393,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                         child: myButton(
                           onTap: () async {
                             File file = await FilePicker.getFile();
-                            cvFile = file;
+                            _cvFile = file;
                             setState(() {});
                           },
                           child: Icon(
@@ -306,7 +411,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 Center(
                   child: Text(
-                    cvFile == null ? '' : basename(cvFile.path),
+                    _cvFile == null ? '' : basename(_cvFile.path),
                     style: TextStyle(
                       color: Colors.black,
                     ),
@@ -413,18 +518,66 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(26)),
                 MyTextFormField(
+                  validator: (String input) {
+                    if (input.isEmpty) {
+                      return 'required';
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: _zipController,
+                  keyboardType: TextInputType.number,
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _zipFocus,
+                    _streetFocus,
+                  ),
+                  textInputAction: TextInputAction.next,
+                  focusNode: _zipFocus,
                   hint: 'ZIP Code',
                   title: 'ZIP Code',
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(8)),
                 MyTextFormField(
+                  validator: (String input) {
+                    if (input.isEmpty) {
+                      return 'required';
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: _streetController,
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _streetFocus,
+                    _buildingNumberFocus,
+                  ),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.streetAddress,
+                  focusNode: _streetFocus,
                   hint: 'Street',
                   title: 'Street',
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(8)),
                 MyTextFormField(
+                  validator: (String input) {
+                    if (input.isEmpty) {
+                      return 'required';
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: _buildingNumberController,
+                  keyboardType: TextInputType.text,
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _buildingNumberFocus,
+                    null,
+                  ),
+                  textInputAction: TextInputAction.done,
+                  focusNode: _buildingNumberFocus,
                   hint: 'Building Number',
                   title: 'Building Number',
                 ),
@@ -440,11 +593,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                         ),
                       ),
                       onTap: () {
-                        if (bloc.selected == 1) {
-                          print('male');
-                        } else if (bloc.selected == 2) {
-                          print('female');
-                        }
+                        validateAndRegisterCompany();
                       }),
                 ),
                 SizedBox(height: 50),
@@ -467,4 +616,15 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
           ],
         ),
       );
+
+  void validateAndRegisterCompany() {
+    if (_formKey.currentState.validate()) {
+      if (_cvFile == null) {
+        // handle this point
+      }
+      if (_userImage == null) {
+        // handle this point
+      }
+    }
+  }
 }

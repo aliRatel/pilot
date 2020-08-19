@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pilot/app/domain/entities/enums/user_type.dart';
 
 import '../../../core/util/consts.dart';
 
-Widget getGenderRadioButtons(bloc) {
+Widget getGenderRadioButtons(func, selected) {
   // 1 > Male  ||  2 >  Female
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -10,21 +11,21 @@ Widget getGenderRadioButtons(bloc) {
     children: [
       RadioListTile(
         title: Text('Male'),
-        value: 1,
+        value: UserGender.male,
         onChanged: (val) {
-          bloc.changeState(val);
+          func(val);
         },
         activeColor: mainColor,
-        groupValue: bloc.selected,
+        groupValue: selected,
       ),
       RadioListTile(
         title: Text('Female'),
-        value: 2,
+        value: UserGender.female,
         onChanged: (val) {
-          bloc.changeState(val);
+          func(val);
         },
         activeColor: mainColor,
-        groupValue: bloc.selected,
+        groupValue: selected,
       ),
     ],
   );
