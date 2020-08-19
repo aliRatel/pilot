@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'components/job_list/job_list.dart';
 import 'components/title.dart';
 import 'components/upload_job.dart';
@@ -12,7 +13,7 @@ class JobSeekerDashboard extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          getdashboardTitle(height,width,'dashboard for job seekers'),
+          getdashboardTitle(height,width),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.1),
               child: Text(
