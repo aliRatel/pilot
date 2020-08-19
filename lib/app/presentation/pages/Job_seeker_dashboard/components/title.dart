@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Container getdashboardTitle(double height, double width, String title){
+Container getDashboardTitle(double height, double width, String title){
   return  Container(
     margin: EdgeInsets.only(bottom: height * 0.05),
     height: height * 0.15,

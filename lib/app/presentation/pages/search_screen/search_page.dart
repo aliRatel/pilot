@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:pilot/app/presentation/pages/Job%20seeker%20dashboard/components/job_list/job_list.dart';
+import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/job_list/job_list.dart';
 import 'package:pilot/app/presentation/pages/search_screen/search_box.dart';
 import 'package:pilot/app/presentation/widgets/dotted_button.dart';
 
