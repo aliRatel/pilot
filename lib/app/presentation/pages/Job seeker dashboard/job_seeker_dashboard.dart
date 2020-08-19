@@ -13,7 +13,7 @@ class JobSeekerDashboard extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          getdashboardTitle(height,width),
+          getdashboardTitle(height,width,'dashboard for job seeker'),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.1),
               child: Text(
