@@ -58,12 +58,11 @@ class UserProvider with ChangeNotifier {
     token = userInfo['jwt'];
     user = userInfo['user'];
     userType == UserType.company ? company = user : jobSeeker = user;
-    if(token !=null){
-      if(company !=null){
-
-      }else if (Job){
-
-
-    }else neededAction = AppAction.signUp;
+    if (token != null) {
+      if (company != null) {
+      } else if (Job != null) {
+      } else
+        neededAction = AppAction.signUp;
+    }
   }
 }

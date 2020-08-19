@@ -13,16 +13,25 @@ class JobSeekerDashboard extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          getdashboardTitle(height,width),
+          getdashboardTitle(height, width),
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-              child: Text(
-                  'Lorem dolor sit amet consecteture adipisicing elit, sed do',
-                  style: TextStyle(
-                      color: Colors.blue[500], fontSize: width * 0.035),
-                  textAlign: TextAlign.center)),
-          getUploadJobContainer(height,width),
-          getjobList(height,width)
+            padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+            child: Text(
+                'Lorem dolor sit amet consecteture adipisicing elit, sed do',
+                style: TextStyle(
+                  color: Colors.blue[500],
+                  fontSize: width * 0.035,
+                ),
+                textAlign: TextAlign.center),
+          ),
+          getUploadJobContainer(
+            height,
+            width,
+          ),
+          getjobList(
+            height,
+            width,
+          )
         ],
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilot/app/presentation/pages/search_screen/search_page.dart';
 import 'package:pilot/app/presentation/providers/basic_user_provider.dart';
 import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:provider/provider.dart';
-import 'app/presentation/pages/LoadingPage.dart';
 import 'app/presentation/providers/gender_radio_button.dart';
 import 'app/presentation/providers/selected_radio_button.dart';
 import 'core/util/consts.dart';
@@ -81,6 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: height,
       allowFontScaling: true,
     );
-    return LoadingPage();
+    return SearchScreen();
   }
 }
