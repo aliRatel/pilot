@@ -22,7 +22,7 @@ class JobSeekerDashboard extends StatelessWidget {
                       color: Colors.blue[500], fontSize: width * 0.035),
                   textAlign: TextAlign.center)),
           getUploadJobContainer(height,width),
-          getjobList(height,width)
+          getJobList(height,width)
         ],
       ),
     );

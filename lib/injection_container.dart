@@ -1,7 +1,6 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
-import 'package:pilot/app/data/datasources/remote/remote_data_source.dart';
-import 'package:pilot/app/data/datasources/remote/services/user_remote_service.dart';
+
 import 'package:pilot/app/data/repositories/user_repository_impl.dart';
 import 'package:pilot/app/domain/repositories/user_repository.dart';
 import 'package:pilot/app/domain/usecases/check_for_available_users_usecase.dart';
@@ -9,9 +8,11 @@ import 'package:pilot/app/domain/usecases/user_login_usecase.dart';
 import 'package:pilot/app/presentation/providers/basic_user_provider.dart';
 import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite_dev.dart';
 
-import 'app/data/datasources/local/local_data_source.dart';
+import 'app/data/data_sources/local/local_data_source.dart';
+import 'app/data/data_sources/remote/remote_data_source.dart';
+import 'app/data/data_sources/remote/services/user_remote_service.dart';
+
 
 GetIt sl = GetIt.instance;
 

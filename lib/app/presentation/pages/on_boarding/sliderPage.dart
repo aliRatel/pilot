@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 
-class sliderPage extends StatelessWidget{
+class SliderPage extends StatelessWidget{
 
   final String image;
   final String description;
 
-  sliderPage({ this.image, this.description});
+  SliderPage({ this.image, this.description});
 
   @override
   Widget build(BuildContext context) {

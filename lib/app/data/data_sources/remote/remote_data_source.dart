@@ -1,5 +1,5 @@
 import 'package:chopper/chopper.dart';
-import 'package:pilot/app/data/datasources/remote/services/user_remote_service.dart';
+import 'package:pilot/app/data/data_sources/remote/services/user_remote_service.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/core/error/exceptions.dart';
 import 'package:meta/meta.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 
 import 'my_button.dart';
 
-getjobList(double height, double width) {
+getJobList(double height, double width) {
   return Expanded(
     child: ListView.builder(
         itemCount: 3,

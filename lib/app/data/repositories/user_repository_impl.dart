@@ -1,8 +1,8 @@
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:pilot/app/data/datasources/local/local_data_source.dart';
-import 'package:pilot/app/data/datasources/remote/remote_data_source.dart';
+import 'package:pilot/app/data/data_sources/local/local_data_source.dart';
+import 'package:pilot/app/data/data_sources/remote/remote_data_source.dart';
+
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/domain/entities/job_seeker.dart';
 import 'package:pilot/app/domain/repositories/user_repository.dart';
