@@ -82,7 +82,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   @override
   Future<bool> cacheUserType(UserType userType) async {
     bool result = await sharedPreferences.setString(
-        CACHED_USER_TYPE, userType.toString());
+        CACHED_USER_TYPE, userType.toShortString());
     if (result) return result;
     throw CacheException();
   }
@@ -146,8 +146,10 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   }
 
   @override
-  Future<UserType> fetchCachedUserType() {
-    // TODO: implement fetchCachedUserType
-    throw UnimplementedError();
+  Future<UserType> fetchCachedUserType() async{
+   var result =  sharedPreferences.getString(CACHED_USER_TYPE);
+   UserType userType = userTypeFromString(result);
+   if(userType != null) return userType;
+   else throw CacheException();
   }
 }

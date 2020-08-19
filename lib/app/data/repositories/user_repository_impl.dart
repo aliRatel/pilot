@@ -49,16 +49,33 @@ class UserRepositoryImpl extends UserRepository {
       return Left(ServerFailure());
     } on CacheException {
       return Left(CacheFailure());
-    }catch(e){
+    } catch (e) {
       print(e);
       return left(UnknownFailure());
     }
   }
 
   @override
-  Future<Either<Failure, bool>> registerUser(
-      {String email, String password}) {
+  Future<Either<Failure, bool>> registerUser({String email, String password}) {
     // TODO: implement registerUser
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> getCachedUserInfo() async {
+    try {
+      Map<String, dynamic> values;
+      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+      var userType = await sharedPreferencesDataSource.fetchCachedUserType();
+      var user = userType == UserType.company
+          ? await sharedPreferencesDataSource.fetchCachedCompany()
+          : await sharedPreferencesDataSource.fetchCachedUser();
+      values['jwt'] = jwt;
+      values['userType']=userType;
+      values['user'] = user;
+      return Right(values);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 }

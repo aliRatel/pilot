@@ -7,3 +7,8 @@ extension ParseToString on UserType {
     return this.toString().split('.').last;
   }
 }
+
+  UserType userTypeFromString(String s){
+    return s=='company'?UserType.company:UserType.jobSeeker;
+  }
+

@@ -1,0 +1,1 @@
+enum AppAction{login,signUp,CompleteJobSeekerInfo,CompleteCompanyInfo}
