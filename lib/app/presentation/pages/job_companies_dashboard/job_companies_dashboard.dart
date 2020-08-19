@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'components/job_list/job_list.dart';
-import 'components/title.dart';
-import 'components/upload_job.dart';
+import 'package:pilot/app/presentation/pages/Job%20seeker%20dashboard/components/job_list/job_list.dart';
+import 'package:pilot/app/presentation/pages/Job%20seeker%20dashboard/components/title.dart';
+import 'package:pilot/app/presentation/pages/Job%20seeker%20dashboard/components/upload_job.dart';
 
-class JobSeekerDashboard extends StatelessWidget {
+
+class JobCompaniesDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -12,7 +13,7 @@ class JobSeekerDashboard extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          getdashboardTitle(height,width,'dashboard for job seekers'),
+          getdashboardTitle(height,width,'dashboard for job companies'),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.1),
               child: Text(

@@ -9,7 +9,6 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((_) => func(context));
-
     return Scaffold(body: Center(child: CircularProgressIndicator(),),);
   }
 }
