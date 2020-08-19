@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pilot/app/presentation/pages/on%20boarding/sliderPage.dart';
+import 'package:pilot/app/presentation/pages/on_boarding/sliderPage.dart';
 
 
 class onBoarding extends StatefulWidget{
