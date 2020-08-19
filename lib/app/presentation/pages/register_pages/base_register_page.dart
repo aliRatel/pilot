@@ -7,7 +7,6 @@ import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_company/register_company_page.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
-import 'package:pilot/core/util/validate_patterns.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
 
 import '../../../../core/util/consts.dart';
@@ -68,15 +67,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                       hint: 'Enter your email',
                       controller: _emailController,
                       focusNode: _emailFocus,
-                      validator: (String input) {
-                        if (input.isEmpty) {
-                          return 'required';
-                        } else if (!PatternUtils.emailIsValid(email: input)) {
-                          return 'invalid email';
-                        } else {
-                          return null;
-                        }
-                      },
+                      validator: (value) => validateRequiredTextField(value),
                       onFieldSubmitted: (input) => fieldFocusChange(
                         context,
                         _emailFocus,
@@ -86,15 +77,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                     ),
                     MyTextFormField(
                       obscureText: _hidePassword,
-                      validator: (String input) {
-                        if (input.isEmpty) {
-                          return 'required';
-                        } else if (input.length < 6) {
-                          return 'password length must not be less than 6 digits';
-                        } else {
-                          return null;
-                        }
-                      },
+                      validator: (value) => validateRequiredTextField(value),
                       controller: _passwordController,
                       onFieldSubmitted: (input) => fieldFocusChange(
                         context,
@@ -118,15 +101,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                       obscureText: _hideConfirmPassword,
                       focusNode: _confirmPasswordFocus,
                       controller: _confirmPasswordController,
-                      validator: (String input) {
-                        if (input.isEmpty) {
-                          return 'required';
-                        } else if (_passwordController.text != input) {
-                          return 'not match with your password';
-                        } else {
-                          return null;
-                        }
-                      },
+                      validator: (value) => validateRequiredTextField(value),
                       onFieldSubmitted: (input) => fieldFocusChange(
                         context,
                         _confirmPasswordFocus,

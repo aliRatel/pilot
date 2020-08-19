@@ -13,7 +13,6 @@ import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
-import 'package:pilot/core/util/validate_patterns.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import '../../../../../core/util/consts.dart';
 import '../../../widgets/gender_type.dart';
@@ -189,15 +188,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   onTextChange: (String input) {
                     setState(() {});
                   },
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else if (!PatternUtils.emailIsValid(email: input)) {
-                      return 'invalid email';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   onFieldSubmitted: (input) => fieldFocusChange(
                     context,
                     _emailFocus,
@@ -215,15 +206,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   hint: 'ex: Max',
                   controller: _nameController,
                   title: 'Sur name',
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else if (input.length < 2) {
-                      return 'invalid name';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   onFieldSubmitted: (input) =>
                       fieldFocusChange(context, _nameFocus, null),
                   textInputAction: TextInputAction.done,
@@ -231,7 +214,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     'Gender',
                     style: TextStyle(
@@ -241,10 +224,11 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   ),
                 ),
                 getGenderRadioButtons(
-                    (selected) => setState(
-                          () => _userGender = selected,
-                        ),
-                    _userGender),
+                  (selected) => setState(
+                    () => _userGender = selected,
+                  ),
+                  _userGender,
+                ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -305,13 +289,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _phoneController,
                   onFieldSubmitted: (input) => fieldFocusChange(
                     context,
@@ -337,13 +315,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _mobileController,
                   onFieldSubmitted: (input) => fieldFocusChange(
                     context,
@@ -520,13 +492,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(26)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _zipController,
                   keyboardType: TextInputType.number,
                   onFieldSubmitted: (input) => fieldFocusChange(
@@ -541,13 +507,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _streetController,
                   onFieldSubmitted: (input) => fieldFocusChange(
                     context,
@@ -555,20 +515,14 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                     _buildingNumberFocus,
                   ),
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.streetAddress,
+                  keyboardType: TextInputType.text,
                   focusNode: _streetFocus,
                   hint: 'Street',
                   title: 'Street',
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _buildingNumberController,
                   keyboardType: TextInputType.text,
                   onFieldSubmitted: (input) => fieldFocusChange(

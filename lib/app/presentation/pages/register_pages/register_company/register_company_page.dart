@@ -186,13 +186,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _zipController,
                   keyboardType: TextInputType.number,
                   onFieldSubmitted: (input) => fieldFocusChange(
@@ -207,13 +201,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _streetController,
                   onFieldSubmitted: (input) => fieldFocusChange(
                     context,
@@ -221,20 +209,14 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                     _buildingNumberFocus,
                   ),
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.streetAddress,
+                  keyboardType: TextInputType.text,
                   focusNode: _streetFocus,
                   hint: 'Street',
                   title: 'Street',
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _buildingNumberController,
                   keyboardType: TextInputType.text,
                   onFieldSubmitted: (input) => fieldFocusChange(
@@ -249,13 +231,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _phoneController,
                   onFieldSubmitted: (input) => fieldFocusChange(
                     context,
@@ -281,13 +257,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 MyTextFormField(
-                  validator: (String input) {
-                    if (input.isEmpty) {
-                      return 'required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   controller: _mobileController,
                   onFieldSubmitted: (input) => fieldFocusChange(
                     context,
