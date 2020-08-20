@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pilot/app/domain/entities/job_seeker.dart';
+import 'package:pilot/app/presentation/pages/add_job_page/add_job_page.dart';
 import 'package:pilot/app/presentation/pages/search_screen/search_page.dart';
 import 'package:pilot/app/presentation/providers/basic_user_provider.dart';
 import 'package:pilot/app/presentation/providers/company_provider.dart';
 import 'package:provider/provider.dart';
+import 'app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 import 'app/presentation/providers/gender_radio_button.dart';
 import 'app/presentation/providers/selected_radio_button.dart';
 import 'core/util/consts.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
+import 'package:pilot/app/presentation/pages/job_companies_dashboard/job_companies_dashboard.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/register_company_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,6 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: height,
       allowFontScaling: true,
     );
-    return SearchScreen();
+    return AddJobPage();
   }
 }

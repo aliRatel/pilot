@@ -16,6 +16,7 @@ class MyTextFormField extends StatefulWidget {
   final String title;
   final String errorText;
   final TextInputAction textInputAction;
+  final int maxlines;
   var onFieldSubmitted;
   FocusNode focusNode;
   MyTextFormField(
@@ -31,6 +32,7 @@ class MyTextFormField extends StatefulWidget {
       this.prefixIcon,
       this.padding,
       this.title,
+      this.maxlines,
       this.textInputAction,
       this.onFieldSubmitted,
       this.focusNode})
@@ -61,6 +63,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
           ),
           TextFormField(
             onFieldSubmitted: widget.onFieldSubmitted,
+            maxLines: widget.maxlines,
             focusNode: widget.focusNode,
             textInputAction: widget.textInputAction,
             obscureText: widget.obscureText,
