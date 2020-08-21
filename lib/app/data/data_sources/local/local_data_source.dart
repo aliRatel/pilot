@@ -113,18 +113,18 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   }
 
   @override
-  Future<Company> fetchCachedCompany() async {
+  Future<Company> fetchCachedCompany()  {
 var result =  sharedPreferences.getString(CACHED_LOCAl_USER);
 if(result != null){
-  return Company.fromJson(json.decode(result));
+  return Future.value(Company.fromJson(json.decode(result)));
 }throw CacheException();
   }
 
   @override
-  Future<JobSeeker> fetchCachedUser() async{
+  Future<JobSeeker> fetchCachedUser() {
     var result =  sharedPreferences.getString(CACHED_LOCAl_USER);
     if(result != null){
-      return JobSeeker.fromJson(json.decode(result));
+      return Future.value(JobSeeker.fromJson(json.decode(result)));
     }throw CacheException();
   }
 
