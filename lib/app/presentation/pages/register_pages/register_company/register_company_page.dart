@@ -4,7 +4,10 @@ import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:pilot/app/presentation/pages/job_companies_dashboard/job_companies_dashboard.dart';
+import 'package:pilot/app/presentation/providers/complete_company_registration_provider.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../core/util/consts.dart';
 import '../../../widgets/base_clipper.dart';
@@ -47,9 +50,30 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     selectedCountry = countries[0];
     selectedCity = cities[0];
   }
- void _submit(){
 
- }
+  void _submit() {
+    if(!_formKey.currentState.validate()) return ;
+    Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
+        .completeProfile(
+            companyName: 'asdf',
+            cityId: 1,
+            countryId: 1,
+            zipCode: 'dsafasd',
+            street: 'dsafasd',
+            mobileNumber: 'dsafasd',
+            phoneNumber: 'dsafasd',
+            buildingNumber: 'dsafasd')
+        .then((value) {
+      if (value) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => JobCompaniesDashboard(),
+            ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -119,12 +143,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                         hint: Text("Select a country"),
                         items: countries
                             .map(
-                              (country) =>
-                              DropdownMenuItem<String>(
+                              (country) => DropdownMenuItem<String>(
                                 child: Text('$country'),
                                 value: country,
                               ),
-                        )
+                            )
                             .toList(),
                         onChanged: (newCountry) {
                           setState(() {
@@ -172,12 +195,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                         hint: Text("Select a city"),
                         items: cities
                             .map(
-                              (city) =>
-                              DropdownMenuItem<String>(
+                              (city) => DropdownMenuItem<String>(
                                 child: Text('$city'),
                                 value: city,
                               ),
-                        )
+                            )
                             .toList(),
                         onChanged: (newCity) {
                           setState(() {
@@ -193,12 +215,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   validator: (value) => validateRequiredTextField(value),
                   controller: _zipController,
                   keyboardType: TextInputType.number,
-                  onFieldSubmitted: (input) =>
-                      fieldFocusChange(
-                        context,
-                        _zipFocus,
-                        _streetFocus,
-                      ),
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _zipFocus,
+                    _streetFocus,
+                  ),
                   textInputAction: TextInputAction.next,
                   focusNode: _zipFocus,
                   hint: 'ZIP Code',
@@ -208,12 +229,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _streetController,
-                  onFieldSubmitted: (input) =>
-                      fieldFocusChange(
-                        context,
-                        _streetFocus,
-                        _buildingNumberFocus,
-                      ),
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _streetFocus,
+                    _buildingNumberFocus,
+                  ),
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                   focusNode: _streetFocus,
@@ -225,12 +245,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   validator: (value) => validateRequiredTextField(value),
                   controller: _buildingNumberController,
                   keyboardType: TextInputType.text,
-                  onFieldSubmitted: (input) =>
-                      fieldFocusChange(
-                        context,
-                        _buildingNumberFocus,
-                        _phoneFocus,
-                      ),
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _buildingNumberFocus,
+                    _phoneFocus,
+                  ),
                   textInputAction: TextInputAction.next,
                   focusNode: _buildingNumberFocus,
                   hint: 'Building Number',
@@ -240,12 +259,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _phoneController,
-                  onFieldSubmitted: (input) =>
-                      fieldFocusChange(
-                        context,
-                        _phoneFocus,
-                        _mobileFocus,
-                      ),
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _phoneFocus,
+                    _mobileFocus,
+                  ),
                   textInputAction: TextInputAction.next,
                   focusNode: _phoneFocus,
                   hint: 'Phone Number',
@@ -267,12 +285,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _mobileController,
-                  onFieldSubmitted: (input) =>
-                      fieldFocusChange(
-                        context,
-                        _mobileFocus,
-                        null,
-                      ),
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _mobileFocus,
+                    null,
+                  ),
                   textInputAction: TextInputAction.done,
                   focusNode: _mobileFocus,
                   keyboardType: TextInputType.phone,
@@ -300,14 +317,26 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   padding: EdgeInsets.all(12.0),
                   child: myButton(
                     context: context,
-                    child: Text(
-                      'Continue',
+                    child: Provider.of<CompleteCompanyRegistrationProvider>(context).loading
+                        ? CircularProgressIndicator(
+                      backgroundColor: Colors.white,
+                      strokeWidth: 2,
+                    )
+                        : Text(
+                      'Sign in',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onTap: validateAndRegister,
+                    onTap:
+                    !Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
+                        .isLoading()
+                        ? () {
+                      _submit();
+                    }
+                        : null,
+
                   ),
                 ),
                 SizedBox(height: 50),
@@ -319,8 +348,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     );
   }
 
-  Widget _buildDropdownItem(Country country) =>
-      Container(
+  Widget _buildDropdownItem(Country country) => Container(
         child: Row(
           children: <Widget>[
             CountryPickerUtils.getDefaultFlagImage(country),
@@ -332,7 +360,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
         ),
       );
 
-  void validateAndRegister() {
-    if (_formKey.currentState.validate()) {}
-  }
+//  void validateAndRegister() {
+//    if (_formKey.currentState.validate()) {}
+//  }
 }

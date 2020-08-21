@@ -8,19 +8,18 @@ part '../generated/company.g.dart';
 class Company extends Equatable {
   int id;
   String companyName;
-  String country;
-  String city;
+  int country;
+  int city;
   String zipCode;
   String street;
   String buildingNumber;
   String phoneNumber;
   String mobileNumber;
   String email;
-  String password;
 
 
   Company({this.id, this.companyName, this.country, this.city, this.zipCode,
-    this.street, this.buildingNumber,this.email,this.password, this.phoneNumber, this.mobileNumber});
+    this.street, this.buildingNumber,this.email, this.phoneNumber, this.mobileNumber});
 
   factory Company.fromJson(Map<String, dynamic> json) =>
       _$CompanyFromJson(json);

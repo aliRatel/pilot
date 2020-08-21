@@ -31,4 +31,29 @@ class _$UserRemoteService extends UserRemoteService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> postCompleteCompanyProfile(
+      Map<String, dynamic> body, String token) {
+    final $url = '/user/complete-company-profile';
+    final $headers = {'bearer': token};
+    final $body = body;
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> postCompleteJobSeekerProfile(
+      Map<String, dynamic> body,
+      String token,
+      http.MultipartFile image,
+      http.MultipartFile cv) {
+    final $url = '/user/complete-jobseeker-profile';
+    final $headers = {'bearer': token};
+    final $body = body;
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

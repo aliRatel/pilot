@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: EdgeInsets.only(
                         right: ScreenUtil().setWidth(12),
-                        left: ScreenUtil().setWidth(12),
+                        left:  ScreenUtil().setWidth(12),
                       ),
                       child: myButton(
                         context: context,

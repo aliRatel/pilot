@@ -42,11 +42,11 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
         .signUpUser(
         email: _emailController.text,
         password: _passwordController.text,
-        userType: UserType.company)
+        userType: _userType)
         .then((value) {
       if (value) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => RegisterJobSeekerPage()));
+            MaterialPageRoute(builder: (context) => _userType==UserType.company?RegisterCompanyPage(): RegisterJobSeekerPage()));
       }
     });
   }

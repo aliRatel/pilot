@@ -7,7 +7,6 @@ part '../generated/job_seeker.g.dart';
 class JobSeeker extends Equatable {
   int id;
   String email;
-  String password;
   String nationality;
   String country;
   String city;
@@ -28,7 +27,6 @@ class JobSeeker extends Equatable {
       this.nationality,
       this.country,
       this.city,
-      this.password,
       this.zipCode,
       this.street,
       this.houseNumber,
@@ -54,7 +52,6 @@ class JobSeeker extends Equatable {
         zipCode,
         street,
         houseNumber,
-        password,
         personalPhoto,
         cv,
         coverLetter,

@@ -13,7 +13,6 @@ JobSeeker _$JobSeekerFromJson(Map<String, dynamic> json) {
     nationality: json['nationality'] as String,
     country: json['country'] as String,
     city: json['city'] as String,
-    password: json['password'] as String,
     zipCode: json['zipCode'] as String,
     street: json['street'] as String,
     houseNumber: json['houseNumber'] as int,
@@ -32,7 +31,6 @@ JobSeeker _$JobSeekerFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$JobSeekerToJson(JobSeeker instance) => <String, dynamic>{
       'id': instance.id,
       'email': instance.email,
-      'password': instance.password,
       'nationality': instance.nationality,
       'country': instance.country,
       'city': instance.city,

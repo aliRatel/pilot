@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:pilot/app/data/data_sources/local/local_data_source.dart';
 import 'package:pilot/app/data/data_sources/remote/remote_data_source.dart';
@@ -97,26 +99,12 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<Either<Failure, bool>> completeCompanyProfile(
-      {String companyName,
-      int countryId,
-      int cityId,
-      String zipCode,
-      String street,
-      String buildingNumber,
-      String phoneNumber,
-      String mobileNumber}) async {
+      {Company company}) async {
     try {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
-      var result = await apiDataSource.postCompleteCompanyProfile(
-          companyName: companyName,
-          countryId: countryId,
-          cityId: cityId,
-          zipCode: zipCode,
-          street: street,
-          buildingNumber: buildingNumber,
-          phoneNumber: phoneNumber,
-          mobileNumber: mobileNumber,
-          jwt: jwt);
+
+      var result = await apiDataSource.postCompleteCompanyProfile (company:company,
+          jwt: jwt) ;
       if (result)
         return Right(true);
       else

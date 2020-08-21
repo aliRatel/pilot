@@ -135,13 +135,13 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   Future<bool> cacheUserByType(
       {int id, String email, String password, UserType userType}) async {
     if (userType == UserType.company) {
-      Company company = Company(id: id, email: email, password: password);
+      Company company = Company(id: id, email: email);
 
       var result = await cacheCompany(company);
       if (result) return Future.value(result);
       throw CacheException();
     } else if (userType == UserType.jobSeeker) {
-      JobSeeker jobSeeker = JobSeeker(id: id, email: email, password: password);
+      JobSeeker jobSeeker = JobSeeker(id: id, email: email);
       print(jobSeeker);
 
       var result = await cacheJobSeeker(jobSeeker);

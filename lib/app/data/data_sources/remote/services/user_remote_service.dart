@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:http/http.dart' as http;
 
 part  'generated/user_remote_service.chopper.dart';
 
@@ -21,5 +22,8 @@ abstract class UserRemoteService extends ChopperService {
   @Post(path: '/login')
   Future<Response> postLogin(@Body() Map<String, dynamic> body);
 
-
+  @Post(path:'/complete-company-profile')
+  Future<Response> postCompleteCompanyProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token);
+  @Post(path:'/complete-jobseeker-profile')
+  Future<Response> postCompleteJobSeekerProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token,@PartFile('image') http.MultipartFile image,@PartFile('cv') http.MultipartFile cv);
 }
