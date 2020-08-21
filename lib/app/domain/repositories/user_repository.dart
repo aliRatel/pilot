@@ -10,7 +10,13 @@ abstract class UserRepository {
 
   Future<Either<Failure, bool>> fetchUser({int id});
 
-  Future<Either<Failure, bool>> completeProfile({JobSeeker user});
+  Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker user});
+  Future<Either<Failure, bool>> completeCompanyProfile(
+      {String companyName,
+      int countryId,
+      int cityId,
+      String zipCode,
+      String street,String buildingNumber,String phoneNumber,String mobileNumber});
 
   Future<Either<Failure, bool>> logIn(
       {String email, String password, UserType userType});

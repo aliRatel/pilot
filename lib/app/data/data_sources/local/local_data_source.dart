@@ -50,10 +50,11 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
 
   @override
   Future<bool> cacheCompany(Company company) async {
-
     var result = await sharedPreferences.setString(
         CACHED_LOCAl_USER, json.encode(company.toJson()));
-    if (result){return Future.value(result);}
+    if (result) {
+      return Future.value(result);
+    }
 
     throw CacheException;
   }
@@ -113,25 +114,26 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   }
 
   @override
-  Future<Company> fetchCachedCompany()  {
-var result =  sharedPreferences.getString(CACHED_LOCAl_USER);
-if(result != null){
-  return Future.value(Company.fromJson(json.decode(result)));
-}throw CacheException();
+  Future<Company> fetchCachedCompany() {
+    var result = sharedPreferences.getString(CACHED_LOCAl_USER);
+    if (result != null) {
+      return Future.value(Company.fromJson(json.decode(result)));
+    }
+    throw CacheException();
   }
 
   @override
   Future<JobSeeker> fetchCachedUser() {
-    var result =  sharedPreferences.getString(CACHED_LOCAl_USER);
-    if(result != null){
+    var result = sharedPreferences.getString(CACHED_LOCAl_USER);
+    if (result != null) {
       return Future.value(JobSeeker.fromJson(json.decode(result)));
-    }throw CacheException();
+    }
+    throw CacheException();
   }
 
   @override
   Future<bool> cacheUserByType(
       {int id, String email, String password, UserType userType}) async {
-
     if (userType == UserType.company) {
       Company company = Company(id: id, email: email, password: password);
 
@@ -159,10 +161,12 @@ if(result != null){
   }
 
   @override
-  Future<UserType> fetchCachedUserType() async{
-   var result =  sharedPreferences.getString(CACHED_USER_TYPE);
-   UserType userType = userTypeFromString(result);
-   if(userType != null) return userType;
-   else throw CacheException();
+  Future<UserType> fetchCachedUserType() async {
+    var result = sharedPreferences.getString(CACHED_USER_TYPE);
+    UserType userType = userTypeFromString(result);
+    if (userType != null)
+      return userType;
+    else
+      throw CacheException();
   }
 }

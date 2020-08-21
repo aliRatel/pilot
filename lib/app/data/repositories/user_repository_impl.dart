@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:pilot/app/data/data_sources/local/local_data_source.dart';
 import 'package:pilot/app/data/data_sources/remote/remote_data_source.dart';
@@ -18,12 +17,6 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(
       {@required this.apiDataSource,
       @required this.sharedPreferencesDataSource});
-
-  @override
-  Future<Either<Failure, bool>> completeProfile({JobSeeker user}) {
-    // TODO: implement completeProfile
-    throw UnimplementedError();
-  }
 
   @override
   Future<Either<Failure, bool>> fetchUser({int id}) {
@@ -57,7 +50,8 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> signUp({String email, String password,UserType userType}) async{
+  Future<Either<Failure, bool>> signUp(
+      {String email, String password, UserType userType}) async {
     try {
       var credential = await apiDataSource.postSignUp(
           email: email, password: password, userType: userType);
@@ -87,7 +81,6 @@ class UserRepositoryImpl extends UserRepository {
       Map<String, dynamic> values = new Map();
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 
-
       var userType = await sharedPreferencesDataSource.fetchCachedUserType();
       var user = (userType == UserType.company)
           ? await sharedPreferencesDataSource.fetchCachedCompany()
@@ -97,12 +90,47 @@ class UserRepositoryImpl extends UserRepository {
       values['userType'] = userType;
       values['user'] = user;
       return Right(values);
-    }catch (e){
-      print(e);
+    } on CacheException {
       return Left(CacheFailure());
     }
-//    } on CacheException {
-//      return Left(CacheFailure());
-//    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> completeCompanyProfile(
+      {String companyName,
+      int countryId,
+      int cityId,
+      String zipCode,
+      String street,
+      String buildingNumber,
+      String phoneNumber,
+      String mobileNumber}) async {
+    try {
+      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+      var result = await apiDataSource.postCompleteCompanyProfile(
+          companyName: companyName,
+          countryId: countryId,
+          cityId: cityId,
+          zipCode: zipCode,
+          street: street,
+          buildingNumber: buildingNumber,
+          phoneNumber: phoneNumber,
+          mobileNumber: mobileNumber,
+          jwt: jwt);
+      if (result)
+        return Right(true);
+      else
+      return Right(false);
+    } on CacheException {
+      return Left(CacheFailure());
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker user}) {
+    // TODO: implement completeJobSeekerProfile
+    throw UnimplementedError();
   }
 }

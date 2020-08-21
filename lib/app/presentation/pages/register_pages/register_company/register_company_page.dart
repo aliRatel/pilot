@@ -47,7 +47,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     selectedCountry = countries[0];
     selectedCity = cities[0];
   }
+ void _submit(){
 
+ }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
