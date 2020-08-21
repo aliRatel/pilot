@@ -2,6 +2,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:pilot/app/data/data_sources/local/local_data_source.dart';
 import 'package:pilot/app/data/data_sources/remote/remote_data_source.dart';
+import 'package:pilot/app/domain/entities/company.dart';
 
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/domain/entities/job_seeker.dart';
@@ -56,26 +57,52 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> registerUser({String email, String password}) {
-    // TODO: implement registerUser
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> signUp({String email, String password,UserType userType}) async{
+    try {
+      var credential = await apiDataSource.postSignUp(
+          email: email, password: password, userType: userType);
+      print(credential);
+      await sharedPreferencesDataSource.cacheToken(credential['jwt']);
+      await sharedPreferencesDataSource.cacheUserType(userType);
+
+      await sharedPreferencesDataSource.cacheUserByType(
+          id: credential['id'],
+          email: email,
+          password: password,
+          userType: userType);
+      return Right(true);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
+    } catch (e) {
+      print(e);
+      return left(UnknownFailure());
+    }
   }
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> getCachedUserInfo() async {
     try {
-      Map<String, dynamic> values;
+      Map<String, dynamic> values = new Map();
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+
+
       var userType = await sharedPreferencesDataSource.fetchCachedUserType();
-      var user = userType == UserType.company
+      var user = (userType == UserType.company)
           ? await sharedPreferencesDataSource.fetchCachedCompany()
           : await sharedPreferencesDataSource.fetchCachedUser();
+      print('********************************' + user.toString());
       values['jwt'] = jwt;
-      values['userType']=userType;
+      values['userType'] = userType;
       values['user'] = user;
       return Right(values);
-    } on CacheException {
+    }catch (e){
+      print(e);
       return Left(CacheFailure());
     }
+//    } on CacheException {
+//      return Left(CacheFailure());
+//    }
   }
 }

@@ -6,7 +6,7 @@ import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
 import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 
-import 'package:pilot/app/presentation/providers/company_provider.dart';
+import 'package:pilot/app/presentation/providers/login_provider.dart';
 import 'package:pilot/app/presentation/providers/selected_radio_button.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
 
     Provider.of<LogInProvider>(context, listen: false).setMessage(null);
     Provider.of<LogInProvider>(context, listen: false)
-        .registerCompany(
+        .loginUser(
             email: _emailController.text,
             password: _passwordController.text,
             userType: UserType.company)
@@ -149,12 +149,6 @@ class _LoginPageState extends State<LoginPage> {
                                     .isLoading()
                                 ? () {
                                     _login();
-                                    if (bloc.selected == 1) {
-                                      // go to job seeker home page
-                                    }
-                                    if (bloc.selected == 2) {
-                                      // go to company home page
-                                    }
                                   }
                                 : null,
                       ),

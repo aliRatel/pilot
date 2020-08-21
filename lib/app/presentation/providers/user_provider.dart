@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:pilot/app/domain/entities/company.dart';
 import 'package:pilot/app/domain/entities/enums/app_action.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
-import 'package:pilot/app/domain/entities/job.dart';
 import 'package:pilot/app/domain/entities/job_seeker.dart';
 import 'package:pilot/app/domain/usecases/check_for_available_users_usecase.dart';
 import 'package:meta/meta.dart';
@@ -24,9 +23,11 @@ class UserProvider with ChangeNotifier {
 
   UserProvider({@required this.checkForAvailableUsersUseCase});
 
-  void checkForUsers() async {
+  Future<void> checkForUsers() async {
+
     var userResult = await checkForAvailableUsersUseCase(NoParams());
     userResult.fold((failure) {
+
       neededAction = AppAction.signUp;
     }, (userInfo) {
       mapUserInfoToAction(userInfo);
@@ -35,7 +36,6 @@ class UserProvider with ChangeNotifier {
 
   void setLoading(value) {
     isLoading = value;
-    print('********************************' + value.toString());
     notifyListeners();
   }
 
@@ -60,9 +60,20 @@ class UserProvider with ChangeNotifier {
     userType == UserType.company ? company = user : jobSeeker = user;
     if (token != null) {
       if (company != null) {
-      } else if (Job != null) {
-      } else
-        neededAction = AppAction.signUp;
+        if (company.companyName == null) {
+          neededAction = AppAction.CompleteCompanyInfo;
+        } else {
+          neededAction = AppAction.CompanyDashBoard;
+        }
+      } else if (jobSeeker != null) {
+        if (jobSeeker == null) {
+          neededAction = AppAction.CompleteJobSeekerInfo;
+        } else {
+          neededAction = AppAction.JobSeekerDashBoard;
+        }
+      }
+    } else {
+      neededAction = AppAction.signUp;
     }
   }
 }

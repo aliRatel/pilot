@@ -6,7 +6,7 @@ import 'package:pilot/core/error/failures.dart';
 abstract class UserRepository {
 
   //api methods
-  Future<Either<Failure, bool>> registerUser({String email, String password});
+  Future<Either<Failure, bool>> signUp({String email, String password,UserType userType});
 
   Future<Either<Failure, bool>> fetchUser({int id});
 

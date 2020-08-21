@@ -102,7 +102,7 @@ import 'package:pilot/core/util/validators_and_focus_managers.dart';
                       onTextChange: (String input) {
                         setState(() {});
                       },
-                      maxlines: 5,
+                      maxLines: 5,
                       hint: 'description',
                       controller: _titleControoler,
                       title: 'Description',

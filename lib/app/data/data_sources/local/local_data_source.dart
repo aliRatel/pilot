@@ -50,9 +50,10 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
 
   @override
   Future<bool> cacheCompany(Company company) async {
+
     var result = await sharedPreferences.setString(
         CACHED_LOCAl_USER, json.encode(company.toJson()));
-    if (result) return result;
+    if (result){return Future.value(result);}
 
     throw CacheException;
   }
@@ -68,7 +69,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
 
   @override
   Future<bool> cacheToken(String jwt) async {
-    bool result = await sharedPreferences.setString(CACHED_USER_TYPE, jwt);
+    bool result = await sharedPreferences.setString(CACHED_TOKEN, jwt);
     if (result) return result;
     throw CacheException();
   }
@@ -112,37 +113,49 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   }
 
   @override
-  Future<Company> fetchCachedCompany() {
-    // TODO: implement fetchCachedCompany
-    throw UnimplementedError();
+  Future<Company> fetchCachedCompany() async {
+var result =  sharedPreferences.getString(CACHED_LOCAl_USER);
+if(result != null){
+  return Company.fromJson(json.decode(result));
+}throw CacheException();
   }
 
   @override
-  Future<JobSeeker> fetchCachedUser() {
-    // TODO: implement fetchCachedUser
-    throw UnimplementedError();
+  Future<JobSeeker> fetchCachedUser() async{
+    var result =  sharedPreferences.getString(CACHED_LOCAl_USER);
+    if(result != null){
+      return JobSeeker.fromJson(json.decode(result));
+    }throw CacheException();
   }
 
   @override
   Future<bool> cacheUserByType(
       {int id, String email, String password, UserType userType}) async {
+
     if (userType == UserType.company) {
       Company company = Company(id: id, email: email, password: password);
+
       var result = await cacheCompany(company);
-      if (result) return result;
+      if (result) return Future.value(result);
       throw CacheException();
     } else if (userType == UserType.jobSeeker) {
       JobSeeker jobSeeker = JobSeeker(id: id, email: email, password: password);
+      print(jobSeeker);
+
       var result = await cacheJobSeeker(jobSeeker);
-      if (result) return result;
+      if (result) return Future.value(result);
       throw CacheException();
     }
   }
 
   @override
   Future<String> fetchCachedJwt() {
-    // TODO: implement fetchCachedJwt
-    throw UnimplementedError();
+    var jwt = sharedPreferences.getString(CACHED_TOKEN);
+    print(jwt);
+    if (jwt != null)
+      return Future.value(jwt);
+    else
+      throw CacheException();
   }
 
   @override

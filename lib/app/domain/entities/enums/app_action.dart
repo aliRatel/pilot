@@ -1,1 +1,1 @@
-enum AppAction{login,signUp,CompleteJobSeekerInfo,CompleteCompanyInfo}
+enum AppAction{signUp,CompleteJobSeekerInfo,CompleteCompanyInfo,JobSeekerDashBoard,CompanyDashBoard}

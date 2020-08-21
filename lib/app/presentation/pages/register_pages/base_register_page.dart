@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
+import 'package:pilot/app/presentation/pages/login/login_page.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
 
 import 'package:pilot/app/presentation/pages/register_pages/register_company/register_company_page.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
+import 'package:pilot/app/presentation/providers/signup_provider.dart';
 import 'package:pilot/app/presentation/widgets/base_clipper.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/util/consts.dart';
 import '../../widgets/my_button.dart';
@@ -31,7 +34,22 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
+  void _signUp() {
+    if (!_formKey.currentState.validate()) return;
 
+    Provider.of<SignUpProvider>(context, listen: false).setMessage(null);
+    Provider.of<SignUpProvider>(context, listen: false)
+        .signUpUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        userType: UserType.company)
+        .then((value) {
+      if (value) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => RegisterJobSeekerPage()));
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,8 +110,8 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                             ? Icons.visibility_off
                             : Icons.visibility),
                         onPressed: () {
-                          _hidePassword = !_hidePassword;
-                          setState(() {});
+
+                          setState(() {_hidePassword = !_hidePassword;});
                         },
                       ),
                     ),
@@ -147,16 +165,24 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                       ),
                       child: myButton(
                           context: context,
-                          child: Text(
-                            'Sign Up',
+                          child: Provider.of<SignUpProvider>(context).loading
+                              ? CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            strokeWidth: 2,
+                          )
+                              : Text(
+                            'Sign in',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onTap: () {
-                            validateAndContinue();
-                          }),
+                          onTap:  !Provider.of<SignUpProvider>(context, listen: false)
+                              .isLoading()
+                              ? () {
+                            _signUp();
+                          }
+                              : null),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(35)),
                     Row(
@@ -231,7 +257,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage(),));
                         },
                         child: RichText(
                           text: TextSpan(
@@ -243,7 +269,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                                 ),
                               ),
                               TextSpan(
-                                text: '  Signin',
+                                text: '  Login',
                                 style: TextStyle(
                                   color: mainColor,
                                 ),

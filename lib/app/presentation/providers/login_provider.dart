@@ -11,7 +11,7 @@ class LogInProvider with ChangeNotifier{
   LogInProvider({@required this.userLoginUseCase});
 
 
-  Future<bool> registerCompany({email,password,userType}) async {
+  Future<bool> loginUser({email,password,userType}) async {
     setLoading(true);
     var result =await userLoginUseCase(UserLoginParams(email:email  ,password: password,userType:userType));
     return await result.fold((failure) {
