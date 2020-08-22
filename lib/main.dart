@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilot/app/presentation/pages/LoadingPage.dart';
-
 import 'package:pilot/app/presentation/providers/user_provider.dart';
 import 'package:pilot/app/presentation/providers/login_provider.dart';
 import 'package:provider/provider.dart';
+import 'app/presentation/providers/complete_JobSeeker_registration_provider.dart';
 import 'app/presentation/providers/complete_company_registration_provider.dart';
 import 'app/presentation/providers/gender_radio_button.dart';
 import 'app/presentation/providers/selected_radio_button.dart';
@@ -33,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => sl<CompleteCompanyRegistrationProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => sl<CompleteJobSeekerRegistrationProvider>(),
         ),
         ChangeNotifierProvider(
           create: (_) => sl<LogInProvider>(),

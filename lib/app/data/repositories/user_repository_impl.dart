@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:html';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:pilot/app/data/data_sources/local/local_data_source.dart';
@@ -106,14 +106,19 @@ class UserRepositoryImpl extends UserRepository {
 
       var result = await apiDataSource.postCompleteCompanyProfile (company:company,
           jwt: jwt) ;
-      if (result)
+     var user = await sharedPreferencesDataSource.fetchCachedCompany();
+     company.email = user.email;
+     company.id = user.id;
+     await sharedPreferencesDataSource.cacheCompany(company);
         return Right(true);
-      else
-      return Right(false);
+
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {
       return Left(ServerFailure());
+    }catch(e){
+      return Left(UnknownFailure());
+
     }
   }
 
@@ -123,15 +128,19 @@ class UserRepositoryImpl extends UserRepository {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 
       var result = await apiDataSource.postCompleteJobSeekerProfile (jobSeeker:jobSeeker,
-          jwt: jwt) ;
-      if (result)
-        return Right(true);
-      else
-        return Right(false);
+          jwt: jwt,cv: cv,personalPhoto: personalPhoto) ;
+     var user = await sharedPreferencesDataSource.fetchCachedUser();
+
+       jobSeeker.cv=result['cv'];
+       jobSeeker.email = user.email;
+       jobSeeker.personalPhoto=result['personalPhoto'];
+       await sharedPreferencesDataSource.cacheJobSeeker(jobSeeker);
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {
       return Left(ServerFailure());
+    }catch(e){
+      return Left(UnknownFailure());
     }
   }
 }
