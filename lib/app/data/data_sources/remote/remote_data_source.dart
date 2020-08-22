@@ -82,10 +82,6 @@ class ApiDataSourceImpl extends ApiDataSource {
 
     var jobSeekerJson =  jobSeeker.toJson();
     var header=jwt;
-    final cvBytes = (await cv.readAsBytes()).toList();
-    final cvFile = http.MultipartFile.fromBytes('cv', cvBytes);
-    final photoBytes = (await personalPhoto.readAsBytes()).toList();
-    final photoFile = http.MultipartFile.fromBytes('image', photoBytes);
     var response = await userRemoteService.postCompleteJobSeekerProfile(jobSeekerJson, header,cv.path,personalPhoto.path);
     if(response.statusCode == 200)
       return response.body;
