@@ -47,13 +47,17 @@ class _$UserRemoteService extends UserRemoteService {
   Future<Response<dynamic>> postCompleteJobSeekerProfile(
       Map<String, dynamic> body,
       String token,
-      http.MultipartFile image,
-      http.MultipartFile cv) {
+      String imagePath,
+      String cvPath) {
     final $url = '/user/complete-jobseeker-profile';
     final $headers = {'bearer': token};
     final $body = body;
-    final $request =
-        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    final $parts = <PartValue>[
+      PartValueFile<String>('image', imagePath),
+      PartValueFile<String>('cv', cvPath)
+    ];
+    final $request = Request('POST', $url, client.baseUrl,
+        body: $body, parts: $parts, multipart: true, headers: $headers);
     return client.send<dynamic, dynamic>($request);
   }
 }

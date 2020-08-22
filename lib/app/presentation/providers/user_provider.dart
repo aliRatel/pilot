@@ -66,7 +66,7 @@ class UserProvider with ChangeNotifier {
           neededAction = AppAction.CompanyDashBoard;
         }
       } else if (jobSeeker != null) {
-        if (jobSeeker == null) {
+        if (jobSeeker.name == null) {
           neededAction = AppAction.CompleteJobSeekerInfo;
         } else {
           neededAction = AppAction.JobSeekerDashBoard;

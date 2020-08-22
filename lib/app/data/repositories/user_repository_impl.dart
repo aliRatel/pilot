@@ -135,6 +135,7 @@ class UserRepositoryImpl extends UserRepository {
        jobSeeker.email = user.email;
        jobSeeker.personalPhoto=result['personalPhoto'];
        await sharedPreferencesDataSource.cacheJobSeeker(jobSeeker);
+       return Right(true);
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {

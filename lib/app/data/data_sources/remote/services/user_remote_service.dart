@@ -25,5 +25,6 @@ abstract class UserRemoteService extends ChopperService {
   @Post(path:'/complete-company-profile')
   Future<Response> postCompleteCompanyProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token);
   @Post(path:'/complete-jobseeker-profile')
-  Future<Response> postCompleteJobSeekerProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token,@PartFile('image') http.MultipartFile image,@PartFile('cv') http.MultipartFile cv);
+  @multipart
+  Future<Response> postCompleteJobSeekerProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token,@PartFile('image') String imagePath,@PartFile('cv') String cvPath);
 }

@@ -13,6 +13,10 @@ import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
+import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/job_seeker_dashboard.dart';
+import 'package:pilot/app/presentation/providers/complete_JobSeeker_registration_provider.dart';
+import 'package:provider/provider.dart';
+
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import '../../../../../core/util/consts.dart';
 import '../../../widgets/gender_type.dart';
@@ -61,6 +65,36 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
     selectedCountry = countries[0];
     selectedCity = cities[0];
+  }
+
+  void _submit() {
+   // if (!_formKey.currentState.validate()) return;
+    print(_userImage.path);
+    print('asdfajsdlkfjasdl;kgjasdl;kgjals;kdgjlsak;djglak;sdjglak;sdjgl;asddjgl;asdjg');
+    Provider.of<CompleteJobSeekerRegistrationProvider>(this.context, listen: false)
+        .completeProfile(
+            name: 'asdf',
+            surname: 'asfdasdfa',
+            cityId: 1,
+            countryId: 1,
+            nationality: 'asdfhsadklfa',
+            zipCode: 'dsafasd',
+            street: 'dsafasd',
+            mobileNumber: 'dsafasd',
+            phoneNumber: 'dsafasd',
+            houseNumber: 5,
+            birthday: DateTime.now(),
+            cv: _userImage,
+            personalPhoto: _userImage)
+        .then((value) {
+      if (value) {
+        Navigator.pushReplacement(
+            this.context,
+            MaterialPageRoute(
+              builder: (context) => JobSeekerDashboard(),
+            ));
+      }
+    });
   }
 
   @override
@@ -131,10 +165,14 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                             child: FlatButton(
                               padding: EdgeInsets.all(0),
                               onPressed: () async {
-                                _userImage = await FilePicker.getFile(
+                                var a = await FilePicker.getFile(
                                   allowCompression: true,
                                   type: FileType.image,
                                 );
+                                print(a.path);
+                                setState(() {
+                                  _userImage=a;
+                                });
                                 if (mounted) {
                                   setState(() {});
                                 }
@@ -539,16 +577,29 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   padding: EdgeInsets.all(12.0),
                   child: myButton(
                       context: context,
-                      child: Text(
-                        'Continue',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        validateAndRegisterCompany();
-                      }),
+                      child: Provider.of<CompleteJobSeekerRegistrationProvider>(
+                      context)
+                      .loading
+                      ? CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    strokeWidth: 2,
+                  )
+                      : Text(
+                    'Sign in',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onTap: !Provider.of<CompleteJobSeekerRegistrationProvider>(
+                      context,
+                      listen: false)
+                      .isLoading()
+                      ? () {
+                    _submit();
+                  }
+                      : null,
+                ),
                 ),
                 SizedBox(height: 50),
               ],

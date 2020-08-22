@@ -8,8 +8,8 @@ class JobSeeker extends Equatable {
   int id;
   String email;
   String nationality;
-  String country;
-  String city;
+  int country;
+  int city;
   String zipCode;
   String street;
   int houseNumber;
