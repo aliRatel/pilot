@@ -134,10 +134,10 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
         SizedBox(
-          height: 10,
+          height: ScreenUtil().setHeight(10),
         ),
         Container(
-          height: 45,
+          height: ScreenUtil().setHeight(45),
           margin: EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             border: Border.all(

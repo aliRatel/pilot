@@ -27,32 +27,36 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   final FocusNode _buildingNumberFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
   final FocusNode _mobileFocus = FocusNode();
+  final FocusNode _companyNameFocus = FocusNode();
+  final FocusNode _countryRegionFocus = FocusNode();
+  final FocusNode _cityFocus = FocusNode();
 
   TextEditingController _zipController = TextEditingController();
   TextEditingController _streetController = TextEditingController();
   TextEditingController _buildingNumberController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
+  TextEditingController _companyNameController = TextEditingController();
 
-  List<String> countries = [];
-  List<String> cities = [];
+  List<String> _countries = [];
+  List<String> _cities = [];
 
-  String selectedCountry = '';
-  String selectedCity = '';
+  String _selectedCountry = '';
+  String _selectedCity = '';
 
   @override
   void initState() {
     super.initState();
 
-    countries = countries_cities.keys.toList();
-    cities = countries_cities[countries_cities.keys.first];
+    _countries = countries_cities.keys.toList();
+    _cities = countries_cities[countries_cities.keys.first];
 
-    selectedCountry = countries[0];
-    selectedCity = cities[0];
+    _selectedCountry = _countries[0];
+    _selectedCity = _cities[0];
   }
 
   void _submit() {
-    if(!_formKey.currentState.validate()) return ;
+    if (!_formKey.currentState.validate()) return;
     Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
         .completeProfile(
             companyName: 'asdf',
@@ -110,6 +114,21 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(30)),
+                MyTextFormField(
+                  validator: (value) => validateRequiredTextField(value),
+                  controller: _companyNameController,
+                  keyboardType: TextInputType.text,
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                    context,
+                    _companyNameFocus,
+                    _countryRegionFocus,
+                  ),
+                  textInputAction: TextInputAction.next,
+                  focusNode: _companyNameFocus,
+                  hint: 'Company Name',
+                  title: 'Company name',
+                ),
+                SizedBox(height: ScreenUtil().setHeight(10)),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setWidth(12),
@@ -119,7 +138,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                     alignment: Alignment.centerLeft,
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(8)),
+                SizedBox(height: ScreenUtil().setHeight(10)),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setWidth(12),
@@ -139,9 +158,10 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton(
-                        value: selectedCountry,
+                        focusNode: _countryRegionFocus,
+                        value: _selectedCountry,
                         hint: Text("Select a country"),
-                        items: countries
+                        items: _countries
                             .map(
                               (country) => DropdownMenuItem<String>(
                                 child: Text('$country'),
@@ -151,17 +171,22 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                             .toList(),
                         onChanged: (newCountry) {
                           setState(() {
-                            selectedCountry = newCountry;
+                            _selectedCountry = newCountry;
+                            fieldFocusChange(
+                              context,
+                              _countryRegionFocus,
+                              _cityFocus,
+                            );
                           });
 
-                          cities = countries_cities[newCountry];
-                          selectedCity = cities[0];
+                          _cities = countries_cities[newCountry];
+                          _selectedCity = _cities[0];
                         },
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(28)),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setWidth(12),
@@ -191,9 +216,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton(
-                        value: selectedCity,
+                        value: _selectedCity,
                         hint: Text("Select a city"),
-                        items: cities
+                        items: _cities
                             .map(
                               (city) => DropdownMenuItem<String>(
                                 child: Text('$city'),
@@ -203,14 +228,19 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                             .toList(),
                         onChanged: (newCity) {
                           setState(() {
-                            selectedCity = newCity;
+                            _selectedCity = newCity;
+                            fieldFocusChange(
+                              context,
+                              _cityFocus,
+                              _zipFocus,
+                            );
                           });
                         },
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(28)),
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _zipController,
@@ -225,7 +255,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   hint: 'ZIP Code',
                   title: 'ZIP Code',
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(10)),
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _streetController,
@@ -240,7 +270,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   hint: 'Street',
                   title: 'Street',
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(10)),
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _buildingNumberController,
@@ -255,7 +285,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   hint: 'Building Number',
                   title: 'Building Number',
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(10)),
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _phoneController,
@@ -281,7 +311,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   ),
                   title: 'Phone Number',
                 ),
-                SizedBox(height: ScreenUtil().setHeight(18)),
+                SizedBox(height: ScreenUtil().setHeight(10)),
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
                   controller: _mobileController,
@@ -317,26 +347,28 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   padding: EdgeInsets.all(12.0),
                   child: myButton(
                     context: context,
-                    child: Provider.of<CompleteCompanyRegistrationProvider>(context).loading
+                    child: Provider.of<CompleteCompanyRegistrationProvider>(
+                                context)
+                            .loading
                         ? CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                      strokeWidth: 2,
-                    )
+                            backgroundColor: Colors.white,
+                            strokeWidth: 2,
+                          )
                         : Text(
-                      'Sign in',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onTap:
-                    !Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
-                        .isLoading()
+                            'Sign in',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                    onTap: !Provider.of<CompleteCompanyRegistrationProvider>(
+                                context,
+                                listen: false)
+                            .isLoading()
                         ? () {
-                      _submit();
-                    }
+                            _submit();
+                          }
                         : null,
-
                   ),
                 ),
                 SizedBox(height: 50),

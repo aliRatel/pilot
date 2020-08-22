@@ -4,7 +4,6 @@ import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/job
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/title.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/upload_job.dart';
 
-
 class JobCompaniesDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,16 +12,23 @@ class JobCompaniesDashboard extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          getDashboardTitle(height,width,'dashboard for job companies'),
+          getDashboardTitle(height, width, 'dashboard for job companies'),
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-              child: Text(
-                  'Lorem dolor sit amet consecteture adipisicing elit, sed do',
-                  style: TextStyle(
-                      color: Colors.blue[500], fontSize: width * 0.035),
-                  textAlign: TextAlign.center)),
-          getUploadJobContainer(height,width),
-          getJobList(height,width)
+            padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+            child: Text(
+              'Lorem dolor sit amet consecteture adipisicing elit, sed do',
+              style: TextStyle(
+                color: Colors.blue[500],
+                fontSize: width * 0.035,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          getUploadJobContainer(
+            height,
+            width,
+          ),
+          getJobList(height, width)
         ],
       ),
     );
