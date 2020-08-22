@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:dartz/dartz.dart';
 import 'package:pilot/app/data/data_sources/local/local_data_source.dart';
@@ -117,8 +118,20 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker user}) {
-    // TODO: implement completeJobSeekerProfile
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker jobSeeker,File cv,File personalPhoto}) async{
+    try {
+      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+
+      var result = await apiDataSource.postCompleteJobSeekerProfile (jobSeeker:jobSeeker,
+          jwt: jwt) ;
+      if (result)
+        return Right(true);
+      else
+        return Right(false);
+    } on CacheException {
+      return Left(CacheFailure());
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }

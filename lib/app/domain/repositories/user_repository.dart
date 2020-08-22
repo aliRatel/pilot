@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:dartz/dartz.dart';
 import 'package:pilot/app/domain/entities/company.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
@@ -11,10 +13,9 @@ abstract class UserRepository {
 
   Future<Either<Failure, bool>> fetchUser({int id});
 
-  Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker user});
+  Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker jobSeeker,File cv,File personalPhoto});
 
-  Future<Either<Failure, bool>> completeCompanyProfile(
-      {Company company});
+  Future<Either<Failure, bool>> completeCompanyProfile({Company company});
 
   Future<Either<Failure, bool>> logIn(
       {String email, String password, UserType userType});

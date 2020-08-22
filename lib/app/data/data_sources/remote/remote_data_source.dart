@@ -1,7 +1,10 @@
+import 'dart:html';
+
 import 'package:chopper/chopper.dart';
 import 'package:pilot/app/data/data_sources/remote/services/user_remote_service.dart';
 import 'package:pilot/app/domain/entities/company.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
+import 'package:pilot/app/domain/entities/job_seeker.dart';
 import 'package:pilot/core/error/exceptions.dart';
 import 'package:meta/meta.dart';
 
@@ -14,6 +17,9 @@ abstract class ApiDataSource {
 
   Future<bool> postCompleteCompanyProfile(
       {Company company,String jwt});
+
+  Future<bool> postCompleteJobSeekerProfile(
+      {JobSeeker jobSeeker,String jwt});
 }
 
 class ApiDataSourceImpl extends ApiDataSource {
@@ -67,5 +73,16 @@ class ApiDataSourceImpl extends ApiDataSource {
       return true;
     else throw ServerException();
 
+  }
+
+  @override
+  Future<bool> postCompleteJobSeekerProfile({JobSeeker jobSeeker, String jwt,File cv,File personalPhoto}) async{
+
+    var jobSeekerJson =  jobSeeker.toJson();
+    var header=jwt;
+    var response = await userRemoteService.postCompleteCompanyProfile(jobSeekerJson, jwt);
+    if(response.statusCode == 200)
+      return true;
+    else throw ServerException();
   }
 }
