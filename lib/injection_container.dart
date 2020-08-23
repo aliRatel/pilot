@@ -30,6 +30,8 @@ Future<void> init() async {
       CompleteCompanyRegistrationProvider(completeCompanyProfileUseCase: sl()));
   sl.registerFactory(() =>
       CompleteJobSeekerRegistrationProvider(completeJobSeekerProfileUseCase: sl()));
+
+
   ///usecases
   sl.registerLazySingleton<CheckForAvailableUsersUseCase>(
       () => CheckForAvailableUsersUseCase(userRepository: sl()));

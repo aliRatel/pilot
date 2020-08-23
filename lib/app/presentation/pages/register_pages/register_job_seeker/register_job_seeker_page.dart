@@ -55,6 +55,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
   List<String> cities = [];
   String selectedCountry = '';
   String selectedCity = '';
+  DateTime birthday;
 
   @override
   void initState() {
@@ -68,22 +69,34 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
   }
 
   void _submit() {
-   // if (!_formKey.currentState.validate()) return;
+    if (!_formKey.currentState.validate()) return;
+
     print(_userImage.path);
     print('asdfajsdlkfjasdl;kgjasdl;kgjals;kdgjlsak;djglak;sdjglak;sdjgl;asddjgl;asdjg');
+
+
+    String name = _nameController.text.trim();
+    String zipCode = _zipController.text.trim();
+    String street = _streetController.text.trim();
+    String mobileNumber = _mobileController.text.trim();
+    String phoneNumber = _phoneController.text.trim();
+    String buildingNumber = _buildingNumberController.text.trim();
+    int cityId = cities.indexOf(selectedCity); //TODO increase by 1
+    int countryId = selectedCountry.indexOf(selectedCountry); //TODO increase by 1
+
     Provider.of<CompleteJobSeekerRegistrationProvider>(this.context, listen: false)
         .completeProfile(
-            name: 'asdf',
+            name: name,
             surname: 'asfdasdfa',
-            cityId: 1,
-            countryId: 1,
-            nationality: 'asdfhsadklfa',
-            zipCode: 'dsafasd',
-            street: 'dsafasd',
-            mobileNumber: 'dsafasd',
-            phoneNumber: 'dsafasd',
-            houseNumber: 5,
-            birthday: DateTime.now(),
+            cityId: cityId,
+            countryId: countryId,
+            nationality: "sssssss",
+            zipCode: zipCode,
+            street: street,
+            mobileNumber: mobileNumber,
+            phoneNumber: phoneNumber,
+            houseNumber: buildingNumber,
+            birthday: birthday,
             cv: _userImage,
             personalPhoto: _userImage)
         .then((value) {
@@ -322,6 +335,9 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                           firstDate: DateTime(1900),
                           initialDate: currentValue ?? DateTime.now(),
                           lastDate: DateTime(2100));
+                    },
+                    onChanged: (DateTime dt){
+                      birthday = dt;
                     },
                   ),
                 ),

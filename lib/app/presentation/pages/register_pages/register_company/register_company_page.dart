@@ -56,17 +56,29 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   }
 
   void _submit() {
-    if (!_formKey.currentState.validate()) return;
+    if (!_formKey.currentState.validate() ) return;
+
+    String companyName = _companyNameController.text.trim();
+    String zipCode = _zipController.text.trim();
+    String street = _streetController.text.trim();
+    String mobileNumber = _mobileController.text.trim();
+    String phoneNumber = _phoneController.text.trim();
+    String buildingNumber = _buildingNumberController.text.trim();
+    int cityId = _cities.indexOf(_selectedCity); //TODO increase by 1
+    int countryId = _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
+
+
+
     Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
         .completeProfile(
-            companyName: 'asdf',
-            cityId: 1,
-            countryId: 1,
-            zipCode: 'dsafasd',
-            street: 'dsafasd',
-            mobileNumber: 'dsafasd',
-            phoneNumber: 'dsafasd',
-            buildingNumber: 'dsafasd')
+            companyName: companyName,
+            cityId: cityId,
+            countryId: countryId,
+            zipCode: zipCode,
+            street: street,
+            mobileNumber: mobileNumber,
+            phoneNumber: phoneNumber,
+            buildingNumber: buildingNumber )
         .then((value) {
       if (value) {
         Navigator.pushReplacement(

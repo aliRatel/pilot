@@ -70,7 +70,7 @@ class ApiDataSourceImpl extends ApiDataSource {
       {Company company,String jwt}) async{
     var companyJson =  company.toJson();
     var header=jwt;
-    var response = await userRemoteService.postCompleteCompanyProfile(companyJson, jwt);
+    var response = await userRemoteService.postCompleteCompanyProfile(companyJson, header);
     if(response.statusCode == 200)
       return true;
     else throw ServerException();

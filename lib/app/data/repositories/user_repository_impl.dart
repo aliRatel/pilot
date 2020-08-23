@@ -130,7 +130,6 @@ class UserRepositoryImpl extends UserRepository {
       var result = await apiDataSource.postCompleteJobSeekerProfile (jobSeeker:jobSeeker,
           jwt: jwt,cv: cv,personalPhoto: personalPhoto) ;
      var user = await sharedPreferencesDataSource.fetchCachedUser();
-
        jobSeeker.cv=result['cv'];
        jobSeeker.email = user.email;
        jobSeeker.personalPhoto=result['personalPhoto'];
