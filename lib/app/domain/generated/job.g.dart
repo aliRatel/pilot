@@ -9,7 +9,7 @@ part of '../entities/job.dart';
 Job _$JobFromJson(Map<String, dynamic> json) {
   return Job(
     id: json['id'] as int,
-    companyId: json['companyId'] as int,
+    companyName: json['companyName'] as String,
     title: json['title'] as String,
     description: json['description'] as String,
   );
@@ -17,7 +17,7 @@ Job _$JobFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'id': instance.id,
-      'companyId': instance.companyId,
+      'companyName': instance.companyName,
       'title': instance.title,
       'description': instance.description,
     };

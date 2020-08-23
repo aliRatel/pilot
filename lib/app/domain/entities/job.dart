@@ -5,13 +5,13 @@ part '../generated/job.g.dart';
 @JsonSerializable()
 class Job extends Equatable {
   int id;
-  int companyId;
+  String companyName;
   String title;
   String description;
 
   Job(
       {@required this.id,
-      @required this.companyId,
+      @required this.companyName,
       @required this.title,
       @required this.description});
 
@@ -19,5 +19,5 @@ class Job extends Equatable {
   Map<String ,dynamic> toJson () => _$JobToJson(this);
 
   @override
-  List<Object> get props => [id, companyId, title, description];
+  List<Object> get props => [id, companyName, title, description];
 }
