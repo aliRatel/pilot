@@ -24,9 +24,19 @@ class UserRepositoryImpl extends UserRepository {
       @required this.sharedPreferencesDataSource});
 
   @override
-  Future<Either<Failure, bool>> fetchUser({int id}) {
-    // TODO: implement fetchUser
-    throw UnimplementedError();
+  Future<Either<Failure, Map<String, dynamic>>> fetchUser({int id}) async {
+    try {
+      var user = await apiDataSource.getUser(id: id);
+      print(user);
+      return Right(user);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
+    } catch (e) {
+      print(e);
+      return left(UnknownFailure());
+    }
   }
 
   @override
@@ -158,41 +168,108 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<Either<Failure, bool>> addNewJob({Job job}) async{
-    // TODO yhya : please get the jwt from shared prefs and send a post request with the apiDataSource that has a (jwt as bearer header and a job as json )
-    throw UnimplementedError();
+    try {
+      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+
+      var result = await apiDataSource.postNewJob (job:job,
+          jwt: jwt) ;
+
+      return Right(result);
+    } on CacheException {
+      return Left(CacheFailure());
+    } on ServerException {
+      return Left(ServerFailure());
+    }catch(e){
+      return Left(UnknownFailure());
+    }
   }
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> getJobsByCompany({int pageNumber = 1}) async{
-    /* TODO yhya :please  send a post request after getting the jwt from shared Prefs because it will be used in the back end to get the current company Id
-        using the apiDataSource method that has a ( a pageNumber with default 1  )
-         should return a map with keys ('jobs' as list of jobs after deserialize  ,'totalPages' as int indicating the total number of pages after considering that each page contains only 10 jobs
-    */
-    throw UnimplementedError();
+    try {
+      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+
+      var jobs = await apiDataSource.getJobsByCompany(jwt: jwt,page: pageNumber);
+      print(jobs);
+      return Right(jobs);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
+    } catch (e) {
+      print(e);
+      return left(UnknownFailure());
+    }
   }
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> getRecentJobs({int pageNumber = 1}) async{
-    // TODO yhya: the same as getJobsByCompany but we are just getting the recent jobs (each page contains 10 items) /// no jwt needed
-    throw UnimplementedError();
+
+    try {
+      var jobs = await apiDataSource.getRecentJobs(page: pageNumber);
+      print(jobs);
+      return Right(jobs);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
+    } catch (e) {
+      print(e);
+      return left(UnknownFailure());
+    }
+
   }
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> searchJobs({int pageNumber = 1, int cityId, int countryId}) async{
-    // TODO yhya: the same as getRecentJobs but we are just getting the recent jobs (each page contains 10 items) considering the city and country Id ,,, note : I think that City Id will be Enough /// no jwt needed
-    throw UnimplementedError();
+
+    try {
+      var jobs = await apiDataSource.searchJobs(page: pageNumber,cityId: cityId,countryId: countryId);
+      print(jobs);
+      return Right(jobs);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
+    } catch (e) {
+      print(e);
+      return left(UnknownFailure());
+    }
+
   }
 
   @override
-  Future<Either<Failure, List<City>>> getCitiesByCountry({int countryId}) {
-    // TODO yhya: a simple get request to get all cities of a specific country
-    throw UnimplementedError();
+  Future<Either<Failure, List<City>>> getCitiesByCountry({int countryId}) async{
+    try {
+      var cities = await apiDataSource.getCitiesByCountry(countryId: countryId,);
+      print(cities);
+      return Right( cities);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
+    } catch (e) {
+      print(e);
+      return left(UnknownFailure());
+    }
+
   }
 
   @override
-  Future<Either<Failure, List<Country>>> getCountries() {
-    // TODO yhya: a simple get request to get all countries
-    throw UnimplementedError();
+  Future<Either<Failure, List<Country>>> getCountries()async {
+    try {
+      var countries = await apiDataSource.getCountries();
+      print(countries);
+      return Right( countries);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
+    } catch (e) {
+      print(e);
+      return left(UnknownFailure());
+    }
+
   }
 
 }

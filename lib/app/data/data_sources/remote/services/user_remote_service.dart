@@ -1,5 +1,7 @@
 import 'package:chopper/chopper.dart';
+import 'package:pilot/app/domain/entities/country.dart';
 import 'package:http/http.dart' as http;
+import 'package:pilot/app/domain/entities/city.dart';
 
 part  'generated/user_remote_service.chopper.dart';
 
@@ -28,4 +30,26 @@ abstract class UserRemoteService extends ChopperService {
   @Post(path:'/complete-jobseeker-profile')
   @multipart
   Future<Response> postCompleteJobSeekerProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token,@PartFile('image') String imagePath,@PartFile('cv') String cvPath);
+
+  @Get(path: '/user/{id}')
+  Future<Response> getUser(@Path() int id);
+
+  @Post(path:'/new-job')
+  Future<Response> postNewJob(@Body() Map<String,dynamic> body,@Header('bearer') String token);
+
+  @Get(path: '/jobs-by-company')
+  Future<Response> getJobsByCompany(@Header('bearer') String token,
+      @Query('int') int page,);
+
+  @Get(path: '/recent-jobs')
+  Future<Response> getRecentJobs( @Query('int') int page, );
+
+  @Get(path: '/search-jobs')
+  Future<Response> searchJobs( @Query('int') int page, @Query('int') int cityId,@Query('int') int countryId,);
+
+  @Get(path: '/get-cities-by-country')
+  Future<Response<List<City>>> getCitiesByCountry( @Query('int') int countryId,);
+
+  @Get(path: '/get-countries')
+  Future<Response<List<Country>>> getCountries();
 }

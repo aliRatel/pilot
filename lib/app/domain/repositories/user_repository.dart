@@ -15,7 +15,7 @@ abstract class UserRepository {
   Future<Either<Failure, bool>> signUp(
       {String email, String password, UserType userType});
 
-  Future<Either<Failure, bool>> fetchUser({int id});
+  Future<Either<Failure, Map<String, dynamic>>> fetchUser({int id});
 
   Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker jobSeeker,File cv,File personalPhoto});
 
