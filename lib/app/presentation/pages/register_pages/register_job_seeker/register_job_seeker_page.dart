@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/job_seeker_dashboard.dart';
 import 'package:pilot/app/presentation/providers/complete_JobSeeker_registration_provider.dart';
+import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 import 'package:provider/provider.dart';
 
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
@@ -38,6 +39,8 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
   final FocusNode _mobileFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();
+  final FocusNode _countryRegionFocus = FocusNode();
+  final FocusNode _cityFocus = FocusNode();
 
   TextEditingController _zipController = TextEditingController();
   TextEditingController _streetController = TextEditingController();
@@ -51,29 +54,29 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
   File _userImage;
   File _cvFile;
-  List<String> countries = [];
-  List<String> cities = [];
-  String selectedCountry = '';
-  String selectedCity = '';
-  DateTime birthday;
+  List<String> _countries = [];
+  List<String> _cities = [];
+  String _selectedCountry = '';
+  String _selectedCity = '';
+  DateTime _birthday;
 
   @override
   void initState() {
     super.initState();
 
-    countries = countries_cities.keys.toList();
-    cities = countries_cities[countries_cities.keys.first];
+    _countries = countries_cities.keys.toList();
+    _cities = countries_cities[countries_cities.keys.first];
 
-    selectedCountry = countries[0];
-    selectedCity = cities[0];
+    _selectedCountry = _countries[0];
+    _selectedCity = _cities[0];
   }
 
   void _submit() {
     if (!_formKey.currentState.validate()) return;
 
     print(_userImage.path);
-    print('asdfajsdlkfjasdl;kgjasdl;kgjals;kdgjlsak;djglak;sdjglak;sdjgl;asddjgl;asdjg');
-
+    print(
+        'asdfajsdlkfjasdl;kgjasdl;kgjals;kdgjlsak;djglak;sdjglak;sdjgl;asddjgl;asdjg');
 
     String name = _nameController.text.trim();
     String zipCode = _zipController.text.trim();
@@ -81,10 +84,12 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
     String mobileNumber = _mobileController.text.trim();
     String phoneNumber = _phoneController.text.trim();
     String buildingNumber = _buildingNumberController.text.trim();
-    int cityId = cities.indexOf(selectedCity); //TODO increase by 1
-    int countryId = selectedCountry.indexOf(selectedCountry); //TODO increase by 1
+    int cityId = _cities.indexOf(_selectedCity); //TODO increase by 1
+    int countryId =
+        _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
 
-    Provider.of<CompleteJobSeekerRegistrationProvider>(this.context, listen: false)
+    Provider.of<CompleteJobSeekerRegistrationProvider>(this.context,
+            listen: false)
         .completeProfile(
             name: name,
             surname: 'asfdasdfa',
@@ -96,7 +101,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
             mobileNumber: mobileNumber,
             phoneNumber: phoneNumber,
             houseNumber: buildingNumber,
-            birthday: birthday,
+            birthday: _birthday,
             cv: _userImage,
             personalPhoto: _userImage)
         .then((value) {
@@ -184,7 +189,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                                 );
                                 print(a.path);
                                 setState(() {
-                                  _userImage=a;
+                                  _userImage = a;
                                 });
                                 if (mounted) {
                                   setState(() {});
@@ -336,8 +341,8 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                           initialDate: currentValue ?? DateTime.now(),
                           lastDate: DateTime(2100));
                     },
-                    onChanged: (DateTime dt){
-                      birthday = dt;
+                    onChanged: (DateTime dt) {
+                      _birthday = dt;
                     },
                   ),
                 ),
@@ -454,46 +459,22 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(12),
-                  ),
-                  child: Container(
-                    height: ScreenUtil().setHeight(55),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(12),
-                    ),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: mainColor,
-                        width: 1,
-                      ),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        value: selectedCountry,
-                        hint: Text("Select a country"),
-                        items: countries
-                            .map(
-                              (country) => DropdownMenuItem<String>(
-                                child: Text('$country'),
-                                value: country,
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (newCountry) {
-                          setState(() {
-                            selectedCountry = newCountry;
-                          });
+                MyDropDownButton(
+                  items: _countries,
+                  initialValue: _selectedCountry,
+                  valueChanged: (dynamic newCountry) {
+                    setState(() {
+                      _selectedCountry = newCountry;
+                      fieldFocusChange(
+                        context,
+                        _countryRegionFocus,
+                        _cityFocus,
+                      );
+                    });
 
-                          cities = countries_cities[newCountry];
-                          selectedCity = cities[0];
-                        },
-                      ),
-                    ),
-                  ),
+                    _cities = countries_cities[newCountry];
+                    _selectedCity = _cities[0];
+                  },
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 Padding(
@@ -506,43 +487,19 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(12),
-                  ),
-                  child: Container(
-                    height: ScreenUtil().setHeight(55),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(12),
-                    ),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: mainColor,
-                        width: 1,
-                      ),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        value: selectedCity,
-                        hint: Text("Select a city"),
-                        items: cities
-                            .map(
-                              (city) => DropdownMenuItem<String>(
-                                child: Text('$city'),
-                                value: city,
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (newCity) {
-                          setState(() {
-                            selectedCity = newCity;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                MyDropDownButton(
+                  items: _cities,
+                  initialValue: _selectedCity,
+                  valueChanged: (dynamic newCity) {
+                    setState(() {
+                      _selectedCity = newCity;
+                      fieldFocusChange(
+                        context,
+                        _cityFocus,
+                        _zipFocus,
+                      );
+                    });
+                  },
                 ),
                 SizedBox(height: ScreenUtil().setHeight(26)),
                 MyTextFormField(
@@ -592,30 +549,30 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 Padding(
                   padding: EdgeInsets.all(12.0),
                   child: myButton(
-                      context: context,
-                      child: Provider.of<CompleteJobSeekerRegistrationProvider>(
-                      context)
-                      .loading
-                      ? CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                    strokeWidth: 2,
-                  )
-                      : Text(
-                    'Sign in',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    context: context,
+                    child: Provider.of<CompleteJobSeekerRegistrationProvider>(
+                                context)
+                            .loading
+                        ? CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            strokeWidth: 2,
+                          )
+                        : Text(
+                            'Sign in',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                    onTap: !Provider.of<CompleteJobSeekerRegistrationProvider>(
+                                context,
+                                listen: false)
+                            .isLoading()
+                        ? () {
+                            _submit();
+                          }
+                        : null,
                   ),
-                  onTap: !Provider.of<CompleteJobSeekerRegistrationProvider>(
-                      context,
-                      listen: false)
-                      .isLoading()
-                      ? () {
-                    _submit();
-                  }
-                      : null,
-                ),
                 ),
                 SizedBox(height: 50),
               ],

@@ -121,6 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: height,
       allowFontScaling: true,
     );
-    return JobCompaniesDashboard();
+    return SearchPage();
   }
 }

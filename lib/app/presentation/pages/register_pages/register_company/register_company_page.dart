@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:pilot/app/presentation/pages/job_companies_dashboard/job_companies_dashboard.dart';
 import 'package:pilot/app/presentation/providers/complete_company_registration_provider.dart';
+import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import 'package:provider/provider.dart';
 
@@ -56,7 +57,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   }
 
   void _submit() {
-    if (!_formKey.currentState.validate() ) return;
+    if (!_formKey.currentState.validate()) return;
 
     String companyName = _companyNameController.text.trim();
     String zipCode = _zipController.text.trim();
@@ -65,9 +66,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     String phoneNumber = _phoneController.text.trim();
     String buildingNumber = _buildingNumberController.text.trim();
     int cityId = _cities.indexOf(_selectedCity); //TODO increase by 1
-    int countryId = _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
-
-
+    int countryId =
+        _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
 
     Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
         .completeProfile(
@@ -78,7 +78,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
             street: street,
             mobileNumber: mobileNumber,
             phoneNumber: phoneNumber,
-            buildingNumber: buildingNumber )
+            buildingNumber: buildingNumber)
         .then((value) {
       if (value) {
         Navigator.pushReplacement(
@@ -151,52 +151,22 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(10)),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(12),
-                  ),
-                  child: Container(
-                    height: ScreenUtil().setHeight(55),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(12),
-                    ),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: mainColor,
-                        width: 1,
-                      ),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        focusNode: _countryRegionFocus,
-                        value: _selectedCountry,
-                        hint: Text("Select a country"),
-                        items: _countries
-                            .map(
-                              (country) => DropdownMenuItem<String>(
-                                child: Text('$country'),
-                                value: country,
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (newCountry) {
-                          setState(() {
-                            _selectedCountry = newCountry;
-                            fieldFocusChange(
-                              context,
-                              _countryRegionFocus,
-                              _cityFocus,
-                            );
-                          });
+                MyDropDownButton(
+                  items: _countries,
+                  initialValue: _selectedCountry,
+                  valueChanged: (dynamic newCountry) {
+                    setState(() {
+                      _selectedCountry = newCountry;
+                      fieldFocusChange(
+                        context,
+                        _countryRegionFocus,
+                        _cityFocus,
+                      );
+                    });
 
-                          _cities = countries_cities[newCountry];
-                          _selectedCity = _cities[0];
-                        },
-                      ),
-                    ),
-                  ),
+                    _cities = countries_cities[newCountry];
+                    _selectedCity = _cities[0];
+                  },
                 ),
                 SizedBox(height: ScreenUtil().setHeight(28)),
                 Padding(
@@ -209,48 +179,19 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(12),
-                  ),
-                  child: Container(
-                    height: ScreenUtil().setHeight(55),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().setWidth(12),
-                    ),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: mainColor,
-                        width: 1,
-                      ),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        value: _selectedCity,
-                        hint: Text("Select a city"),
-                        items: _cities
-                            .map(
-                              (city) => DropdownMenuItem<String>(
-                                child: Text('$city'),
-                                value: city,
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (newCity) {
-                          setState(() {
-                            _selectedCity = newCity;
-                            fieldFocusChange(
-                              context,
-                              _cityFocus,
-                              _zipFocus,
-                            );
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                MyDropDownButton(
+                  items: _cities,
+                  initialValue: _selectedCity,
+                  valueChanged: (dynamic newCity) {
+                    setState(() {
+                      _selectedCity = newCity;
+                      fieldFocusChange(
+                        context,
+                        _cityFocus,
+                        _zipFocus,
+                      );
+                    });
+                  },
                 ),
                 SizedBox(height: ScreenUtil().setHeight(28)),
                 MyTextFormField(

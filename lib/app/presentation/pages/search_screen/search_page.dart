@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/job_list/job_list.dart';
 import 'package:pilot/app/presentation/pages/search_screen/search_box.dart';
 import 'package:pilot/app/presentation/widgets/dotted_button.dart';
+import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 
 import 'package:pilot/core/util/consts.dart';
+import 'package:pilot/core/util/validators_and_focus_managers.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -12,17 +14,41 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final FocusNode _countryRegionFocus = FocusNode();
+  final FocusNode _cityFocus = FocusNode();
+
+  List<String> _countries = [];
+  List<String> _cities = [];
+
+  String _selectedCountry = '';
+  String _selectedCity = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    _countries = countries_cities.keys.toList();
+    _cities = countries_cities[countries_cities.keys.first];
+
+    _selectedCountry = _countries[0];
+    _selectedCity = _cities[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(appBar: AppBar(backgroundColor:mainColor ,title:Text(
-      'search for jobs',
-      style: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mainColor,
+        title: Text(
+          'search for jobs',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
       ),
-    ),),
       backgroundColor: Color(0xffF0F0F0).withOpacity(.99),
       body: Stack(
         children: [
@@ -38,7 +64,6 @@ class _SearchPageState extends State<SearchPage> {
                   SizedBox(
                     height: size.height * .085,
                   ),
-
                   SizedBox(
                     height: ScreenUtil().setHeight(12),
                   ),
@@ -61,8 +86,65 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     child: Column(
                       children: [
-                        getBrandItem(),
-                        getBrandItem(),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(20),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: ScreenUtil().setWidth(15),
+                            right: ScreenUtil().setWidth(5),
+                            bottom: ScreenUtil().setHeight(8),
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Country'),
+                          ),
+                        ),
+                        MyDropDownButton(
+                          items: _countries,
+                          initialValue: _selectedCountry,
+                          valueChanged: (dynamic newCountry) {
+                            setState(() {
+                              _selectedCountry = newCountry;
+                              fieldFocusChange(
+                                context,
+                                _countryRegionFocus,
+                                _cityFocus,
+                              );
+                            });
+
+                            _cities = countries_cities[newCountry];
+                            _selectedCity = _cities[0];
+                          },
+                        ),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(20),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: ScreenUtil().setWidth(15),
+                            right: ScreenUtil().setWidth(5),
+                            bottom: ScreenUtil().setHeight(8),
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('City'),
+                          ),
+                        ),
+                        MyDropDownButton(
+                          items: _cities,
+                          initialValue: _selectedCity,
+                          valueChanged: (dynamic newCity) {
+                            setState(() {
+                              _selectedCity = newCity;
+                              fieldFocusChange(
+                                context,
+                                _cityFocus,
+                                null,
+                              );
+                            });
+                          },
+                        ),
                         SizedBox(
                           height: ScreenUtil().setHeight(18),
                         ),
@@ -102,7 +184,7 @@ class _SearchPageState extends State<SearchPage> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                     // return JobCard(size.height, size.width);
+                      // return JobCard(size.height, size.width);
                     },
                     itemCount: 4,
                   ),

@@ -12,85 +12,115 @@ class CompanyJobCard extends StatelessWidget {
   final double width;
   final Job job;
 
-  const CompanyJobCard(this.height, this.width, this.job, {Key key}) : super(key: key);
+  const CompanyJobCard(this.height, this.width, this.job, {Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return job==null?Container(height: 1,child: CircularProgressIndicator(backgroundColor: Colors.grey,),):Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        height: height * 0.33,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [BoxShadow(color: Colors.lightBlue, spreadRadius: 1)],
-          color: Colors.white,
-        ),
-        padding: EdgeInsets.only(
-          right: ScreenUtil().setWidth(10),
-          left: ScreenUtil().setWidth(10),
-          top: ScreenUtil().setHeight(15),
-          bottom: ScreenUtil().setHeight(20),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(job.title,
-                style: TextStyle(
-                    fontSize: width * 0.035,
-                    color: Colors.blue[500],
-                    fontWeight: FontWeight.bold)),
-            Text(job.companyName, style: TextStyle(fontSize: width * 0.033)),
-            Text('8 Nov',
-                style: TextStyle(fontSize: width * 0.033, color: Colors.grey)),
-            Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(18)),
-                child: Text(
-                    'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained',
+    return job == null
+        ? Container(
+            height: 1,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.grey,
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Container(
+              height: height * 0.33,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(color: Colors.lightBlue, spreadRadius: 1),
+                ],
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.only(
+                right: ScreenUtil().setWidth(10),
+                left: ScreenUtil().setWidth(10),
+                top: ScreenUtil().setHeight(15),
+                bottom: ScreenUtil().setHeight(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    job.title,
                     style: TextStyle(
-                        fontSize: width * 0.035, color: Colors.blueGrey),
-                    textAlign: TextAlign.start)),
-            Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setHeight(18)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text('Roseville',
+                        fontSize: width * 0.035,
+                        color: Colors.blue[500],
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    job.companyName,
+                    style: TextStyle(fontSize: width * 0.033),
+                  ),
+                  Text(
+                    '8 Nov',
+                    style:
+                        TextStyle(fontSize: width * 0.033, color: Colors.grey),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: ScreenUtil().setHeight(18),
+                    ),
+                    child: Text(
+                        'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained',
+                        style: TextStyle(
+                            fontSize: width * 0.035, color: Colors.blueGrey),
+                        textAlign: TextAlign.start),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: ScreenUtil().setHeight(18),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Roseville',
+                              style: TextStyle(
+                                  fontSize: width * 0.033, color: Colors.grey),
+                            ),
+                            Text(
+                              '/United States',
+                              style: TextStyle(fontSize: width * 0.033),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '23 app',
                           style: TextStyle(
-                              fontSize: width * 0.033, color: Colors.grey)),
-                      Text('/United States',
-                          style: TextStyle(fontSize: width * 0.033)),
-                    ],
+                            fontSize: width * 0.033,
+                            color: Colors.blue[500],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text('23 app',
-                      style: TextStyle(
-                          fontSize: width * 0.033, color: Colors.blue[500])),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: getMyButton(width, 'Delete'),
+                          flex: 1,
+                        ),
+                        SizedBox(width: ScreenUtil().setWidth(18)),
+                        Expanded(
+                          child: getMyButton(width, 'View'),
+                          flex: 1,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: getMyButton(width, 'Delete'),
-                    flex: 1,
-                  ),
-                  SizedBox(width: ScreenUtil().setWidth(18)),
-                  Expanded(
-                    child: getMyButton(width, 'View'),
-                    flex: 1,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
-
 
 class CompanyJobsList extends StatefulWidget {
   const CompanyJobsList(
@@ -122,18 +152,27 @@ class _CompanyJobsListState extends State<CompanyJobsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<CompanyDashBoardProvider>(widget.context,
-                listen: false)
-            .isInitLoading()
+    return Provider.of<CompanyDashBoardProvider>(
+      widget.context,
+      listen: false,
+    ).isInitLoading()
         ? Center(child: CircularProgressIndicator())
         : Expanded(
             child: ListView.builder(
               controller: _controller,
-              itemCount: Provider.of<CompanyDashBoardProvider>(widget.context, listen: false).jobs.length,
+              itemCount: Provider.of<CompanyDashBoardProvider>(widget.context,
+                      listen: false)
+                  .jobs
+                  .length,
               padding: const EdgeInsets.all(8),
               itemBuilder: (BuildContext context, int index) {
                 return CompanyJobCard(
-                    widget.height, widget.width, Provider.of<CompanyDashBoardProvider>(widget.context, listen: true).jobs.elementAt(index));
+                    widget.height,
+                    widget.width,
+                    Provider.of<CompanyDashBoardProvider>(widget.context,
+                            listen: true)
+                        .jobs
+                        .elementAt(index));
               },
             ),
           );
@@ -144,7 +183,6 @@ class _CompanyJobsListState extends State<CompanyJobsList> {
         !_controller.position.outOfRange) {
       Provider.of<CompanyDashBoardProvider>(widget.context, listen: false)
           .getJobs();
-        }
     }
   }
-
+}

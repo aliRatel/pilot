@@ -16,12 +16,12 @@ class JobCompaniesDashboard extends StatelessWidget {
           getDashboardTitle(height, width, 'dashboard for job companies'),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-
           ),
           getAddJobContainer(
             height,
             width,
-          context),
+            context,
+          ),
           CompanyJobsList(
             height: height,
             width: width,
