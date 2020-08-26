@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Container getDashboardTitle(double height, double width, String title){
   return  Container(
-    margin: EdgeInsets.only(bottom: height * 0.05),
+    margin: EdgeInsets.only(bottom: height * 0.00001),
     height: height * 0.15,
     color: Colors.blue[800],
     alignment: Alignment.center,

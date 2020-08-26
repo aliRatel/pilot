@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilot/app/presentation/pages/LoadingPage.dart';
+import 'package:pilot/app/presentation/pages/on_boarding/main_onbaording_page.dart';
 import 'package:pilot/app/presentation/providers/user_provider.dart';
 import 'package:pilot/app/presentation/providers/login_provider.dart';
 import 'package:provider/provider.dart';
+import 'app/presentation/pages/Job_seeker_dashboard/job_seeker_dashboard.dart';
+import 'app/presentation/providers/add_job_provider.dart';
+import 'app/presentation/providers/company_dashBoard_provider.dart';
 import 'app/presentation/providers/complete_JobSeeker_registration_provider.dart';
 import 'app/presentation/providers/complete_company_registration_provider.dart';
 import 'app/presentation/providers/gender_radio_button.dart';
+import 'app/presentation/providers/jobSeeker_dashBoardProvider.dart';
+import 'app/presentation/providers/location_provider.dart';
+import 'app/presentation/providers/search_page_provider.dart';
 import 'app/presentation/providers/selected_radio_button.dart';
 import 'app/presentation/providers/signup_provider.dart';
 import 'core/util/consts.dart';
@@ -28,6 +35,21 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => sl<AddJobProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => sl<CompanyDashBoardProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => sl<JobSeekerDashBoardProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => sl<LocationProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => sl<SearchPageProvider>(),
+        ),
         ChangeNotifierProvider(
           create: (_) => sl<UserProvider>(),
         ),
@@ -93,6 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: height,
       allowFontScaling: true,
     );
-    return LoadingPage();
+    return JobSeekerDashboard();
   }
 }

@@ -27,8 +27,8 @@ class JobCompaniesDashboard extends StatelessWidget {
           getUploadJobContainer(
             height,
             width,
-          ),
-          getJobList(height, width)
+          context),
+         // getJobList(height, width)
         ],
       ),
     );

@@ -6,16 +6,23 @@ import 'package:pilot/app/presentation/widgets/dotted_button.dart';
 
 import 'package:pilot/core/util/consts.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchPage extends StatefulWidget {
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return Scaffold(appBar: AppBar(backgroundColor:mainColor ,title:Text(
+      'search for jobs',
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
+    ),),
       backgroundColor: Color(0xffF0F0F0).withOpacity(.99),
       body: Stack(
         children: [
@@ -31,14 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   SizedBox(
                     height: size.height * .085,
                   ),
-                  Text(
-                    'Dashboard for companies',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
+
                   SizedBox(
                     height: ScreenUtil().setHeight(12),
                   ),
@@ -102,7 +102,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return JobItem(size.height, size.width);
+                     // return JobCard(size.height, size.width);
                     },
                     itemCount: 4,
                   ),
