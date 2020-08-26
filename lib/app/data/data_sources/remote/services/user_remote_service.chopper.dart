@@ -81,11 +81,9 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> getJobsByCompany(String token, int page) {
-    final $url = '//jobs-by-company';
-    final $params = <String, dynamic>{'int': page};
-    final $headers = {'bearer': token};
-    final $request = Request('GET', $url, client.baseUrl,
-        parameters: $params, headers: $headers);
+    final $url = '/jobs/api/job/company/$page';
+    final $headers = {'Authorization': token};
+    final $request = Request('GET', $url, client.baseUrl, headers: $headers);
     return client.send<dynamic, dynamic>($request);
   }
 

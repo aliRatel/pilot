@@ -181,11 +181,15 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<Either<Failure, List<Job>>> getJobsByCompany({int pageNumber = 1}) async{
     try {
-      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+      //var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+      var jwt = 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
+     // var comp = await sharedPreferencesDataSource.fetchCachedCompany();
+     // var id = comp.id;
 
-      var result = await apiDataSource.getJobsByCompany(jwt: jwt,page: pageNumber);
+      var result = await apiDataSource.getJobsByCompany(jwt: jwt,page: 158);
       var jobs=((result['jobs']) as List).map((i) =>
           Job.fromJson(i)).toList();
+      print(jobs);
       return Right(jobs);
     } on ServerException {
       return Left(ServerFailure());

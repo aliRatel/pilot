@@ -37,9 +37,9 @@ abstract class UserRemoteService extends ChopperService {
   @Post(path:'/new-job')
   Future<Response> postNewJob(@Body() Map<String,dynamic> body,@Header('bearer') String token);
 
-  @Get(path: '/jobs-by-company')
-  Future<Response> getJobsByCompany(@Header('bearer') String token,
-      @Query('int') int page,);
+  @Get(path: 'jobs/api/job/company/{id}')
+  Future<Response> getJobsByCompany(@Header('Authorization') String token,
+      @Path('id') int page);
 
   @Get(path: 'jobs/api/Job/allJobs/')
   Future<Response> getRecentJobs( @Query('int') int page, );

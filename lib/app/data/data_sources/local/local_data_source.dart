@@ -148,6 +148,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
       if (result) return Future.value(result);
       throw CacheException();
     }
+
   }
 
   @override

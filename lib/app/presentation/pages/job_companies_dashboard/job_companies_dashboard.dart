@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/add_job.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/job_list/job_list.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/title.dart';
-import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/upload_job.dart';
+import 'package:pilot/app/presentation/pages/job_companies_dashboard/components/job_list/company_job_list.dart';
 
 class JobCompaniesDashboard extends StatelessWidget {
   @override
@@ -15,20 +16,17 @@ class JobCompaniesDashboard extends StatelessWidget {
           getDashboardTitle(height, width, 'dashboard for job companies'),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-            child: Text(
-              'Lorem dolor sit amet consecteture adipisicing elit, sed do',
-              style: TextStyle(
-                color: Colors.blue[500],
-                fontSize: width * 0.035,
-              ),
-              textAlign: TextAlign.center,
-            ),
+
           ),
-          getUploadJobContainer(
+          getAddJobContainer(
             height,
             width,
           context),
-         // getJobList(height, width)
+          CompanyJobsList(
+            height: height,
+            width: width,
+            context: context,
+          )
         ],
       ),
     );
