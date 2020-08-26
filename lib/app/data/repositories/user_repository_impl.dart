@@ -157,14 +157,7 @@ class UserRepositoryImpl extends UserRepository {
     }
   }
 
-  /* TODO yhya : some notes before you start coding :
-      1- I will figure something out  with the web team  to change jobs.companyId => jobs.companyName so we don't have to send another request to get the company name with its Id or do any populating
-      2- all the below methods will use query params instead of body except for the addNewJob(Job job) method
-      3- remember to generate chopper services with build runner using filename.chopper.dart instead of filename.g.dart /// this one had me stuck for a while  :)  :)  :)  :)  :)
-      4- you can always  use whatever status codes you fell right
-      5- create a separate method in the ApiDataSource for each one of the below todos
-      6-  thank you and have fun
-  */
+
 
 
   @override
