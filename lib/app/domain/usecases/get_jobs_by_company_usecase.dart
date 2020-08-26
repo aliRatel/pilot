@@ -5,13 +5,13 @@ import 'package:pilot/app/domain/repositories/user_repository.dart';
 import 'package:pilot/core/error/failures.dart';
 import 'package:pilot/core/usecases/usecase.dart';
 import 'package:meta/meta.dart';
-class GetJobsByCompanyUseCase extends UseCase<Map<String,dynamic>,GetJobsByCompanyParams>{
+class GetJobsByCompanyUseCase extends UseCase< List<Job>,GetJobsByCompanyParams>{
   final UserRepository userRepository ;
 
   GetJobsByCompanyUseCase({@required this.userRepository});
 
   @override
-  Future<Either<Failure, Map<String,dynamic>>> call(GetJobsByCompanyParams params) async {
+  Future<Either<Failure,  List<Job>>> call(GetJobsByCompanyParams params) async {
 return await userRepository.getJobsByCompany(pageNumber: params.pageNumber);
   }
 }

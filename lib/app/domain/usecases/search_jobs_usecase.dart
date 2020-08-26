@@ -1,18 +1,19 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pilot/app/domain/entities/job.dart';
 import 'package:pilot/app/domain/repositories/user_repository.dart';
 import 'package:pilot/core/error/failures.dart';
 import 'package:pilot/core/usecases/usecase.dart';
 import 'package:meta/meta.dart';
 
 class SearchJobsUseCase
-    extends UseCase<Map<String, dynamic>, SearchJobsParams> {
+    extends UseCase< List<Job>, SearchJobsParams> {
   final UserRepository userRepository;
 
   SearchJobsUseCase({@required this.userRepository});
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> call(
+  Future<Either<Failure, List<Job>>> call(
       SearchJobsParams params) async {
     return await userRepository.searchJobs(
         pageNumber: params.pageNumber,

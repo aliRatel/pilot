@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -185,12 +186,13 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> getJobsByCompany({int pageNumber = 1}) async{
+  Future<Either<Failure, List<Job>>> getJobsByCompany({int pageNumber = 1}) async{
     try {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 
-      var jobs = await apiDataSource.getJobsByCompany(jwt: jwt,page: pageNumber);
-      print(jobs);
+      var result = await apiDataSource.getJobsByCompany(jwt: jwt,page: pageNumber);
+      var jobs=((result['jobs']) as List).map((i) =>
+          Job.fromJson(i)).toList();
       return Right(jobs);
     } on ServerException {
       return Left(ServerFailure());
@@ -203,11 +205,13 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> getRecentJobs({int pageNumber = 1}) async{
+  Future<Either<Failure, List<Job>>> getRecentJobs({int pageNumber = 1}) async{
 
     try {
-      var jobs = await apiDataSource.getRecentJobs(page: pageNumber);
-      print(jobs);
+      var result = await apiDataSource.getRecentJobs(page: pageNumber);
+
+      var jobs=((result['jobs']) as List).map((i) =>
+          Job.fromJson(i)).toList();
       return Right(jobs);
     } on ServerException {
       return Left(ServerFailure());
@@ -221,11 +225,12 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> searchJobs({int pageNumber = 1, int cityId, int countryId}) async{
+  Future<Either<Failure,List<Job>>> searchJobs({int pageNumber = 1, int cityId, int countryId}) async{
 
     try {
-      var jobs = await apiDataSource.searchJobs(page: pageNumber,cityId: cityId,countryId: countryId);
-      print(jobs);
+      var result = await apiDataSource.searchJobs(page: pageNumber,cityId: cityId,countryId: countryId);
+      var jobs=((result['jobs']) as List).map((i) =>
+          Job.fromJson(i)).toList();
       return Right(jobs);
     } on ServerException {
       return Left(ServerFailure());

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../user_remote_service.dart';
+part of 'user_remote_service.dart';
 
 // **************************************************************************
 // ChopperGenerator
@@ -18,7 +18,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> postSignUp(Map<String, dynamic> body) {
-    final $url = '/user/register';
+    final $url = '//register';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
@@ -26,7 +26,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> postLogin(Map<String, dynamic> body) {
-    final $url = '/user/login';
+    final $url = '//login';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
@@ -35,7 +35,7 @@ class _$UserRemoteService extends UserRemoteService {
   @override
   Future<Response<dynamic>> postCompleteCompanyProfile(
       Map<String, dynamic> body, String token) {
-    final $url = '/user/complete-company-profile';
+    final $url = '//complete-company-profile';
     final $headers = {'bearer': token};
     final $body = body;
     final $request =
@@ -49,7 +49,7 @@ class _$UserRemoteService extends UserRemoteService {
       String token,
       String imagePath,
       String cvPath) {
-    final $url = '/user/complete-jobseeker-profile';
+    final $url = '//complete-jobseeker-profile';
     final $headers = {'bearer': token};
     final $body = body;
     final $parts = <PartValue>[
@@ -63,7 +63,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> getUser(int id) {
-    final $url = '/user/user/$id';
+    final $url = '//user/$id';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
@@ -71,7 +71,7 @@ class _$UserRemoteService extends UserRemoteService {
   @override
   Future<Response<dynamic>> postNewJob(
       Map<String, dynamic> body, String token) {
-    final $url = '/user/new-job';
+    final $url = '//new-job';
     final $headers = {'bearer': token};
     final $body = body;
     final $request =
@@ -81,7 +81,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> getJobsByCompany(String token, int page) {
-    final $url = '/user/jobs-by-company';
+    final $url = '//jobs-by-company';
     final $params = <String, dynamic>{'int': page};
     final $headers = {'bearer': token};
     final $request = Request('GET', $url, client.baseUrl,
@@ -91,7 +91,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> getRecentJobs(int page) {
-    final $url = '/user/recent-jobs';
+    final $url = '/jobs/api/Job/allJobs/';
     final $params = <String, dynamic>{'int': page};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
@@ -99,7 +99,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> searchJobs(int page, int cityId, int countryId) {
-    final $url = '/user/search-jobs';
+    final $url = '//search-jobs';
     final $params = <String, dynamic>{
       'int': page,
       'int': cityId,
@@ -111,7 +111,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<List<City>>> getCitiesByCountry(int countryId) {
-    final $url = '/user/get-cities-by-country';
+    final $url = '//get-cities-by-country';
     final $params = <String, dynamic>{'int': countryId};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<List<City>, City>($request);
@@ -119,7 +119,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<List<Country>>> getCountries() {
-    final $url = '/user/get-countries';
+    final $url = '//get-countries';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<List<Country>, Country>($request);
   }

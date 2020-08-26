@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilot/app/presentation/pages/LoadingPage.dart';
 import 'package:pilot/app/presentation/pages/on_boarding/main_onbaording_page.dart';
-import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 import 'package:pilot/app/presentation/pages/search_screen/search_page.dart';
 import 'package:pilot/app/presentation/providers/user_provider.dart';
 import 'package:pilot/app/presentation/providers/login_provider.dart';
@@ -121,6 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: height,
       allowFontScaling: true,
     );
-    return RegisterJobSeekerPage();
+    return JobSeekerDashboard();
   }
 }

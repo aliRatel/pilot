@@ -7,7 +7,7 @@ class JobSeekerDashBoardProvider extends ChangeNotifier {
   bool initLoad = true;
   String errorMessage;
   int pageNumber = 1;
-  int totalPages = 1000;
+  int totalPages = 1;
   var jobs = [];
 //  var fixtures = [
 //    Job(
@@ -32,14 +32,14 @@ class JobSeekerDashBoardProvider extends ChangeNotifier {
     setLoading(true);
     var result = await getRecentJobsUseCase(
         GetRecentJobsParams(pageNumber: pageNumber));
-
+print(result);
     result.fold((failure) {
       setLoading(false);
       setInitLoad(false);
-    }, (resultMap) {
+    }, (jobs) {
       increasePageNumber();
-     totalPages = resultMap['totalPages'];
-     var newJobs = resultMap['jobs'];
+     //totalPages = resultMap['totalPages'];
+     var newJobs = jobs;
       addFetchedJobs(newJobs);
       setLoading(false);
       setInitLoad(false);
