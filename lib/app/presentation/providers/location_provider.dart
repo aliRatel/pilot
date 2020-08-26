@@ -9,7 +9,8 @@ import 'package:meta/meta.dart';
 class LocationProvider extends ChangeNotifier {
   bool loading = false;
   String errorMessage;
-
+List<Country> countries;
+List<City> currentCities;
   final GetCountriesUseCase getCountriesUseCase;
 
   final GetCitiesByCountryUseCase getCitiesByCountryUseCase;

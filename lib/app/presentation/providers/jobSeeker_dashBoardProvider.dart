@@ -4,36 +4,47 @@ import 'package:pilot/app/domain/usecases/get_recent_jobs_usecase.dart';
 
 class JobSeekerDashBoardProvider extends ChangeNotifier {
   bool loading = false;
+  bool initLoad = true;
   String errorMessage;
-
+  int pageNumber = 1;
+  int totalPages = 1000;
+  var jobs = [];
+//  var fixtures = [
+//    Job(
+//        id: 1,
+//        companyName: 'google',
+//        title: 'developer1',
+//        description:
+//        'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained'),
+//    Job(
+//        id: 1,
+//        companyName: 'google',
+//        title: 'developer1',
+//        description:
+//        'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained'),
+//  ];
   final GetRecentJobsUseCase getRecentJobsUseCase;
 
   JobSeekerDashBoardProvider({@required this.getRecentJobsUseCase});
 
-  Future<List<Job>> getJobs(int pageNumber) async {
-//var result = await getRecentJobsUseCase(GetRecentJobsParams(pageNumber:pageNumber));
-    return [
-      Job(
-          id: 1,
-          companyName: 'google',
-          title: 'developer1',
-          description: 'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained'),
-      Job(
-          id: 1,
-          companyName: 'google',
-          title: 'developer2',
-          description: 'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained'),
-      Job(
-          id: 1,
-          companyName: 'google',
-          title: 'developer3',
-          description: 'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained'),
-      Job(
-          id: 1,
-          companyName: 'google',
-          title: 'developer4',
-          description: 'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained')
-    ];
+  Future<void> getJobs() async {
+    if (pageNumber > totalPages) return null;
+    setLoading(true);
+    var result = await getRecentJobsUseCase(
+        GetRecentJobsParams(pageNumber: pageNumber));
+
+    result.fold((failure) {
+      setLoading(false);
+      setInitLoad(false);
+    }, (resultMap) {
+      increasePageNumber();
+     totalPages = resultMap['totalPages'];
+     var newJobs = resultMap['jobs'];
+      addFetchedJobs(newJobs);
+      setLoading(false);
+      setInitLoad(false);
+    });
+
   }
 
   void setLoading(bool value) {
@@ -41,8 +52,18 @@ class JobSeekerDashBoardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void increasePageNumber() {
+    pageNumber++;
+    notifyListeners();
+  }
+
   void setMessage(String value) {
     errorMessage = value;
+    notifyListeners();
+  }
+
+  void setInitLoad(bool value) {
+    initLoad = value;
     notifyListeners();
   }
 
@@ -53,4 +74,19 @@ class JobSeekerDashBoardProvider extends ChangeNotifier {
   bool isLoading() {
     return loading;
   }
+
+  bool isInitLoading() {
+    return initLoad;
+  }
+
+  void addFetchedJobs(List<Job> data) {
+    if (jobs.length > 0 && jobs.last == null)
+      jobs.removeLast();
+
+    jobs = jobs + data;
+    if (pageNumber < totalPages)
+      jobs.add(null);
+    notifyListeners();
+  }
+
 }
