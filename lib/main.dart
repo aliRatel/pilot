@@ -104,11 +104,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
-//    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-////      Provider.of<LocationProvider>(context,listen: false).getCountries().then((value) {
-////        super.initState();
-////      });
-////    });
+    super.initState();
   }
 
   @override
@@ -121,6 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: height,
       allowFontScaling: true,
     );
-    return SearchPage();
+    return LoadingPage();
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
@@ -12,9 +11,12 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:path/path.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:pilot/app/domain/entities/city.dart';
+import 'package:pilot/app/domain/entities/country.dart' as COU;
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/job_seeker_dashboard.dart';
 import 'package:pilot/app/presentation/providers/complete_JobSeeker_registration_provider.dart';
+import 'package:pilot/app/presentation/providers/location_provider.dart';
 import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 import 'package:provider/provider.dart';
 
@@ -56,27 +58,27 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
   File _cvFile;
   List<String> _countries = [];
   List<String> _cities = [];
-  String _selectedCountry = '';
-  String _selectedCity = '';
+  COU.Country _selectedCountry;
+  City _selectedCity;
+
   DateTime _birthday;
 
   @override
   void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      _selectedCountry =
+          Provider.of<LocationProvider>(this.context, listen: false)
+              .countries
+              .last;
+    });
+
     super.initState();
-
-    _countries = countries_cities.keys.toList();
-    _cities = countries_cities[countries_cities.keys.first];
-
-    _selectedCountry = _countries[0];
-    _selectedCity = _cities[0];
   }
 
   void _submit() {
     if (!_formKey.currentState.validate()) return;
 
     print(_userImage.path);
-    print(
-        'asdfajsdlkfjasdl;kgjasdl;kgjals;kdgjlsak;djglak;sdjglak;sdjgl;asddjgl;asdjg');
 
     String name = _nameController.text.trim();
     String zipCode = _zipController.text.trim();
@@ -84,9 +86,8 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
     String mobileNumber = _mobileController.text.trim();
     String phoneNumber = _phoneController.text.trim();
     String buildingNumber = _buildingNumberController.text.trim();
-    int cityId = _cities.indexOf(_selectedCity); //TODO increase by 1
-    int countryId =
-        _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
+    int cityId = _selectedCity.id;
+    int countryId = _selectedCountry.id;
 
     Provider.of<CompleteJobSeekerRegistrationProvider>(this.context,
             listen: false)
@@ -460,20 +461,24 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 MyDropDownButton(
-                  items: _countries,
-                  initialValue: _selectedCountry,
-                  valueChanged: (dynamic newCountry) {
-                    setState(() {
-                      _selectedCountry = newCountry;
-                      fieldFocusChange(
-                        context,
-                        _countryRegionFocus,
-                        _cityFocus,
-                      );
-                    });
+                  items: Provider.of<LocationProvider>(context).countries,
+                  initialValue:
+                      Provider.of<LocationProvider>(context).selectedCountry,
+                  valueChanged: (dynamic newCountry) async {
+                    print(newCountry.name);
 
-                    _cities = countries_cities[newCountry];
-                    _selectedCity = _cities[0];
+                    Provider.of<LocationProvider>(context, listen: false)
+                        .setSelectedCountry(newCountry);
+                    print('==================================');
+                    print(_selectedCountry.name);
+                    await Provider.of<LocationProvider>(context, listen: false)
+                        .getCities(Provider.of<LocationProvider>(context,listen: false).selectedCountry.id);
+
+                    fieldFocusChange(
+                      context,
+                      _countryRegionFocus,
+                      _cityFocus,
+                    );
                   },
                 ),
                 SizedBox(height: ScreenUtil().setHeight(18)),
@@ -487,20 +492,25 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
-                MyDropDownButton(
-                  items: _cities,
-                  initialValue: _selectedCity,
-                  valueChanged: (dynamic newCity) {
-                    setState(() {
-                      _selectedCity = newCity;
-                      fieldFocusChange(
-                        context,
-                        _cityFocus,
-                        _zipFocus,
-                      );
-                    });
-                  },
-                ),
+                Provider.of<LocationProvider>(context, listen: false)
+                        .isLoading()
+                    ? CircularProgressIndicator()
+                    : MyDropDownButton(
+                        items: Provider.of<LocationProvider>(context)
+                            .currentCities,
+                        initialValue:
+                            Provider.of<LocationProvider>(context).selectedCity,
+                        valueChanged: (dynamic newCity) {
+                          Provider.of<LocationProvider>(context, listen: false)
+                              .setSelectedCity(newCity);
+                            fieldFocusChange(
+                              context,
+                              _cityFocus,
+                              _zipFocus,
+                            );
+
+                        },
+                      ),
                 SizedBox(height: ScreenUtil().setHeight(26)),
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),

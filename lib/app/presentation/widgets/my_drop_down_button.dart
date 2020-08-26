@@ -23,6 +23,7 @@ class MyDropDownButton extends StatefulWidget {
 }
 
 class _MyDropDownButtonState extends State<MyDropDownButton> {
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,8 +50,8 @@ class _MyDropDownButtonState extends State<MyDropDownButton> {
             hint: Text(widget.hint),
             items: widget.items
                 .map(
-                  (item) => DropdownMenuItem<String>(
-                    child: Text('$item'),
+                  (item) => DropdownMenuItem(
+                    child: Text(item.name.toString()),
                     value: item,
                   ),
                 )

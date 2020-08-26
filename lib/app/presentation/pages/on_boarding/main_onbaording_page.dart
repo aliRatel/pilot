@@ -44,6 +44,7 @@ class OnBoardingPage extends State<OnBoarding> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 2),()=>null).then((value) => null);
     var pagesNumbers = _pages.length;
     // TODO: implement build
     return Scaffold(

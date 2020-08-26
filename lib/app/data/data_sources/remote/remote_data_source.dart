@@ -42,10 +42,10 @@ abstract class ApiDataSource {
   Future<Map<String, dynamic>> searchJobs(
       {int page,int cityId, int countryId});
 
-  Future<List<City>> getCitiesByCountry(
+  Future<Map<String, dynamic>> getCitiesByCountry(
       {int countryId});
 
-  Future<List<Country>> getCountries();
+  Future<Map<String, dynamic>> getCountries();
 
 }
 
@@ -163,7 +163,7 @@ class ApiDataSourceImpl extends ApiDataSource {
   }
 
   @override
-  Future<List<City>> getCitiesByCountry({int countryId}) async{
+  Future<Map<String, dynamic>> getCitiesByCountry({int countryId}) async{
     var response = await userRemoteService.getCitiesByCountry(countryId);
     if(response.statusCode == 200)
       return response.body;
@@ -172,8 +172,9 @@ class ApiDataSourceImpl extends ApiDataSource {
   }
 
   @override
-  Future<List<Country>> getCountries() async{
+  Future<Map<String, dynamic>> getCountries() async{
     var response = await userRemoteService.getCountries();
+    print(response);
     if(response.statusCode == 200)
       return response.body;
 

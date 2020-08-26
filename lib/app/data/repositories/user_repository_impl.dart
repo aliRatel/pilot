@@ -117,78 +117,75 @@ class UserRepositoryImpl extends UserRepository {
     try {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 
-       await apiDataSource.postCompleteCompanyProfile (company:company,
-          jwt: jwt) ;
-     var user = await sharedPreferencesDataSource.fetchCachedCompany();
-     company.email = user.email;
-     company.id = user.id;
-     await sharedPreferencesDataSource.cacheCompany(company);
-        return Right(true);
-
+      await apiDataSource.postCompleteCompanyProfile(
+          company: company, jwt: jwt);
+      var user = await sharedPreferencesDataSource.fetchCachedCompany();
+      company.email = user.email;
+      company.id = user.id;
+      await sharedPreferencesDataSource.cacheCompany(company);
+      return Right(true);
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {
       return Left(ServerFailure());
-    }catch(e){
+    } catch (e) {
       return Left(UnknownFailure());
-
     }
   }
 
   @override
-  Future<Either<Failure, bool>> completeJobSeekerProfile({JobSeeker jobSeeker,File cv,File personalPhoto}) async{
+  Future<Either<Failure, bool>> completeJobSeekerProfile(
+      {JobSeeker jobSeeker, File cv, File personalPhoto}) async {
     try {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 
-      var result = await apiDataSource.postCompleteJobSeekerProfile (jobSeeker:jobSeeker,
-          jwt: jwt,cv: cv,personalPhoto: personalPhoto) ;
-     var user = await sharedPreferencesDataSource.fetchCachedUser();
-       jobSeeker.cv=result['cv'];
-       jobSeeker.email = user.email;
-       jobSeeker.personalPhoto=result['personalPhoto'];
-       await sharedPreferencesDataSource.cacheJobSeeker(jobSeeker);
-       return Right(true);
+      var result = await apiDataSource.postCompleteJobSeekerProfile(
+          jobSeeker: jobSeeker, jwt: jwt, cv: cv, personalPhoto: personalPhoto);
+      var user = await sharedPreferencesDataSource.fetchCachedUser();
+      jobSeeker.cv = result['cv'];
+      jobSeeker.email = user.email;
+      jobSeeker.personalPhoto = result['personalPhoto'];
+      await sharedPreferencesDataSource.cacheJobSeeker(jobSeeker);
+      return Right(true);
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {
       return Left(ServerFailure());
-    }catch(e){
+    } catch (e) {
       return Left(UnknownFailure());
     }
   }
 
-
-
-
   @override
-  Future<Either<Failure, bool>> addNewJob({Job job}) async{
+  Future<Either<Failure, bool>> addNewJob({Job job}) async {
     try {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 
-      var result = await apiDataSource.postNewJob (job:job,
-          jwt: jwt) ;
+      var result = await apiDataSource.postNewJob(job: job, jwt: jwt);
 
       return Right(result);
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {
       return Left(ServerFailure());
-    }catch(e){
+    } catch (e) {
       return Left(UnknownFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<Job>>> getJobsByCompany({int pageNumber = 1}) async{
+  Future<Either<Failure, List<Job>>> getJobsByCompany(
+      {int pageNumber = 1}) async {
     try {
       //var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
-      var jwt = 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
-     // var comp = await sharedPreferencesDataSource.fetchCachedCompany();
-     // var id = comp.id;
+      var jwt =
+          'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
+      // var comp = await sharedPreferencesDataSource.fetchCachedCompany();
+      // var id = comp.id;
 
-      var result = await apiDataSource.getJobsByCompany(jwt: jwt,page: 158);
-      var jobs=((result['jobs']) as List).map((i) =>
-          Job.fromJson(i)).toList();
+      var result = await apiDataSource.getJobsByCompany(jwt: jwt, page: 158);
+      var jobs =
+          ((result['jobs']) as List).map((i) => Job.fromJson(i)).toList();
       print(jobs);
       return Right(jobs);
     } on ServerException {
@@ -202,13 +199,12 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<Job>>> getRecentJobs({int pageNumber = 1}) async{
-
+  Future<Either<Failure, List<Job>>> getRecentJobs({int pageNumber = 1}) async {
     try {
       var result = await apiDataSource.getRecentJobs(page: pageNumber);
 
-      var jobs=((result['jobs']) as List).map((i) =>
-          Job.fromJson(i)).toList();
+      var jobs =
+          ((result['jobs']) as List).map((i) => Job.fromJson(i)).toList();
       return Right(jobs);
     } on ServerException {
       return Left(ServerFailure());
@@ -218,16 +214,16 @@ class UserRepositoryImpl extends UserRepository {
       print(e);
       return left(UnknownFailure());
     }
-
   }
 
   @override
-  Future<Either<Failure,List<Job>>> searchJobs({int pageNumber = 1, int cityId, int countryId}) async{
-
+  Future<Either<Failure, List<Job>>> searchJobs(
+      {int pageNumber = 1, int cityId, int countryId}) async {
     try {
-      var result = await apiDataSource.searchJobs(page: pageNumber,cityId: cityId,countryId: countryId);
-      var jobs=((result['jobs']) as List).map((i) =>
-          Job.fromJson(i)).toList();
+      var result = await apiDataSource.searchJobs(
+          page: pageNumber, cityId: cityId, countryId: countryId);
+      var jobs =
+          ((result['jobs']) as List).map((i) => Job.fromJson(i)).toList();
       return Right(jobs);
     } on ServerException {
       return Left(ServerFailure());
@@ -237,15 +233,19 @@ class UserRepositoryImpl extends UserRepository {
       print(e);
       return left(UnknownFailure());
     }
-
   }
 
   @override
-  Future<Either<Failure, List<City>>> getCitiesByCountry({int countryId}) async{
+  Future<Either<Failure, List<City>>> getCitiesByCountry(
+      {int countryId}) async {
     try {
-      var cities = await apiDataSource.getCitiesByCountry(countryId: countryId,);
+      var result = await apiDataSource.getCitiesByCountry(
+        countryId: countryId,
+      );
+      var cities =
+          ((result['cities']) as List).map((i) => City.fromJson(i)).toList();
       print(cities);
-      return Right( cities);
+      return Right(cities);
     } on ServerException {
       return Left(ServerFailure());
     } on CacheException {
@@ -254,15 +254,17 @@ class UserRepositoryImpl extends UserRepository {
       print(e);
       return left(UnknownFailure());
     }
-
   }
 
   @override
-  Future<Either<Failure, List<Country>>> getCountries()async {
+  Future<Either<Failure, List<Country>>> getCountries() async {
     try {
-      var countries = await apiDataSource.getCountries();
-      print(countries);
-      return Right( countries);
+      var result = await apiDataSource.getCountries();
+
+      var countries = ((result['countries']) as List)
+          .map((i) => Country.fromJson(i))
+          .toList();
+      return Right(countries);
     } on ServerException {
       return Left(ServerFailure());
     } on CacheException {
@@ -271,7 +273,5 @@ class UserRepositoryImpl extends UserRepository {
       print(e);
       return left(UnknownFailure());
     }
-
   }
-
 }

@@ -108,17 +108,16 @@ class _$UserRemoteService extends UserRemoteService {
   }
 
   @override
-  Future<Response<List<City>>> getCitiesByCountry(int countryId) {
-    final $url = '//get-cities-by-country';
-    final $params = <String, dynamic>{'int': countryId};
-    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
-    return client.send<List<City>, City>($request);
+  Future<Response<dynamic>> getCitiesByCountry(int countryId) {
+    final $url = '/accounts/api/CitiesOfCountry/$countryId/';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
   }
 
   @override
-  Future<Response<List<Country>>> getCountries() {
-    final $url = '//get-countries';
+  Future<Response<dynamic>> getCountries() {
+    final $url = '/accounts/api/Country/All/';
     final $request = Request('GET', $url, client.baseUrl);
-    return client.send<List<Country>, Country>($request);
+    return client.send<dynamic, dynamic>($request);
   }
 }

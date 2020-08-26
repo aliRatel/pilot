@@ -47,9 +47,9 @@ abstract class UserRemoteService extends ChopperService {
   @Get(path: '/search-jobs')
   Future<Response> searchJobs( @Query('int') int page, @Query('int') int cityId,@Query('int') int countryId,);
 
-  @Get(path: '/get-cities-by-country')
-  Future<Response<List<City>>> getCitiesByCountry( @Query('int') int countryId,);
+  @Get(path: 'accounts/api/CitiesOfCountry/{id}/')
+  Future<Response> getCitiesByCountry( @Path('id')  int countryId,);
 
-  @Get(path: '/get-countries')
-  Future<Response<List<Country>>> getCountries();
+  @Get(path: 'accounts/api/Country/All/')
+  Future<Response> getCountries();
 }

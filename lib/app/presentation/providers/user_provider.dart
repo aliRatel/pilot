@@ -16,7 +16,7 @@ class UserProvider with ChangeNotifier {
   Company company;
   String token;
   UserType userType;
-  AppAction neededAction;
+  AppAction neededAction= AppAction.signUp;
 
 //usecases
   final CheckForAvailableUsersUseCase checkForAvailableUsersUseCase;
