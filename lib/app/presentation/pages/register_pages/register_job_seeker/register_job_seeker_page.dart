@@ -56,8 +56,6 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
   File _userImage;
   File _cvFile;
-  List<String> _countries = [];
-  List<String> _cities = [];
   COU.Country _selectedCountry;
   City _selectedCity;
 
@@ -89,8 +87,10 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
     int cityId = _selectedCity.id;
     int countryId = _selectedCountry.id;
 
-    Provider.of<CompleteJobSeekerRegistrationProvider>(this.context,
-            listen: false)
+    Provider.of<CompleteJobSeekerRegistrationProvider>(
+      this.context,
+      listen: false,
+    )
         .completeProfile(
             name: name,
             surname: 'asfdasdfa',
@@ -118,6 +118,8 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
   @override
   Widget build(BuildContext context) {
+    var locationProvider =
+        Provider.of<LocationProvider>(context, listen: false);
     final format = DateFormat("yyyy-MM-dd");
     return SafeArea(
       child: Scaffold(
@@ -461,18 +463,15 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 MyDropDownButton(
-                  items: Provider.of<LocationProvider>(context).countries,
-                  initialValue:
-                      Provider.of<LocationProvider>(context).selectedCountry,
+                  items: locationProvider.countries,
+                  initialValue: locationProvider.selectedCountry,
                   valueChanged: (dynamic newCountry) async {
                     print(newCountry.name);
-
-                    Provider.of<LocationProvider>(context, listen: false)
-                        .setSelectedCountry(newCountry);
+                    locationProvider.setSelectedCountry(newCountry);
                     print('==================================');
                     print(_selectedCountry.name);
-                    await Provider.of<LocationProvider>(context, listen: false)
-                        .getCities(Provider.of<LocationProvider>(context,listen: false).selectedCountry.id);
+                    await locationProvider
+                        .getCities(locationProvider.selectedCountry.id);
 
                     fieldFocusChange(
                       context,
@@ -492,8 +491,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
-                Provider.of<LocationProvider>(context, listen: false)
-                        .isLoading()
+                locationProvider.isLoading()
                     ? CircularProgressIndicator()
                     : MyDropDownButton(
                         items: Provider.of<LocationProvider>(context)
@@ -503,12 +501,11 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                         valueChanged: (dynamic newCity) {
                           Provider.of<LocationProvider>(context, listen: false)
                               .setSelectedCity(newCity);
-                            fieldFocusChange(
-                              context,
-                              _cityFocus,
-                              _zipFocus,
-                            );
-
+                          fieldFocusChange(
+                            context,
+                            _cityFocus,
+                            _zipFocus,
+                          );
                         },
                       ),
                 SizedBox(height: ScreenUtil().setHeight(26)),

@@ -8,11 +8,11 @@ import 'package:meta/meta.dart';
 
 class LocationProvider extends ChangeNotifier {
   bool loading = false;
-  String errorMessage=null;
-List<Country> countries=new List();
-List<City> currentCities=new List();
-Country selectedCountry;
-City selectedCity;
+  String errorMessage = null;
+  List<Country> countries = new List();
+  List<City> currentCities = new List();
+  Country selectedCountry;
+  City selectedCity;
   final GetCountriesUseCase getCountriesUseCase;
 
   final GetCitiesByCountryUseCase getCitiesByCountryUseCase;
@@ -42,30 +42,31 @@ City selectedCity;
     setLoading(true);
     print('a-------------------------------');
     var result = await getCountriesUseCase(NoParams());
-     return  await result.fold((failure) {
+    return await result.fold((failure) {
       setLoading(false);
       print('went wrong');
 
       setMessage('something went wrong');
       return false;
-    }, (fetchedCountries) async{
-       setCountries(fetchedCountries);
-       setSelectedCountry(countries.first) ;
-       var cityResult = await getCitiesByCountryUseCase(GetCitiesByCountryParams(countryId: countries.first.id));
-       cityResult.fold((failure) {
-         setLoading(false);
-         setMessage('something went wrong');
-         return false;
-       }, (fetchedCities){
-         setCities(fetchedCities);
-         setSelectedCity(fetchedCities.first);
-         setLoading(false);
-         setMessage(null);
-         return  true;
-       });
+    }, (fetchedCountries) async {
+      setCountries(fetchedCountries);
+      setSelectedCountry(countries.first);
+      var cityResult = await getCitiesByCountryUseCase(
+          GetCitiesByCountryParams(countryId: countries.first.id));
+      cityResult.fold((failure) {
+        setLoading(false);
+        setMessage('something went wrong');
+        return false;
+      }, (fetchedCities) {
+        setCities(fetchedCities);
+        setSelectedCity(fetchedCities.first);
+        setLoading(false);
+        setMessage(null);
+        return true;
+      });
       setLoading(false);
       setMessage(null);
-      return  true;
+      return true;
     });
   }
 
@@ -86,16 +87,17 @@ City selectedCity;
   bool isLoading() {
     return loading;
   }
-  void setCountries(List<Country> fetchedCountries){
-    countries  = fetchedCountries;
-    notifyListeners();
 
+  void setCountries(List<Country> fetchedCountries) {
+    countries = fetchedCountries;
+    notifyListeners();
   }
 
   void setSelectedCountry(newCountry) {
     selectedCountry = newCountry;
     notifyListeners();
   }
+
   void setSelectedCity(newCity) {
     selectedCity = newCity;
     print(selectedCity.name);

@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:pilot/app/presentation/pages/job_companies_dashboard/job_companies_dashboard.dart';
 import 'package:pilot/app/presentation/providers/complete_company_registration_provider.dart';
+import 'package:pilot/app/presentation/providers/location_provider.dart';
 import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import 'package:provider/provider.dart';
+import 'package:pilot/app/domain/entities/city.dart';
+import 'package:pilot/app/domain/entities/country.dart' as COU;
 
 import '../../../../../core/util/consts.dart';
 import '../../../widgets/base_clipper.dart';
@@ -39,24 +42,22 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _companyNameController = TextEditingController();
 
-  List<String> _countries = [];
-  List<String> _cities = [];
-
-  String _selectedCountry = '';
-  String _selectedCity = '';
+  COU.Country _selectedCountry;
+  City _selectedCity;
 
   @override
   void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      _selectedCountry =
+          Provider.of<LocationProvider>(this.context, listen: false)
+              .countries
+              .last;
+    });
+
     super.initState();
-
-    _countries = countries_cities.keys.toList();
-    _cities = countries_cities[countries_cities.keys.first];
-
-    _selectedCountry = _countries[0];
-    _selectedCity = _cities[0];
   }
 
-  void _submit() {
+  void _submit(LocationProvider locationProvider) {
     if (!_formKey.currentState.validate()) return;
 
     String companyName = _companyNameController.text.trim();
@@ -65,9 +66,10 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     String mobileNumber = _mobileController.text.trim();
     String phoneNumber = _phoneController.text.trim();
     String buildingNumber = _buildingNumberController.text.trim();
-    int cityId = _cities.indexOf(_selectedCity); //TODO increase by 1
-    int countryId =
-        _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
+    int cityId = locationProvider.selectedCity
+        .id; // _cities.indexOf(_selectedCity); //TODO increase by 1
+    int countryId = locationProvider.selectedCountry
+        .id; // _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
 
     Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
         .completeProfile(
@@ -92,6 +94,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
   @override
   Widget build(BuildContext context) {
+    var locationProvider =
+        Provider.of<LocationProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -152,20 +156,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(10)),
                 MyDropDownButton(
-                  items: _countries,
-                  initialValue: _selectedCountry,
-                  valueChanged: (dynamic newCountry) {
+                  items: locationProvider.countries,
+                  initialValue: locationProvider.selectedCountry,
+                  valueChanged: (dynamic newCountry) async {
+                    print(newCountry.name);
+                    locationProvider.setSelectedCountry(newCountry);
+                    print('==================================');
+                    print(_selectedCountry.name);
+                    await locationProvider
+                        .getCities(locationProvider.selectedCountry.id);
+
                     setState(() {
-                      _selectedCountry = newCountry;
                       fieldFocusChange(
                         context,
                         _countryRegionFocus,
                         _cityFocus,
                       );
                     });
-
-                    _cities = countries_cities[newCountry];
-                    _selectedCity = _cities[0];
                   },
                 ),
                 SizedBox(height: ScreenUtil().setHeight(28)),
@@ -179,20 +186,24 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
-                MyDropDownButton(
-                  items: _cities,
-                  initialValue: _selectedCity,
-                  valueChanged: (dynamic newCity) {
-                    setState(() {
-                      _selectedCity = newCity;
-                      fieldFocusChange(
-                        context,
-                        _cityFocus,
-                        _zipFocus,
-                      );
-                    });
-                  },
-                ),
+                locationProvider
+                        .isLoading()
+                    ? CircularProgressIndicator()
+                    : MyDropDownButton(
+                        items: Provider.of<LocationProvider>(context)
+                            .currentCities,
+                        initialValue:
+                            Provider.of<LocationProvider>(context).selectedCity,
+                        valueChanged: (dynamic newCity) {
+                          Provider.of<LocationProvider>(context, listen: false)
+                              .setSelectedCity(newCity);
+                          fieldFocusChange(
+                            context,
+                            _cityFocus,
+                            _zipFocus,
+                          );
+                        },
+                      ),
                 SizedBox(height: ScreenUtil().setHeight(28)),
                 MyTextFormField(
                   validator: (value) => validateRequiredTextField(value),
@@ -319,7 +330,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                                 listen: false)
                             .isLoading()
                         ? () {
-                            _submit();
+                            _submit(locationProvider);
                           }
                         : null,
                   ),

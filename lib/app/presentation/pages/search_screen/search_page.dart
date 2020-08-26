@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/job_list/job_list.dart';
+import 'package:pilot/app/domain/entities/city.dart';
+import 'package:pilot/app/domain/entities/country.dart' as COU;
 import 'package:pilot/app/presentation/pages/search_screen/search_box.dart';
+import 'package:pilot/app/presentation/providers/location_provider.dart';
 import 'package:pilot/app/presentation/widgets/dotted_button.dart';
 import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 
 import 'package:pilot/core/util/consts.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -17,26 +20,28 @@ class _SearchPageState extends State<SearchPage> {
   final FocusNode _countryRegionFocus = FocusNode();
   final FocusNode _cityFocus = FocusNode();
 
-  List<String> _countries = [];
-  List<String> _cities = [];
+  COU.Country _selectedCountry;
+  City _selectedCity;
 
-  String _selectedCountry = '';
-  String _selectedCity = '';
+  DateTime _birthday;
 
   @override
   void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      _selectedCountry =
+          Provider.of<LocationProvider>(this.context, listen: false)
+              .countries
+              .last;
+    });
+
     super.initState();
-
-    _countries = countries_cities.keys.toList();
-    _cities = countries_cities[countries_cities.keys.first];
-
-    _selectedCountry = _countries[0];
-    _selectedCity = _cities[0];
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var locationProvider =
+        Provider.of<LocationProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
@@ -101,20 +106,22 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         MyDropDownButton(
-                          items: _countries,
-                          initialValue: _selectedCountry,
-                          valueChanged: (dynamic newCountry) {
-                            setState(() {
-                              _selectedCountry = newCountry;
-                              fieldFocusChange(
-                                context,
-                                _countryRegionFocus,
-                                _cityFocus,
-                              );
-                            });
+                          items: locationProvider.countries,
+                          initialValue: locationProvider.selectedCountry,
+                          valueChanged: (dynamic newCountry) async {
+                            print(newCountry.name);
+                            locationProvider.setSelectedCountry(newCountry);
+                            print('==================================');
+                            print(_selectedCountry.name);
+                            // return cities for the selected country id
+                            await locationProvider
+                                .getCities(locationProvider.selectedCountry.id);
 
-                            _cities = countries_cities[newCountry];
-                            _selectedCity = _cities[0];
+                            fieldFocusChange(
+                              context,
+                              _countryRegionFocus,
+                              _cityFocus,
+                            );
                           },
                         ),
                         SizedBox(
@@ -131,20 +138,22 @@ class _SearchPageState extends State<SearchPage> {
                             child: Text('City'),
                           ),
                         ),
-                        MyDropDownButton(
-                          items: _cities,
-                          initialValue: _selectedCity,
-                          valueChanged: (dynamic newCity) {
-                            setState(() {
-                              _selectedCity = newCity;
-                              fieldFocusChange(
-                                context,
-                                _cityFocus,
-                                null,
-                              );
-                            });
-                          },
-                        ),
+                        locationProvider
+                                .isLoading()
+                            ? CircularProgressIndicator()
+                            : MyDropDownButton(
+                                items: Provider.of<LocationProvider>(context)
+                                    .currentCities,
+                                initialValue:
+                                    Provider.of<LocationProvider>(context)
+                                        .selectedCity,
+                                valueChanged: (dynamic newCity) {
+                                  Provider.of<LocationProvider>(context,
+                                          listen: false)
+                                      .setSelectedCity(newCity);
+                                  fieldFocusChange(context, _cityFocus, null);
+                                },
+                              ),
                         SizedBox(
                           height: ScreenUtil().setHeight(18),
                         ),
@@ -197,60 +206,6 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget getBrandItem() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            left: ScreenUtil().setWidth(10),
-            right: ScreenUtil().setWidth(5),
-            top: ScreenUtil().setHeight(18),
-          ),
-          child: Text(
-            'VEHICLE  BRAND',
-            style: TextStyle(color: Colors.grey),
-          ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(10),
-        ),
-        Container(
-          height: ScreenUtil().setHeight(45),
-          margin: EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.grey,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: FlatButton(
-            onPressed: () {},
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            focusColor: mainColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Toyota',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  icon: Icon(Icons.keyboard_arrow_right),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(15),
-        ),
-      ],
     );
   }
 }
