@@ -13,7 +13,7 @@ const CACHED_CREDENTIALS = 'CACHED_CREDENTIALS';
 const CACHED_USER_TYPE = 'CACHED_USER_TYPE';
 
 abstract class SharedPreferencesDataSource {
-  Future<JobSeeker> fetchCachedUser();
+  Future<JobSeeker> fetchCachedJobSeeker();
 
   Future<Company> fetchCachedCompany();
 
@@ -70,7 +70,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
 
   @override
   Future<bool> cacheToken(String jwt) async {
-    bool result = await sharedPreferences.setString(CACHED_TOKEN, jwt);
+    bool result = await sharedPreferences.setString(CACHED_TOKEN, 'bearer '+jwt);
     if (result) return result;
     throw CacheException();
   }
@@ -83,6 +83,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
 
   @override
   Future<bool> cacheUserType(UserType userType) async {
+
     bool result = await sharedPreferences.setString(
         CACHED_USER_TYPE, userType.toShortString());
     if (result) return result;
@@ -123,7 +124,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   }
 
   @override
-  Future<JobSeeker> fetchCachedUser() {
+  Future<JobSeeker> fetchCachedJobSeeker() {
     var result = sharedPreferences.getString(CACHED_LOCAl_USER);
     if (result != null) {
       return Future.value(JobSeeker.fromJson(json.decode(result)));
@@ -157,7 +158,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
     print(jwt);
     if (jwt != null)
       return Future.value(jwt);
-    else
+
       throw CacheException();
   }
 
@@ -167,7 +168,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
     UserType userType = userTypeFromString(result);
     if (userType != null)
       return userType;
-    else
+
       throw CacheException();
   }
 }

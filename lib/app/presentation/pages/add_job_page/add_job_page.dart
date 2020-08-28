@@ -3,10 +3,14 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:pilot/app/domain/entities/city.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/title.dart';
 import 'package:pilot/app/domain/entities/country.dart' as COU;
+import 'package:pilot/app/presentation/pages/job_companies_dashboard/job_companies_dashboard.dart';
+import 'package:pilot/app/presentation/providers/add_job_provider.dart';
+import 'package:pilot/app/presentation/providers/company_dashBoard_provider.dart';
 import 'package:pilot/app/presentation/providers/location_provider.dart';
 import 'package:pilot/app/presentation/widgets/my_button.dart';
 import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 import 'package:pilot/app/presentation/widgets/text_form_field.dart';
+import 'package:pilot/core/util/consts.dart';
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import 'package:provider/provider.dart';
 
@@ -16,16 +20,18 @@ class AddJobPage extends StatefulWidget {
 }
 
 class _AddJobPageState extends State<AddJobPage> {
-  final _addJobKey = GlobalKey<FormState>();
-  TextEditingController _titleControoler = TextEditingController();
-  TextEditingController _skillsControoler = TextEditingController();
-  TextEditingController _descriptionsControler = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _skillsController = TextEditingController();
+  TextEditingController _descriptionsController = TextEditingController();
+  TextEditingController _abstractController = TextEditingController();
 
   final FocusNode _titleFocus = FocusNode();
   final FocusNode _skillsFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
   final FocusNode _countryRegionFocus = FocusNode();
   final FocusNode _cityFocus = FocusNode();
+  final FocusNode _abstractFocus = FocusNode();
 
   COU.Country _selectedCountry;
   City _selectedCity;
@@ -44,29 +50,45 @@ class _AddJobPageState extends State<AddJobPage> {
     super.initState();
   }
 
+  void _submit() {
+    if (!_formKey.currentState.validate()) return;
+    String title = _titleController.text.trim();
+    String skills = _skillsController.text.trim();
+    String description = _descriptionsController.text.trim();
+    String abstract = _abstractController.text.trim();
+    int cityId =
+        Provider.of<LocationProvider>(context, listen: false).selectedCity.id;
+    int countryId = Provider.of<LocationProvider>(context, listen: false)
+        .selectedCountry
+        .id;
+    Provider.of<AddJobProvider>(context, listen: false).setMessage(null);
+    Provider.of<AddJobProvider>(context, listen: false)
+        .addJob(title, skills, countryId, cityId, abstract, description)
+        .then((value) async {
+      if (value) {
+        Provider.of<CompanyDashBoardProvider>(context,listen: false).getJobs();
+        Navigator.pop(context);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    var locationProvider =
-        Provider.of<LocationProvider>(context, listen: false);
-
     return Scaffold(
+      appBar: AppBar(backgroundColor: mainColor,title: Text('Create a new job'),),
       body: ListView(
         children: [
           Form(
-            key: _addJobKey,
+            key: _formKey,
             child: Column(
               children: [
-                getDashboardTitle(height, width, 'create a new job'),
+//                getDashboardTitle(height, width, 'create a new job'),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-                    child: Text(
-                        'Lorem dolor sit amet consecteture \n adipisicing elit, sed do',
-                        style: TextStyle(
-                            color: Colors.blue[500], fontSize: width * 0.045),
-                        textAlign: TextAlign.center)),
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+                ),
                 SizedBox(height: ScreenUtil().setHeight(30)),
 
                 MyTextFormField(
@@ -74,10 +96,9 @@ class _AddJobPageState extends State<AddJobPage> {
                     setState(() {});
                   },
                   hint: 'title',
-                  controller: _titleControoler,
+                  controller: _titleController,
                   title: 'Title',
-                  validator: (value) =>
-                      value.iSEmpty ? "title cannot be empty." : null,
+                  validator: (value) => validateRequiredTextField(value),
                   onFieldSubmitted: (input) =>
                       fieldFocusChange(context, _titleFocus, _skillsFocus),
                   textInputAction: TextInputAction.next,
@@ -90,30 +111,40 @@ class _AddJobPageState extends State<AddJobPage> {
                     setState(() {});
                   },
                   hint: 'Skills',
-                  controller: _skillsControoler,
+                  controller: _skillsController,
                   title: 'Skills',
-                  validator: (val) {
-                    val.isEmpty ? "Skills cannot be empty." : null;
-                  },
+                  validator: (value) => validateRequiredTextField(value),
                   onFieldSubmitted: (input) =>
-                      fieldFocusChange(context, _titleFocus, _descriptionFocus),
+                      fieldFocusChange(context, _skillsFocus, _abstractFocus),
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                   focusNode: _skillsFocus,
                 ),
-
+                MyTextFormField(
+                  onTextChange: (String input) {
+                    setState(() {});
+                  },
+                  hint: 'abstract',
+                  controller: _abstractController,
+                  title: 'abstract',
+                  validator: (value) => validateRequiredTextField(value),
+                  onFieldSubmitted: (input) => fieldFocusChange(
+                      context, _abstractFocus, _descriptionFocus),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.text,
+                  focusNode: _abstractFocus,
+                ),
                 MyTextFormField(
                   onTextChange: (String input) {
                     setState(() {});
                   },
                   maxLines: 5,
                   hint: 'description',
-                  controller: _titleControoler,
+                  controller: _descriptionsController,
                   title: 'Description',
-                  validator: (value) =>
-                      value.iSEmpty ? "description cannot be empty." : null,
-                  //onFieldSubmitted: (input) =>
-                  //fieldFocusChange(context, _titleFocus, null),
+                  validator: (value) => validateRequiredTextField(value),
+                  onFieldSubmitted: (input) =>
+                      fieldFocusChange(context, _titleFocus, null),
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
                   focusNode: _descriptionFocus,
@@ -132,15 +163,22 @@ class _AddJobPageState extends State<AddJobPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 MyDropDownButton(
-                  items: locationProvider.countries,
-                  initialValue: locationProvider.selectedCountry,
+                  items: Provider.of<LocationProvider>(context, listen: false)
+                      .countries,
+                  initialValue:
+                      Provider.of<LocationProvider>(context, listen: false)
+                          .selectedCountry,
                   valueChanged: (dynamic newCountry) async {
                     print(newCountry.name);
-                    locationProvider.setSelectedCountry(newCountry);
+                    Provider.of<LocationProvider>(context, listen: false)
+                        .setSelectedCountry(newCountry);
                     print('==================================');
                     print(_selectedCountry.name);
-                    await locationProvider
-                        .getCities(locationProvider.selectedCountry.id);
+                    await Provider.of<LocationProvider>(context, listen: false)
+                        .getCities(Provider.of<LocationProvider>(context,
+                                listen: false)
+                            .selectedCountry
+                            .id);
 
                     fieldFocusChange(
                       context,
@@ -160,7 +198,8 @@ class _AddJobPageState extends State<AddJobPage> {
                   ),
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
-                locationProvider.isLoading()
+                Provider.of<LocationProvider>(context, listen: false)
+                        .isLoading()
                     ? CircularProgressIndicator()
                     : MyDropDownButton(
                         items: Provider.of<LocationProvider>(context)
@@ -176,20 +215,30 @@ class _AddJobPageState extends State<AddJobPage> {
                 SizedBox(height: ScreenUtil().setHeight(18)),
 
                 Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: myButton(
+                    padding: EdgeInsets.all(12.0),
+                    child: myButton(
                       context: context,
-                      child: Text(
-                        'Done',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        validateAndRegisterCompany();
-                      }),
-                ),
+                      child: Provider.of<AddJobProvider>(context)
+                              .loading
+                          ? CircularProgressIndicator(
+                              backgroundColor: Colors.white,
+                              strokeWidth: 2,
+                            )
+                          : Text(
+                              'Add job',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                      onTap:
+                          !Provider.of<AddJobProvider>(context, listen: false)
+                                  .isLoading()
+                              ? () {
+                                  _submit();
+                                }
+                              : null,
+                    )),
                 SizedBox(height: 50),
               ],
             ),
@@ -200,6 +249,6 @@ class _AddJobPageState extends State<AddJobPage> {
   }
 
   void validateAndRegisterCompany() {
-    if (_addJobKey.currentState.validate()) {}
+    if (_formKey.currentState.validate()) {}
   }
 }

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
+import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/job_seeker_dashboard.dart';
+import 'package:pilot/app/presentation/pages/job_companies_dashboard/job_companies_dashboard.dart';
 import 'package:pilot/app/presentation/pages/login/radio_buttons.dart';
 import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
+import 'package:pilot/app/presentation/pages/register_pages/register_company/register_company_page.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
 
 import 'package:pilot/app/presentation/providers/login_provider.dart';
@@ -26,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   bool _hidePassword = true;
-  UserType _userType = UserType.company;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -36,13 +38,19 @@ class _LoginPageState extends State<LoginPage> {
     Provider.of<LogInProvider>(context, listen: false).setMessage(null);
     Provider.of<LogInProvider>(context, listen: false)
         .loginUser(
-            email: _emailController.text,
-            password: _passwordController.text,
-            userType: UserType.company)
-        .then((value) {
-      if (value) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => RegisterJobSeekerPage()));
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    )
+        .then((usertype) {
+      if (usertype != null) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => usertype == UserType.jobSeeker
+                    ? JobSeekerDashboard()
+                    : usertype == UserType.company
+                        ? JobCompaniesDashboard()
+                        : null));
       }
     });
   }
@@ -122,13 +130,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    getRadioButtons(
-                        (selected) => setState(() => _userType = selected),
-                        _userType),
+
                     Padding(
                       padding: EdgeInsets.only(
                         right: ScreenUtil().setWidth(12),
-                        left:  ScreenUtil().setWidth(12),
+                        left: ScreenUtil().setWidth(12),
                       ),
                       child: myButton(
                         context: context,

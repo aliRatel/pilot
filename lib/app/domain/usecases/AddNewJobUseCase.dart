@@ -12,8 +12,8 @@ class AddNewJobUseCase extends UseCase<bool, AddNewJobParams> {
   AddNewJobUseCase({@required this.userRepository});
 
   @override
-  Future<Either<Failure, bool>> call(AddNewJobParams params) {
-    userRepository.addNewJob(job:params.job);
+  Future<Either<Failure, bool>> call(AddNewJobParams params) async{
+    return await userRepository.addNewJob(job:params.job);
   }
 }
 

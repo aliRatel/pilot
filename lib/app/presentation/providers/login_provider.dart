@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/domain/usecases/user_login_usecase.dart';
 
 class LogInProvider with ChangeNotifier{
@@ -7,21 +8,24 @@ class LogInProvider with ChangeNotifier{
 
   final UserLoginUseCase userLoginUseCase ;
 
-
   LogInProvider({@required this.userLoginUseCase});
 
 
-  Future<bool> loginUser({email,password,userType}) async {
+  Future<UserType> loginUser({email,password}) async {
     setLoading(true);
-    var result =await userLoginUseCase(UserLoginParams(email:email  ,password: password,userType:userType));
+    var result =await userLoginUseCase(UserLoginParams(email:email  ,password: password));
     return await result.fold((failure) {
       setMessage('something went wrong');
       setLoading(false);
-      return false;
+      print('went wrong');
+
+      return null;
     }, (user) {
+
+      print(user);
       setLoading(false);
-      setMessage('');
-      return true;
+      setMessage(null);
+      return user;
     });
 
 

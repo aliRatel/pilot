@@ -28,7 +28,6 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<Failure, Map<String, dynamic>>> fetchUser({int id}) async {
     try {
       var user = await apiDataSource.getUser(id: id);
-      print(user);
       return Right(user);
     } on ServerException {
       return Left(ServerFailure());
@@ -41,20 +40,22 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> logIn(
-      {String email, String password, UserType userType}) async {
+  Future<Either<Failure, UserType>> logIn(
+      {String email, String password}) async {
     try {
       var credential = await apiDataSource.postLogIn(
-          email: email, password: password, userType: userType);
+          email: email, password: password);
       print(credential);
       await sharedPreferencesDataSource.cacheToken(credential['jwt']);
-      await sharedPreferencesDataSource.cacheUserType(userType);
+      int index = credential['userType'];
+      UserType responseUserType= userTypeFromIndex(index);
+      await sharedPreferencesDataSource.cacheUserType(responseUserType);
       await sharedPreferencesDataSource.cacheUserByType(
           id: credential['id'],
           email: email,
           password: password,
-          userType: userType);
-      return Right(true);
+          userType: responseUserType);
+      return Right(responseUserType);
     } on ServerException {
       return Left(ServerFailure());
     } on CacheException {
@@ -76,7 +77,7 @@ class UserRepositoryImpl extends UserRepository {
       await sharedPreferencesDataSource.cacheUserType(userType);
 
       await sharedPreferencesDataSource.cacheUserByType(
-          id: credential['id'],
+
           email: email,
           password: password,
           userType: userType);
@@ -100,14 +101,15 @@ class UserRepositoryImpl extends UserRepository {
       var userType = await sharedPreferencesDataSource.fetchCachedUserType();
       var user = (userType == UserType.company)
           ? await sharedPreferencesDataSource.fetchCachedCompany()
-          : await sharedPreferencesDataSource.fetchCachedUser();
-      print('********************************' + user.toString());
+          : await sharedPreferencesDataSource.fetchCachedJobSeeker();
       values['jwt'] = jwt;
       values['userType'] = userType;
       values['user'] = user;
       return Right(values);
     } on CacheException {
       return Left(CacheFailure());
+    }catch(e){
+      return Left(UnknownFailure());
     }
   }
 
@@ -141,7 +143,8 @@ class UserRepositoryImpl extends UserRepository {
 
       var result = await apiDataSource.postCompleteJobSeekerProfile(
           jobSeeker: jobSeeker, jwt: jwt, cv: cv, personalPhoto: personalPhoto);
-      var user = await sharedPreferencesDataSource.fetchCachedUser();
+      print(result);
+      var user = await sharedPreferencesDataSource.fetchCachedJobSeeker();
       jobSeeker.cv = result['cv'];
       jobSeeker.email = user.email;
       jobSeeker.personalPhoto = result['personalPhoto'];
@@ -152,6 +155,7 @@ class UserRepositoryImpl extends UserRepository {
     } on ServerException {
       return Left(ServerFailure());
     } catch (e) {
+      print(e);
       return Left(UnknownFailure());
     }
   }
@@ -159,16 +163,20 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<Either<Failure, bool>> addNewJob({Job job}) async {
     try {
-      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+
+       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+//      var jwt = 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
 
       var result = await apiDataSource.postNewJob(job: job, jwt: jwt);
-
+print('-*-*-*-*--**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
+print(result);
       return Right(result);
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {
       return Left(ServerFailure());
     } catch (e) {
+      print(e);
       return Left(UnknownFailure());
     }
   }
@@ -177,9 +185,8 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<Failure, List<Job>>> getJobsByCompany(
       {int pageNumber = 1}) async {
     try {
-      //var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
-      var jwt =
-          'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
+      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+//      var jwt ='bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
       // var comp = await sharedPreferencesDataSource.fetchCachedCompany();
       // var id = comp.id;
 

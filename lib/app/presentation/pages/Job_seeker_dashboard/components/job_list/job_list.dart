@@ -122,7 +122,7 @@ class _JobsListState extends State<JobsList> {
   Widget build(BuildContext context) {
     return Provider.of<JobSeekerDashBoardProvider>(widget.context,
                 listen: false)
-            .isInitLoading()
+            .loading
         ? Center(child: CircularProgressIndicator())
         : Expanded(
             child: ListView.builder(

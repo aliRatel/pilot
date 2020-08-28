@@ -18,24 +18,24 @@ abstract class UserRemoteService extends ChopperService {
   }
 
 
-  @Post(path: '/register')
+  @Post(path: 'accounts/api/user/register/')
   Future<Response> postSignUp(@Body() Map<String, dynamic> body);
 
-  @Post(path: '/login')
+  @Post(path: 'accounts/api/user/login/')
   Future<Response> postLogin(@Body() Map<String, dynamic> body);
 
   @Post(path:'/complete-company-profile')
   Future<Response> postCompleteCompanyProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token);
 
-  @Post(path:'/complete-jobseeker-profile')
+  @Post(path:'accounts/api/user/register/JobSeekerProfile/')
   @multipart
-  Future<Response> postCompleteJobSeekerProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token,@PartFile('image') String imagePath,@PartFile('cv') String cvPath);
+  Future<Response> postCompleteJobSeekerProfile(@Part('data') Map<String,dynamic> body,@Header('Authorization') String token,@PartFile('personal_photo') String imagePath,@PartFile('CV') String cvPath);
 
   @Get(path: '/user/{id}')
   Future<Response> getUser(@Path() int id);
 
-  @Post(path:'/new-job')
-  Future<Response> postNewJob(@Body() Map<String,dynamic> body,@Header('bearer') String token);
+  @Post(path:'jobs/api/job/add/')
+  Future<Response> postNewJob(@Body() Map<String,dynamic> body,@Header('Authorization') String token);
 
   @Get(path: 'jobs/api/job/company/{id}')
   Future<Response> getJobsByCompany(@Header('Authorization') String token,

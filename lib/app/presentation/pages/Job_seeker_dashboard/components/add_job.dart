@@ -4,14 +4,14 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:pilot/app/presentation/pages/add_job_page/add_job_page.dart';
 import 'package:pilot/app/presentation/pages/search_screen/search_page.dart';
 
-Container getAddJobContainer(double height, double width,BuildContext context) {
+Container getAddJobContainer(
+    double height, double width, BuildContext context ) {
   return Container(
     padding: EdgeInsets.only(
         top: height * 0.01, left: width * 0.015, right: width * 0.015),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         SizedBox(height: ScreenUtil().setHeight(10)),
         Container(
           alignment: Alignment.center,
@@ -21,11 +21,18 @@ Container getAddJobContainer(double height, double width,BuildContext context) {
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.white,
           ),
-          child: GestureDetector(onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => AddJobPage(),)),
+          child: GestureDetector(
+            onTap: () {
+
+                    Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddJobPage(),
+                ));},
             child: DottedBorder(
               borderType: BorderType.Circle,
               color: Colors.blue[800],
-              dashPattern: [4,15],
+              dashPattern: [4, 15],
               padding: EdgeInsets.all(5.0),
               child: Container(
                 padding: EdgeInsets.symmetric(

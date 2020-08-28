@@ -119,6 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
       height: height,
       allowFontScaling: true,
     );
-    return AddJobPage();
+    return LoadingPage();
   }
 }

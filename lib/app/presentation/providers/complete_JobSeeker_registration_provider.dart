@@ -39,7 +39,7 @@ class CompleteJobSeekerRegistrationProvider extends ChangeNotifier {
         city: cityId,
         zipCode: zipCode,
         street: street,
-        houseNumber: houseNumber,
+        houseNumber: 1,
         phoneNumber: phoneNumber,
         coverLetter: coverLetter,
         birthday: birthday);

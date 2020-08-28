@@ -21,8 +21,8 @@ abstract class UserRepository {
 
   Future<Either<Failure, bool>> completeCompanyProfile({Company company});
 
-  Future<Either<Failure, bool>> logIn(
-      {String email, String password, UserType userType});
+  Future<Either<Failure, UserType>> logIn(
+      {String email, String password});
 
   Future<Either<Failure, Map<String, dynamic>>> getCachedUserInfo();
 

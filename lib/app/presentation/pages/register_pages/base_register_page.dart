@@ -40,8 +40,8 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
     Provider.of<SignUpProvider>(context, listen: false).setMessage(null);
     Provider.of<SignUpProvider>(context, listen: false)
         .signUpUser(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
         userType: _userType)
         .then((value) {
       if (value) {

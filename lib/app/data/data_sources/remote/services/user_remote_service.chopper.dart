@@ -18,15 +18,16 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> postSignUp(Map<String, dynamic> body) {
-    final $url = '//register';
+    final $url = '/accounts/api/user/register/';
     final $body = body;
+    print(body);
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
   Future<Response<dynamic>> postLogin(Map<String, dynamic> body) {
-    final $url = '//login';
+    final $url = '/accounts/api/user/login/';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
@@ -49,15 +50,16 @@ class _$UserRemoteService extends UserRemoteService {
       String token,
       String imagePath,
       String cvPath) {
-    final $url = '//complete-jobseeker-profile';
-    final $headers = {'bearer': token};
+    final $url = '/accounts/api/user/register/JobSeekerProfile/';
+    final $headers = {'Authorization': token};
     final $body = body;
     final $parts = <PartValue>[
-      PartValueFile<String>('image', imagePath),
-      PartValueFile<String>('cv', cvPath)
+      PartValueFile<String>('personal_photo', imagePath),
+      PartValueFile<String>('CV', cvPath),
+      PartValue<Map<String, dynamic>>('data', body),
     ];
     final $request = Request('POST', $url, client.baseUrl,
-        body: $body, parts: $parts, multipart: true, headers: $headers);
+         parts: $parts, multipart: true, headers: $headers);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -71,8 +73,8 @@ class _$UserRemoteService extends UserRemoteService {
   @override
   Future<Response<dynamic>> postNewJob(
       Map<String, dynamic> body, String token) {
-    final $url = '//new-job';
-    final $headers = {'bearer': token};
+    final $url = '/jobs/api/job/add/';
+    final $headers = {'Authorization': token};
     final $body = body;
     final $request =
         Request('POST', $url, client.baseUrl, body: $body, headers: $headers);

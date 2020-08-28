@@ -143,19 +143,20 @@ class _CompanyJobsListState extends State<CompanyJobsList> {
 
   void initState() {
     super.initState();
+
     _controller = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         Provider.of<CompanyDashBoardProvider>(widget.context, listen: false)
             .getJobs());
-    _controller.addListener(_scrollEndListener);
+   // _controller.addListener(_scrollEndListener);
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Provider.of<CompanyDashBoardProvider>(
       widget.context,
-      listen: false,
-    ).isInitLoading()
+    ).loading
         ? Center(child: CircularProgressIndicator())
         : Expanded(
             child: ListView.builder(

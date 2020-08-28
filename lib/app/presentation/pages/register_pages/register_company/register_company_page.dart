@@ -67,9 +67,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     String phoneNumber = _phoneController.text.trim();
     String buildingNumber = _buildingNumberController.text.trim();
     int cityId = locationProvider.selectedCity
-        .id; // _cities.indexOf(_selectedCity); //TODO increase by 1
+        .id;
     int countryId = locationProvider.selectedCountry
-        .id; // _selectedCountry.indexOf(_selectedCountry); //TODO increase by 1
+        .id;
 
     Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
         .completeProfile(

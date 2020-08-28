@@ -9,6 +9,7 @@ import 'package:pilot/app/presentation/pages/on_boarding/main_onbaording_page.da
 import 'package:pilot/app/presentation/pages/register_pages/base_register_page.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_company/register_company_page.dart';
 import 'package:pilot/app/presentation/pages/register_pages/register_job_seeker/register_job_seeker_page.dart';
+import 'package:pilot/app/presentation/pages/search_screen/search_page.dart';
 import 'package:pilot/app/presentation/providers/location_provider.dart';
 import 'package:pilot/app/presentation/providers/user_provider.dart';
 import 'package:pilot/core/util/consts.dart';
@@ -77,7 +78,6 @@ func(BuildContext context) async {
 }
 
 mapAction(AppAction action) {
-  return RegisterJobSeekerPage();
 
   switch (action) {
     case AppAction.signUp:

@@ -4,6 +4,7 @@ import 'package:pilot/app/domain/entities/city.dart';
 import 'package:pilot/app/domain/entities/country.dart' as COU;
 import 'package:pilot/app/presentation/pages/search_screen/search_box.dart';
 import 'package:pilot/app/presentation/providers/location_provider.dart';
+import 'package:pilot/app/presentation/providers/search_page_provider.dart';
 import 'package:pilot/app/presentation/widgets/dotted_button.dart';
 import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 
@@ -22,7 +23,6 @@ class _SearchPageState extends State<SearchPage> {
 
   COU.Country _selectedCountry;
   City _selectedCity;
-
   DateTime _birthday;
 
   @override
@@ -36,13 +36,16 @@ class _SearchPageState extends State<SearchPage> {
 
     super.initState();
   }
+void _submit(){
 
+}
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var locationProvider =
-        Provider.of<LocationProvider>(context, listen: false);
-    return Scaffold(
+
+    return  Provider.of<SearchPageProvider>(
+      context,
+    ).loading?Center(child: CircularProgressIndicator(),):Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
         title: Text(
@@ -106,16 +109,16 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         MyDropDownButton(
-                          items: locationProvider.countries,
-                          initialValue: locationProvider.selectedCountry,
+                          items: Provider.of<LocationProvider>(context, listen: false).countries,
+                          initialValue: Provider.of<LocationProvider>(context, listen: false).selectedCountry,
                           valueChanged: (dynamic newCountry) async {
                             print(newCountry.name);
-                            locationProvider.setSelectedCountry(newCountry);
+                            Provider.of<LocationProvider>(context, listen: false).setSelectedCountry(newCountry);
                             print('==================================');
                             print(_selectedCountry.name);
                             // return cities for the selected country id
-                            await locationProvider
-                                .getCities(locationProvider.selectedCountry.id);
+                            await Provider.of<LocationProvider>(context, listen: false)
+                                .getCities(Provider.of<LocationProvider>(context, listen: false).selectedCountry.id);
 
                             fieldFocusChange(
                               context,
@@ -138,7 +141,7 @@ class _SearchPageState extends State<SearchPage> {
                             child: Text('City'),
                           ),
                         ),
-                        locationProvider
+                        Provider.of<LocationProvider>(context, listen: false)
                                 .isLoading()
                             ? CircularProgressIndicator()
                             : MyDropDownButton(

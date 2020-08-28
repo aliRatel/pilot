@@ -6,6 +6,8 @@ import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/tit
 import 'package:pilot/app/presentation/pages/job_companies_dashboard/components/job_list/company_job_list.dart';
 
 class JobCompaniesDashboard extends StatelessWidget {
+final key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -21,8 +23,9 @@ class JobCompaniesDashboard extends StatelessWidget {
             height,
             width,
             context,
+
           ),
-          CompanyJobsList(
+           CompanyJobsList(
             height: height,
             width: width,
             context: context,

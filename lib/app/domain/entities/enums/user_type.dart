@@ -12,3 +12,9 @@ extension ParseToString on UserType {
     return s=='company'?UserType.company:UserType.jobSeeker;
   }
 
+UserType userTypeFromIndex(int index){
+  if(index ==1)return UserType.company;
+  if(index ==2) return UserType.jobSeeker;
+  throw Exception();
+  }
+

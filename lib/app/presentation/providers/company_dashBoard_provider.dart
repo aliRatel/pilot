@@ -4,7 +4,7 @@ import 'package:pilot/app/domain/usecases/get_jobs_by_company_usecase.dart';
 
 class CompanyDashBoardProvider extends ChangeNotifier{
   bool loading = false;
-  bool initLoad = true;
+//  bool initLoad = true;
   String errorMessage;
   int pageNumber = 1;
   int totalPages = 1;
@@ -20,20 +20,20 @@ final GetJobsByCompanyUseCase getJobsByCompanyUseCase;
     setLoading(true);
     var result = await getJobsByCompanyUseCase(
         GetJobsByCompanyParams(pageNumber: pageNumber));
-    print(result);
+
     result.fold((failure) {
       setLoading(false);
-      setInitLoad(false);
+//      setInitLoad(false);
     }, (jobs) {
-      increasePageNumber();
+      //increasePageNumber();
       //totalPages = resultMap['totalPages'];
       var newJobs = jobs;
 
       addFetchedJobs(newJobs);
       setLoading(false);
-      setInitLoad(false);
+//      setInitLoad(false);
     });
-    setInitLoad(false);
+//    setInitLoad(false);
 
   }
 
@@ -52,10 +52,10 @@ final GetJobsByCompanyUseCase getJobsByCompanyUseCase;
     notifyListeners();
   }
 
-  void setInitLoad(bool value) {
-    initLoad = value;
-    notifyListeners();
-  }
+//  void setInitLoad(bool value) {
+//    initLoad = value;
+//    notifyListeners();
+//  }
 
   String getMessage() {
     return errorMessage;
@@ -65,19 +65,21 @@ final GetJobsByCompanyUseCase getJobsByCompanyUseCase;
     return loading;
   }
 
-  bool isInitLoading() {
-    return initLoad;
-  }
+//  bool isInitLoading() {
+//    return initLoad;
+//  }
 
   void addFetchedJobs(List<Job> data) {
-    if (jobs.length > 0 && jobs.last == null)
-      jobs.removeLast();
-
-    jobs = jobs + data;
-    if (pageNumber < totalPages)
-      jobs.add(null);
+    jobs=data;
     notifyListeners();
-    print(jobs);
+//    if (jobs.length > 0 && jobs.last == null)
+//      jobs.removeLast();
+//
+//    jobs = jobs + data;
+//    if (pageNumber < totalPages)
+//      jobs.add(null);
+//    notifyListeners();
+//    print(jobs);
   }
 
 }

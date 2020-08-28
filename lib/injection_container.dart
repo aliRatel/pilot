@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:pilot/app/data/repositories/user_repository_impl.dart';
 import 'package:pilot/app/domain/entities/job_seeker.dart';
 import 'package:pilot/app/domain/repositories/user_repository.dart';
+import 'package:pilot/app/domain/usecases/AddNewJobUseCase.dart';
 import 'package:pilot/app/domain/usecases/check_for_available_users_usecase.dart';
 import 'package:pilot/app/domain/usecases/complete_company_profile_usecase.dart';
 import 'package:pilot/app/domain/usecases/complete_user_profile_usecase.dart';
@@ -71,6 +72,7 @@ Future<void> init() async {
       () => GetRecentJobsUseCase(userRepository: sl()));
   sl.registerLazySingleton<SearchJobsUseCase>(
       () => SearchJobsUseCase(userRepository: sl()));
+  sl.registerLazySingleton<AddNewJobUseCase>(() => AddNewJobUseCase(userRepository: sl()));
 
   ///repositories
   sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(

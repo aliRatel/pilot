@@ -15,7 +15,7 @@ import 'package:meta/meta.dart';
 
 abstract class ApiDataSource {
   Future<Map<String, dynamic>> postLogIn(
-      {String email, String password, UserType userType});
+      {String email, String password});
 
   Future<Map<String, dynamic>> postSignUp(
       {String email, String password, UserType userType});
@@ -56,18 +56,18 @@ class ApiDataSourceImpl extends ApiDataSource {
 
   @override
   Future<Map<String, dynamic>> postLogIn(
-      {String email, String password, UserType userType}) async {
+      {String email, String password}) async {
     var body = {
       'email': email,
       'password': password,
-      'userType': userType.toShortString()
     };
     var response = await userRemoteService.postLogin(body);
-    print(response.statusCode);
-    if (response.statusCode == 202) {
-      int id = response.body['id'];
-      String jwt = response.body['jwtToken'];
-      return {'id': id, 'jwt': jwt};
+    if (response.statusCode == 200) {
+      int id = response.body['user_id'];
+      String jwt = response.body['token'];
+
+      int userType = response.body['user_type'];
+      return {'id': id, 'jwt': jwt,'userType':userType};
     } else
       throw mapResponseException(response.statusCode);
   }
@@ -75,17 +75,16 @@ class ApiDataSourceImpl extends ApiDataSource {
   @override
   Future<Map<String, dynamic>> postSignUp(
       {String email, String password, UserType userType}) async {
-    var body = {
+    var body = {'user': {
       'email': email,
       'password': password,
-      'userType': userType.toShortString()
-    };
+      'user_type': userType.index + 1
+    }};
     var response = await userRemoteService.postSignUp(body);
     print(response.statusCode);
-    if (response.statusCode == 202) {
-      int id = response.body['id'];
-      String jwt = response.body['jwtToken'];
-      return {'id': id, 'jwt': jwt};
+    if (response.statusCode == 201) {
+      String jwt = response.body['token'];
+      return {'jwt': jwt};
     } else
       throw mapResponseException(response.statusCode);
   }
@@ -107,7 +106,9 @@ class ApiDataSourceImpl extends ApiDataSource {
 
     var jobSeekerJson =  jobSeeker.toJson();
     var header=jwt;
+    print('start');
     var response = await userRemoteService.postCompleteJobSeekerProfile(jobSeekerJson, header,cv.path,personalPhoto.path);
+    print(response.statusCode);
     if(response.statusCode == 200)
       return response.body;
 
@@ -127,9 +128,11 @@ class ApiDataSourceImpl extends ApiDataSource {
   @override
   Future<bool> postNewJob({Job job,String jwt}) async{
     var jobJson =  job.toJson();
+    print('////////////////////////////////////////////////////////////////////////////////////////////////');
+    print(jobJson);
     var header = jwt;
     var response = await userRemoteService.postNewJob(jobJson, header);
-    if(response.statusCode == 201)
+    if(response.statusCode == 200)
       return true;
 
     throw ServerException();
