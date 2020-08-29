@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:chopper/chopper.dart';
@@ -34,7 +35,7 @@ abstract class ApiDataSource {
       {Job job,String jwt});
 
   Future<Map<String, dynamic>> getJobsByCompany(
-      {String jwt,int page});
+      {String jwt});
 
   Future<Map<String, dynamic>> getRecentJobs(
       {int page});
@@ -62,12 +63,14 @@ class ApiDataSourceImpl extends ApiDataSource {
       'password': password,
     };
     var response = await userRemoteService.postLogin(body);
+    print(response.error);
+
     if (response.statusCode == 200) {
       int id = response.body['user_id'];
       String jwt = response.body['token'];
 
       int userType = response.body['user_type'];
-      return {'id': id, 'jwt': jwt,'userType':userType};
+      return {'id': id, 'jwt': jwt,'userType':userType,'completed': response.body['completed']};
     } else
       throw mapResponseException(response.statusCode);
   }
@@ -92,9 +95,12 @@ class ApiDataSourceImpl extends ApiDataSource {
   @override
   Future<bool> postCompleteCompanyProfile (
       {Company company,String jwt}) async{
+    print('start');
     var companyJson =  company.toJson();
     var header=jwt;
     var response = await userRemoteService.postCompleteCompanyProfile(companyJson, header);
+    print(response.statusCode);
+    print(response.error);
     if(response.statusCode == 200)
       return true;
     else throw ServerException();
@@ -107,8 +113,10 @@ class ApiDataSourceImpl extends ApiDataSource {
     var jobSeekerJson =  jobSeeker.toJson();
     var header=jwt;
     print('start');
-    var response = await userRemoteService.postCompleteJobSeekerProfile(jobSeekerJson, header,cv.path,personalPhoto.path);
+    var response = await userRemoteService.postCompleteJobSeekerProfile(json.encode(jobSeekerJson),header,cv.path,personalPhoto.path);
     print(response.statusCode);
+    print(response.error);
+    print(response.body);
     if(response.statusCode == 200)
       return response.body;
 
@@ -139,8 +147,8 @@ class ApiDataSourceImpl extends ApiDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> getJobsByCompany({String jwt, int page}) async{
-    var response = await userRemoteService.getJobsByCompany(jwt,page);
+  Future<Map<String, dynamic>> getJobsByCompany({String jwt}) async{
+    var response = await userRemoteService.getJobsByCompany(jwt);
     if(response.statusCode == 200)
       return response.body;
 

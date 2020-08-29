@@ -29,7 +29,7 @@ abstract class UserRepository {
   Future<Either<Failure,bool>> addNewJob({Job job});
   Future<Either<Failure,List<Job>>> getRecentJobs({int pageNumber=1});
   Future<Either<Failure,List<Job>>> searchJobs({int pageNumber=1, int cityId,int countryId});
-  Future<Either<Failure,List<Job>>> getJobsByCompany({int pageNumber=1});
+  Future<Either<Failure,List<Job>>> getJobsByCompany();
   Future<Either<Failure,List<Country>>> getCountries();
   Future<Either<Failure,List<City>>> getCitiesByCountry({int countryId});
 }

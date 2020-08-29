@@ -7,13 +7,18 @@ part '../generated/company.g.dart';
 // ignore: must_be_immutable
 class Company extends Equatable {
   int id;
+  @JsonKey(name:'Name')
   String companyName;
   int country;
   int city;
+  @JsonKey(name:'zip_code')
   String zipCode;
   String street;
-  String buildingNumber;
+  @JsonKey(name:'building_number')
+  int buildingNumber;
+  @JsonKey(name:'phone_number')
   String phoneNumber;
+  @JsonKey(name:'mobile_number')
   String mobileNumber;
   String email;
 

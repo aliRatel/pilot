@@ -12,7 +12,7 @@ class GetJobsByCompanyUseCase extends UseCase< List<Job>,GetJobsByCompanyParams>
 
   @override
   Future<Either<Failure,  List<Job>>> call(GetJobsByCompanyParams params) async {
-return await userRepository.getJobsByCompany(pageNumber: params.pageNumber);
+return await userRepository.getJobsByCompany();
   }
 }
 

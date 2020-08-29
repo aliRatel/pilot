@@ -41,6 +41,8 @@ class CompleteJobSeekerRegistrationProvider extends ChangeNotifier {
         street: street,
         houseNumber: 1,
         phoneNumber: phoneNumber,
+        gender: 'M',
+        mobileNumber: '64546',
         coverLetter: coverLetter,
         birthday: birthday);
 

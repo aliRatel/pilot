@@ -18,7 +18,9 @@ Job _$JobFromJson(Map<String, dynamic> json) {
     cityId: json['city'] as int,
     date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
     skills: json['skills'] as String,
-  );
+  )
+    ..city = json['city_Name'] as String
+    ..country = json['country_Name'] as String;
 }
 
 Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
@@ -31,5 +33,7 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'abstract': instance.abstract,
       'country': instance.countryId,
       'city': instance.cityId,
+      'city_Name': instance.city,
+      'country_Name': instance.country,
       'date': instance.date?.toIso8601String(),
     };

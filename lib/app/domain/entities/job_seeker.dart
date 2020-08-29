@@ -10,16 +10,26 @@ class JobSeeker extends Equatable {
   String nationality;
   int country;
   int city;
+  @JsonKey(name: 'zip_code')
   String zipCode;
   String street;
+  @JsonKey(name: 'house_number')
   int houseNumber;
+  @JsonKey(name: 'phone_number')
   String phoneNumber;
   String personalPhoto;
   String cv;
+  @JsonKey(name: 'cover_letter')
   String coverLetter;
+  @JsonKey(name: 'Name')
   String name;
   String surname;
+  @JsonKey(name: 'birth_date')
   DateTime birthday;
+  @JsonKey(name:'mobile_number')
+  String mobileNumber;
+  String gender;
+
 
   JobSeeker(
       {this.id,
@@ -35,6 +45,8 @@ class JobSeeker extends Equatable {
       this.cv,
       this.coverLetter,
       this.name,
+        this.gender,
+        this.mobileNumber,
       this.surname,
       this.birthday});
 

@@ -58,7 +58,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   }
 
   void _submit(LocationProvider locationProvider) {
-    if (!_formKey.currentState.validate()) return;
+    //if (!_formKey.currentState.validate()) return;
 
     String companyName = _companyNameController.text.trim();
     String zipCode = _zipController.text.trim();
@@ -73,16 +73,17 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
     Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
         .completeProfile(
-            companyName: companyName,
-            cityId: cityId,
-            countryId: countryId,
-            zipCode: zipCode,
-            street: street,
-            mobileNumber: mobileNumber,
-            phoneNumber: phoneNumber,
-            buildingNumber: buildingNumber)
+            companyName: 'asdfas',
+            cityId: 8,
+            countryId: 4,
+            zipCode: 'asdfas',
+            street: 'street',
+            mobileNumber: '54561',
+            phoneNumber: '54154',
+            buildingNumber: 4)
         .then((value) {
       if (value) {
+        print(value);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -96,248 +97,246 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   Widget build(BuildContext context) {
     var locationProvider =
         Provider.of<LocationProvider>(context, listen: false);
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                ClipPath(
-                  clipper: BaseCLipper(),
-                  child: Container(
-                    height: ScreenUtil().setHeight(150),
-                    decoration: BoxDecoration(color: mainColor),
-                    child: Center(
-                      child: Text(
-                        'Complete company create an account',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              ClipPath(
+                clipper: BaseCLipper(),
+                child: Container(
+                  height: ScreenUtil().setHeight(150),
+                  decoration: BoxDecoration(color: mainColor),
+                  child: Center(
+                    child: Text(
+                      'Complete company create an account',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(20)),
-                Text(
-                  'Please complete the creating account process',
-                  style: TextStyle(
-                    color: mainColor,
-                    fontSize: 16,
-                  ),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(20)),
+              Text(
+                'Please complete the creating account process',
+                style: TextStyle(
+                  color: mainColor,
+                  fontSize: 16,
                 ),
-                SizedBox(height: ScreenUtil().setHeight(30)),
-                MyTextFormField(
-                  validator: (value) => validateRequiredTextField(value),
-                  controller: _companyNameController,
-                  keyboardType: TextInputType.text,
-                  onFieldSubmitted: (input) => fieldFocusChange(
-                    context,
-                    _companyNameFocus,
-                    _countryRegionFocus,
-                  ),
-                  textInputAction: TextInputAction.next,
-                  focusNode: _companyNameFocus,
-                  hint: 'Company Name',
-                  title: 'Company name',
+              ),
+              SizedBox(height: ScreenUtil().setHeight(30)),
+              MyTextFormField(
+                validator: (value) => validateRequiredTextField(value),
+                controller: _companyNameController,
+                keyboardType: TextInputType.text,
+                onFieldSubmitted: (input) => fieldFocusChange(
+                  context,
+                  _companyNameFocus,
+                  _countryRegionFocus,
                 ),
-                SizedBox(height: ScreenUtil().setHeight(10)),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(12),
-                  ),
-                  child: Align(
-                    child: Text('Country/Region'),
-                    alignment: Alignment.centerLeft,
-                  ),
+                textInputAction: TextInputAction.next,
+                focusNode: _companyNameFocus,
+                hint: 'Company Name',
+                title: 'Company name',
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil().setWidth(12),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(10)),
-                MyDropDownButton(
-                  items: locationProvider.countries,
-                  initialValue: locationProvider.selectedCountry,
-                  valueChanged: (dynamic newCountry) async {
-                    print(newCountry.name);
-                    locationProvider.setSelectedCountry(newCountry);
-                    print('==================================');
-                    print(_selectedCountry.name);
-                    await locationProvider
-                        .getCities(locationProvider.selectedCountry.id);
+                child: Align(
+                  child: Text('Country/Region'),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              MyDropDownButton(
+                items: locationProvider.countries,
+                initialValue: locationProvider.selectedCountry,
+                valueChanged: (dynamic newCountry) async {
+                  print(newCountry.name);
+                  locationProvider.setSelectedCountry(newCountry);
+                  print('==================================');
+                  print(_selectedCountry.name);
+                  await locationProvider
+                      .getCities(locationProvider.selectedCountry.id);
 
-                    setState(() {
-                      fieldFocusChange(
-                        context,
-                        _countryRegionFocus,
-                        _cityFocus,
-                      );
-                    });
-                  },
+                  setState(() {
+                    fieldFocusChange(
+                      context,
+                      _countryRegionFocus,
+                      _cityFocus,
+                    );
+                  });
+                },
+              ),
+              SizedBox(height: ScreenUtil().setHeight(28)),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil().setWidth(12),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(28)),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(12),
-                  ),
-                  child: Align(
-                    child: Text('City'),
-                    alignment: Alignment.centerLeft,
-                  ),
+                child: Align(
+                  child: Text('City'),
+                  alignment: Alignment.centerLeft,
                 ),
-                SizedBox(height: ScreenUtil().setHeight(8)),
-                locationProvider
-                        .isLoading()
-                    ? CircularProgressIndicator()
-                    : MyDropDownButton(
-                        items: Provider.of<LocationProvider>(context)
-                            .currentCities,
-                        initialValue:
-                            Provider.of<LocationProvider>(context).selectedCity,
-                        valueChanged: (dynamic newCity) {
-                          Provider.of<LocationProvider>(context, listen: false)
-                              .setSelectedCity(newCity);
-                          fieldFocusChange(
-                            context,
-                            _cityFocus,
-                            _zipFocus,
-                          );
-                        },
-                      ),
-                SizedBox(height: ScreenUtil().setHeight(28)),
-                MyTextFormField(
-                  validator: (value) => validateRequiredTextField(value),
-                  controller: _zipController,
-                  keyboardType: TextInputType.number,
-                  onFieldSubmitted: (input) => fieldFocusChange(
-                    context,
-                    _zipFocus,
-                    _streetFocus,
-                  ),
-                  textInputAction: TextInputAction.next,
-                  focusNode: _zipFocus,
-                  hint: 'ZIP Code',
-                  title: 'ZIP Code',
-                ),
-                SizedBox(height: ScreenUtil().setHeight(10)),
-                MyTextFormField(
-                  validator: (value) => validateRequiredTextField(value),
-                  controller: _streetController,
-                  onFieldSubmitted: (input) => fieldFocusChange(
-                    context,
-                    _streetFocus,
-                    _buildingNumberFocus,
-                  ),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.text,
-                  focusNode: _streetFocus,
-                  hint: 'Street',
-                  title: 'Street',
-                ),
-                SizedBox(height: ScreenUtil().setHeight(10)),
-                MyTextFormField(
-                  validator: (value) => validateRequiredTextField(value),
-                  controller: _buildingNumberController,
-                  keyboardType: TextInputType.text,
-                  onFieldSubmitted: (input) => fieldFocusChange(
-                    context,
-                    _buildingNumberFocus,
-                    _phoneFocus,
-                  ),
-                  textInputAction: TextInputAction.next,
-                  focusNode: _buildingNumberFocus,
-                  hint: 'Building Number',
-                  title: 'Building Number',
-                ),
-                SizedBox(height: ScreenUtil().setHeight(10)),
-                MyTextFormField(
-                  validator: (value) => validateRequiredTextField(value),
-                  controller: _phoneController,
-                  onFieldSubmitted: (input) => fieldFocusChange(
-                    context,
-                    _phoneFocus,
-                    _mobileFocus,
-                  ),
-                  textInputAction: TextInputAction.next,
-                  focusNode: _phoneFocus,
-                  hint: 'Phone Number',
-                  keyboardType: TextInputType.phone,
-                  prefixIcon: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '+1',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  title: 'Phone Number',
-                ),
-                SizedBox(height: ScreenUtil().setHeight(10)),
-                MyTextFormField(
-                  validator: (value) => validateRequiredTextField(value),
-                  controller: _mobileController,
-                  onFieldSubmitted: (input) => fieldFocusChange(
-                    context,
-                    _mobileFocus,
-                    null,
-                  ),
-                  textInputAction: TextInputAction.done,
-                  focusNode: _mobileFocus,
-                  keyboardType: TextInputType.phone,
-                  hint: 'Mobile Number',
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CountryPickerDropdown(
-                      initialValue: 'EG',
-                      itemBuilder: _buildDropdownItem,
-                      priorityList: [
-                        CountryPickerUtils.getCountryByIsoCode('GB'),
-                        CountryPickerUtils.getCountryByIsoCode('CN'),
-                      ],
-                      sortComparator: (Country a, Country b) =>
-                          a.isoCode.compareTo(b.isoCode),
-                      onValuePicked: (Country country) {
-                        print("${country.name}");
+              ),
+              SizedBox(height: ScreenUtil().setHeight(8)),
+              locationProvider
+                      .isLoading()
+                  ? CircularProgressIndicator()
+                  : MyDropDownButton(
+                      items: Provider.of<LocationProvider>(context)
+                          .currentCities,
+                      initialValue:
+                          Provider.of<LocationProvider>(context).selectedCity,
+                      valueChanged: (dynamic newCity) {
+                        Provider.of<LocationProvider>(context, listen: false)
+                            .setSelectedCity(newCity);
+                        fieldFocusChange(
+                          context,
+                          _cityFocus,
+                          _zipFocus,
+                        );
                       },
                     ),
-                  ),
-                  title: 'Mobile Number',
-                  //leadingIcon: Icons.mob,
+              SizedBox(height: ScreenUtil().setHeight(28)),
+              MyTextFormField(
+                validator: (value) => validateRequiredTextField(value),
+                controller: _zipController,
+                keyboardType: TextInputType.number,
+                onFieldSubmitted: (input) => fieldFocusChange(
+                  context,
+                  _zipFocus,
+                  _streetFocus,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: myButton(
-                    context: context,
-                    child: Provider.of<CompleteCompanyRegistrationProvider>(
-                                context)
-                            .loading
-                        ? CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                            strokeWidth: 2,
-                          )
-                        : Text(
-                            'Sign in',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                textInputAction: TextInputAction.next,
+                focusNode: _zipFocus,
+                hint: 'ZIP Code',
+                title: 'ZIP Code',
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              MyTextFormField(
+                validator: (value) => validateRequiredTextField(value),
+                controller: _streetController,
+                onFieldSubmitted: (input) => fieldFocusChange(
+                  context,
+                  _streetFocus,
+                  _buildingNumberFocus,
+                ),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.text,
+                focusNode: _streetFocus,
+                hint: 'Street',
+                title: 'Street',
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              MyTextFormField(
+                validator: (value) => validateRequiredTextField(value),
+                controller: _buildingNumberController,
+                keyboardType: TextInputType.text,
+                onFieldSubmitted: (input) => fieldFocusChange(
+                  context,
+                  _buildingNumberFocus,
+                  _phoneFocus,
+                ),
+                textInputAction: TextInputAction.next,
+                focusNode: _buildingNumberFocus,
+                hint: 'Building Number',
+                title: 'Building Number',
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              MyTextFormField(
+                validator: (value) => validateRequiredTextField(value),
+                controller: _phoneController,
+                onFieldSubmitted: (input) => fieldFocusChange(
+                  context,
+                  _phoneFocus,
+                  _mobileFocus,
+                ),
+                textInputAction: TextInputAction.next,
+                focusNode: _phoneFocus,
+                hint: 'Phone Number',
+                keyboardType: TextInputType.phone,
+                prefixIcon: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '+1',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                title: 'Phone Number',
+              ),
+              SizedBox(height: ScreenUtil().setHeight(10)),
+              MyTextFormField(
+                validator: (value) => validateRequiredTextField(value),
+                controller: _mobileController,
+                onFieldSubmitted: (input) => fieldFocusChange(
+                  context,
+                  _mobileFocus,
+                  null,
+                ),
+                textInputAction: TextInputAction.done,
+                focusNode: _mobileFocus,
+                keyboardType: TextInputType.phone,
+                hint: 'Mobile Number',
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CountryPickerDropdown(
+                    initialValue: 'EG',
+                    itemBuilder: _buildDropdownItem,
+                    priorityList: [
+                      CountryPickerUtils.getCountryByIsoCode('GB'),
+                      CountryPickerUtils.getCountryByIsoCode('CN'),
+                    ],
+                    sortComparator: (Country a, Country b) =>
+                        a.isoCode.compareTo(b.isoCode),
+                    onValuePicked: (Country country) {
+                      print("${country.name}");
+                    },
+                  ),
+                ),
+                title: 'Mobile Number',
+                //leadingIcon: Icons.mob,
+              ),
+              Padding(
+                padding: EdgeInsets.all(12.0),
+                child: myButton(
+                  context: context,
+                  child: Provider.of<CompleteCompanyRegistrationProvider>(
+                              context)
+                          .loading
+                      ? CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          strokeWidth: 2,
+                        )
+                      : Text(
+                          'Sign in',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
-                    onTap: !Provider.of<CompleteCompanyRegistrationProvider>(
-                                context,
-                                listen: false)
-                            .isLoading()
-                        ? () {
-                            _submit(locationProvider);
-                          }
-                        : null,
-                  ),
+                        ),
+                  onTap: !Provider.of<CompleteCompanyRegistrationProvider>(
+                              context,
+                              listen: false)
+                          .isLoading()
+                      ? () {
+                          _submit(locationProvider);
+                        }
+                      : null,
                 ),
-                SizedBox(height: 50),
-              ],
-            ),
+              ),
+              SizedBox(height: 50),
+            ],
           ),
         ),
       ),

@@ -34,12 +34,15 @@ class CompleteCompanyRegistrationProvider extends ChangeNotifier {
         CompleteCompanyProfileParams(company: company));
         return await result.fold((failure)
     {
+      print('fail');
+
       setMessage('something went wrong');
       setLoading(false);
       return false;
     }, (success) {
+          print('sucess');
     setLoading(false);
-    setMessage('');
+    setMessage(null);
     return true;
     });
   }

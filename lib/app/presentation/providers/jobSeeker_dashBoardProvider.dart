@@ -9,20 +9,6 @@ class JobSeekerDashBoardProvider extends ChangeNotifier {
   int pageNumber = 1;
   int totalPages = 1;
   var jobs = [];
-//  var fixtures = [
-//    Job(
-//        id: 1,
-//        companyName: 'google',
-//        title: 'developer1',
-//        description:
-//        'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained'),
-//    Job(
-//        id: 1,
-//        companyName: 'google',
-//        title: 'developer1',
-//        description:
-//        'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained'),
-//  ];
   final GetRecentJobsUseCase getRecentJobsUseCase;
 
   JobSeekerDashBoardProvider({@required this.getRecentJobsUseCase});

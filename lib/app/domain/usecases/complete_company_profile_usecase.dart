@@ -15,7 +15,7 @@ class CompleteCompanyProfileUseCase
   @override
   Future<Either<Failure, bool>> call(
       CompleteCompanyProfileParams params) async {
-    return await userRepository.completeCompanyProfile(company:params.company);
+    return await userRepository.completeCompanyProfile();
   }
 }
 

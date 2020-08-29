@@ -115,13 +115,12 @@ class _JobsListState extends State<JobsList> {
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         Provider.of<JobSeekerDashBoardProvider>(widget.context, listen: false)
             .getJobs());
-    _controller.addListener(_scrollEndListener);
+    //_controller.addListener(_scrollEndListener);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<JobSeekerDashBoardProvider>(widget.context,
-                listen: false)
+    return Provider.of<JobSeekerDashBoardProvider>(widget.context)
             .loading
         ? Center(child: CircularProgressIndicator())
         : Expanded(

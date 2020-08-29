@@ -9,7 +9,7 @@ part  'user_remote_service.chopper.dart';
 abstract class UserRemoteService extends ChopperService {
   static UserRemoteService create() {
     final client = ChopperClient(
-        baseUrl: 'http://aliaskar1333.pythonanywhere.com',
+        baseUrl: 'http://192.168.43.5:8000',
         services: [
           _$UserRemoteService(),
         ],
@@ -24,12 +24,12 @@ abstract class UserRemoteService extends ChopperService {
   @Post(path: 'accounts/api/user/login/')
   Future<Response> postLogin(@Body() Map<String, dynamic> body);
 
-  @Post(path:'/complete-company-profile')
-  Future<Response> postCompleteCompanyProfile(@Body() Map<String,dynamic> body,@Header('bearer') String token);
+  @Post(path:'accounts/api/user/register/CompanyProfile/')
+  Future<Response> postCompleteCompanyProfile(@Body() Map<String,dynamic> body,@Header('Authorization') String token);
 
   @Post(path:'accounts/api/user/register/JobSeekerProfile/')
   @multipart
-  Future<Response> postCompleteJobSeekerProfile(@Part('data') Map<String,dynamic> body,@Header('Authorization') String token,@PartFile('personal_photo') String imagePath,@PartFile('CV') String cvPath);
+  Future<Response> postCompleteJobSeekerProfile(@Part('data') String body,@Header('Authorization') String token,@PartFile('personal_photo') String imagePath,@PartFile('CV') String cvPath);
 
   @Get(path: '/user/{id}')
   Future<Response> getUser(@Path() int id);
@@ -37,11 +37,10 @@ abstract class UserRemoteService extends ChopperService {
   @Post(path:'jobs/api/job/add/')
   Future<Response> postNewJob(@Body() Map<String,dynamic> body,@Header('Authorization') String token);
 
-  @Get(path: 'jobs/api/job/company/{id}')
-  Future<Response> getJobsByCompany(@Header('Authorization') String token,
-      @Path('id') int page);
+  @Get(path: 'jobs/api/job/company/')
+  Future<Response> getJobsByCompany(@Header('Authorization') String token);
 
-  @Get(path: 'jobs/api/Job/allJobs/')
+  @Get(path: 'jobs/api/job/allJobs/')
   Future<Response> getRecentJobs( @Query('int') int page, );
 
   @Get(path: '/search-jobs')

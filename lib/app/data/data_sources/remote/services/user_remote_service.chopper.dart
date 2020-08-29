@@ -20,7 +20,6 @@ class _$UserRemoteService extends UserRemoteService {
   Future<Response<dynamic>> postSignUp(Map<String, dynamic> body) {
     final $url = '/accounts/api/user/register/';
     final $body = body;
-    print(body);
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
@@ -36,8 +35,8 @@ class _$UserRemoteService extends UserRemoteService {
   @override
   Future<Response<dynamic>> postCompleteCompanyProfile(
       Map<String, dynamic> body, String token) {
-    final $url = '//complete-company-profile';
-    final $headers = {'bearer': token};
+    final $url = '/accounts/api/user/register/CompanyProfile/';
+    final $headers = {'Authorization': token};
     final $body = body;
     final $request =
         Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
@@ -46,20 +45,16 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> postCompleteJobSeekerProfile(
-      Map<String, dynamic> body,
-      String token,
-      String imagePath,
-      String cvPath) {
+      String body, String token, String imagePath, String cvPath) {
     final $url = '/accounts/api/user/register/JobSeekerProfile/';
     final $headers = {'Authorization': token};
-    final $body = body;
     final $parts = <PartValue>[
+      PartValue<String>('data', body),
       PartValueFile<String>('personal_photo', imagePath),
-      PartValueFile<String>('CV', cvPath),
-      PartValue<Map<String, dynamic>>('data', body),
+      PartValueFile<String>('CV', cvPath)
     ];
     final $request = Request('POST', $url, client.baseUrl,
-         parts: $parts, multipart: true, headers: $headers);
+        parts: $parts, multipart: true, headers: $headers);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -82,8 +77,8 @@ class _$UserRemoteService extends UserRemoteService {
   }
 
   @override
-  Future<Response<dynamic>> getJobsByCompany(String token, int page) {
-    final $url = '/jobs/api/job/company/$page';
+  Future<Response<dynamic>> getJobsByCompany(String token) {
+    final $url = '/jobs/api/job/company/';
     final $headers = {'Authorization': token};
     final $request = Request('GET', $url, client.baseUrl, headers: $headers);
     return client.send<dynamic, dynamic>($request);
@@ -91,7 +86,7 @@ class _$UserRemoteService extends UserRemoteService {
 
   @override
   Future<Response<dynamic>> getRecentJobs(int page) {
-    final $url = '/jobs/api/Job/allJobs/';
+    final $url = '/jobs/api/job/allJobs/';
     final $params = <String, dynamic>{'int': page};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);

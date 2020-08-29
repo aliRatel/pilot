@@ -18,6 +18,10 @@ class Job extends Equatable {
   int countryId;
   @JsonKey(name: 'city')
   int cityId;
+  @JsonKey(name:'city_Name')
+  String city;
+  @JsonKey(name:'country_Name')
+  String country;
   DateTime date;
 
   Job(

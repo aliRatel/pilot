@@ -53,6 +53,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
   TextEditingController _nameController = TextEditingController();
 
   UserGender _userGender = UserGender.male;
+  final format = DateFormat("yyyy-MM-dd");
 
   File _userImage;
   File _cvFile;
@@ -101,12 +102,12 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
             cityId: cityId,
             countryId: countryId,
             nationality: "sssssss",
-            zipCode: zipCode,
-            street: street,
-            mobileNumber: mobileNumber,
-            phoneNumber: phoneNumber,
-            houseNumber: buildingNumber,
-            birthday: _birthday,
+            zipCode: 'zipCode',
+            street: 'street',
+            mobileNumber: '6546546533',
+            phoneNumber: '46858464',
+            houseNumber: '4664635846',
+            birthday: format.format(DateTime.now()),
             cv: _userImage,
             personalPhoto: _userImage)
         .then((value) {
@@ -124,7 +125,6 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
   Widget build(BuildContext context) {
     var locationProvider =
         Provider.of<LocationProvider>(context, listen: false);
-    final format = DateFormat("yyyy-MM-dd");
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(

@@ -109,6 +109,7 @@ class UserRepositoryImpl extends UserRepository {
     } on CacheException {
       return Left(CacheFailure());
     }catch(e){
+      print(e);
       return Left(UnknownFailure());
     }
   }
@@ -131,6 +132,7 @@ class UserRepositoryImpl extends UserRepository {
     } on ServerException {
       return Left(ServerFailure());
     } catch (e) {
+      print(e);
       return Left(UnknownFailure());
     }
   }
@@ -182,15 +184,13 @@ print(result);
   }
 
   @override
-  Future<Either<Failure, List<Job>>> getJobsByCompany(
-      {int pageNumber = 1}) async {
+  Future<Either<Failure, List<Job>>> getJobsByCompany() async {
     try {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
-//      var jwt ='bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
-      // var comp = await sharedPreferencesDataSource.fetchCachedCompany();
-      // var id = comp.id;
-
-      var result = await apiDataSource.getJobsByCompany(jwt: jwt, page: 158);
+       var comp = await sharedPreferencesDataSource.fetchCachedCompany();
+       var id = comp.id;
+print(id);
+      var result = await apiDataSource.getJobsByCompany(jwt: jwt);
       var jobs =
           ((result['jobs']) as List).map((i) => Job.fromJson(i)).toList();
       print(jobs);
