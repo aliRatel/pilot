@@ -1,6 +1,6 @@
 enum UserType { company, jobSeeker }
 
-enum UserGender { male, female }
+enum UserGender { M, F }
 
 extension ParseToString on UserType {
   String toShortString() {
@@ -8,6 +8,11 @@ extension ParseToString on UserType {
   }
 }
 
+extension ParseGenderToString on UserGender {
+  String toShortString() {
+    return this.toString().split('.').last;
+  }
+}
   UserType userTypeFromString(String s){
     return s=='company'?UserType.company:UserType.jobSeeker;
   }

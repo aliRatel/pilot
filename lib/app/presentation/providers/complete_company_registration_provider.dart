@@ -1,7 +1,7 @@
+
 import 'package:flutter/widgets.dart';
 import 'package:pilot/app/domain/entities/company.dart';
 import 'package:pilot/app/domain/usecases/complete_company_profile_usecase.dart';
-import 'package:provider/provider.dart';
 import 'package:meta/meta.dart';
 
 class CompleteCompanyRegistrationProvider extends ChangeNotifier {
@@ -30,6 +30,7 @@ class CompleteCompanyRegistrationProvider extends ChangeNotifier {
         buildingNumber: buildingNumber,
         phoneNumber: phoneNumber,
         mobileNumber: mobileNumber);
+  
     var result = await completeCompanyProfileUseCase(
         CompleteCompanyProfileParams(company: company));
         return await result.fold((failure)

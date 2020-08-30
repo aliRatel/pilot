@@ -43,14 +43,23 @@ class _LoginPageState extends State<LoginPage> {
     )
         .then((usertype) {
       if (usertype != null) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => usertype == UserType.jobSeeker
-                    ? JobSeekerDashboard()
-                    : usertype == UserType.company
-                        ? JobCompaniesDashboard()
-                        : null));
+        Provider.of<LogInProvider>(context,listen: false).completed
+            ? Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => usertype == UserType.jobSeeker
+                        ? JobSeekerDashboard()
+                        : usertype == UserType.company
+                            ? JobCompaniesDashboard()
+                            : null))
+            : Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => usertype == UserType.jobSeeker
+                        ? RegisterJobSeekerPage()
+                        : usertype == UserType.company
+                            ? RegisterCompanyPage()
+                            : BaseRegisterPage()));
       }
     });
   }
@@ -95,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) => validateRequiredTextField(value),
                       controller: _emailController,
                       hint: 'Enter your email',
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     // SizedBox(height: ScreenUtil().setHeight(3)),
                     MyTextFormField(

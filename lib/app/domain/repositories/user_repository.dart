@@ -9,7 +9,6 @@ import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/domain/entities/job.dart';
 import 'package:pilot/app/domain/entities/job_seeker.dart';
 import 'package:pilot/core/error/failures.dart';
-import 'package:meta/meta.dart';
 abstract class UserRepository {
   //api methods
   Future<Either<Failure, bool>> signUp(
@@ -21,7 +20,7 @@ abstract class UserRepository {
 
   Future<Either<Failure, bool>> completeCompanyProfile({Company company});
 
-  Future<Either<Failure, UserType>> logIn(
+  Future<Either<Failure, Map<String,dynamic>>> logIn(
       {String email, String password});
 
   Future<Either<Failure, Map<String, dynamic>>> getCachedUserInfo();

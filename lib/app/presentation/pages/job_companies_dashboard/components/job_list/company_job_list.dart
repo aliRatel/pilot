@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
-import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/job_list/job_list.dart';
 import 'package:pilot/app/presentation/providers/company_dashBoard_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pilot/app/domain/entities/job.dart';
+import 'package:intl/intl.dart';
 
 import 'my_button.dart';
 
@@ -56,7 +56,8 @@ class CompanyJobCard extends StatelessWidget {
                     style: TextStyle(fontSize: width * 0.033),
                   ),
                   Text(
-                    '8 Nov',
+                  DateFormat("yyyy-MM-dd").format(job.date).toString()
+              ,
                     style:
                         TextStyle(fontSize: width * 0.033, color: Colors.grey),
                   ),
@@ -80,12 +81,12 @@ class CompanyJobCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Roseville',
+                              job.city,
                               style: TextStyle(
                                   fontSize: width * 0.033, color: Colors.grey),
                             ),
                             Text(
-                              '/United States',
+                              '/${job.country}',
                               style: TextStyle(fontSize: width * 0.033),
                             ),
                           ],
@@ -157,7 +158,7 @@ class _CompanyJobsListState extends State<CompanyJobsList> {
     return Provider.of<CompanyDashBoardProvider>(
       widget.context,
     ).loading
-        ? Center(child: CircularProgressIndicator())
+        ? Expanded(child: Center(child: CircularProgressIndicator()))
         : Expanded(
             child: ListView.builder(
               controller: _controller,

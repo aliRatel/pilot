@@ -116,8 +116,5 @@ class _SearchBoxState extends State<SearchBox> {
 
   void _search() {
     print('search');
-    if (_formKey.currentState.validate()) {
-      // search for ...
-    }
   }
 }

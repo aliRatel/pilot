@@ -5,7 +5,7 @@ import 'package:pilot/app/domain/usecases/user_login_usecase.dart';
 class LogInProvider with ChangeNotifier{
   bool loading = false;
   String errorMessage;
-
+  bool completed=false;
   final UserLoginUseCase userLoginUseCase ;
 
   LogInProvider({@required this.userLoginUseCase});
@@ -21,11 +21,11 @@ class LogInProvider with ChangeNotifier{
 
       return null;
     }, (user) {
-
+      completed =  user['completed']?  true:false;
       print(user);
       setLoading(false);
       setMessage(null);
-      return user;
+      return user['userType'];
     });
 
 

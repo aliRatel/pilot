@@ -11,7 +11,7 @@ Widget getGenderRadioButtons(func, selected) {
     children: [
       RadioListTile(
         title: Text('Male'),
-        value: UserGender.male,
+        value: UserGender.M,
         onChanged: (val) {
           func(val);
         },
@@ -20,7 +20,7 @@ Widget getGenderRadioButtons(func, selected) {
       ),
       RadioListTile(
         title: Text('Female'),
-        value: UserGender.female,
+        value: UserGender.F,
         onChanged: (val) {
           func(val);
         },

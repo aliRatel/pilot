@@ -92,10 +92,11 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                         _passwordFocus,
                       ),
                       textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     MyTextFormField(
                       obscureText: _hidePassword,
-                      validator: (value) => validateRequiredTextField(value),
+                      validator: (value) => validateRequiredAndMatch(value,_confirmPasswordController.text.trim()),
                       controller: _passwordController,
                       onFieldSubmitted: (input) => fieldFocusChange(
                         context,
@@ -119,7 +120,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                       obscureText: _hideConfirmPassword,
                       focusNode: _confirmPasswordFocus,
                       controller: _confirmPasswordController,
-                      validator: (value) => validateRequiredTextField(value),
+                      validator: (value) => validateRequiredAndMatch(value,_passwordController.text.trim()),
                       onFieldSubmitted: (input) => fieldFocusChange(
                         context,
                         _confirmPasswordFocus,
@@ -171,7 +172,7 @@ class _BaseRegisterPageState extends State<BaseRegisterPage> {
                             strokeWidth: 2,
                           )
                               : Text(
-                            'Sign in',
+                            'Sign up',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

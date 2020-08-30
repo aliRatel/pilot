@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:pilot/app/presentation/providers/jobSeeker_dashBoardProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:pilot/app/domain/entities/job.dart';
@@ -39,7 +40,7 @@ class JobCard extends StatelessWidget {
                     color: Colors.blue[500],
                     fontWeight: FontWeight.bold)),
             Text(job.companyName, style: TextStyle(fontSize: width * 0.033)),
-            Text('8 Nov',
+            Text(DateFormat("yyyy-MM-dd").format(job.date).toString(),
                 style: TextStyle(fontSize: width * 0.033, color: Colors.grey)),
             Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(18)),
@@ -55,10 +56,10 @@ class JobCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text('Roseville',
+                      Text(job.city,
                           style: TextStyle(
                               fontSize: width * 0.033, color: Colors.grey)),
-                      Text('/United States',
+                      Text('/${job.country}',
                           style: TextStyle(fontSize: width * 0.033)),
                     ],
                   ),
@@ -122,7 +123,7 @@ class _JobsListState extends State<JobsList> {
   Widget build(BuildContext context) {
     return Provider.of<JobSeekerDashBoardProvider>(widget.context)
             .loading
-        ? Center(child: CircularProgressIndicator())
+        ? Expanded(child: Center(child: CircularProgressIndicator()))
         : Expanded(
             child: ListView.builder(
               controller: _controller,

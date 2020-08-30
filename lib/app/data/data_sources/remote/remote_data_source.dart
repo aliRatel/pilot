@@ -2,11 +2,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:chopper/chopper.dart';
-import 'package:pilot/app/domain/entities/country.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:pilot/app/data/data_sources/remote/services/user_remote_service.dart';
-import 'package:pilot/app/domain/entities/city.dart';
 import 'package:pilot/app/domain/entities/company.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/domain/entities/job.dart';
@@ -96,7 +93,9 @@ class ApiDataSourceImpl extends ApiDataSource {
   Future<bool> postCompleteCompanyProfile (
       {Company company,String jwt}) async{
     print('start');
+    print(company);
     var companyJson =  company.toJson();
+
     var header=jwt;
     var response = await userRemoteService.postCompleteCompanyProfile(companyJson, header);
     print(response.statusCode);
@@ -166,7 +165,7 @@ class ApiDataSourceImpl extends ApiDataSource {
 
   @override
   Future<Map<String, dynamic>> searchJobs({int page, int cityId, int countryId}) async{
-    var response = await userRemoteService.searchJobs(page,cityId,countryId);
+    var response = await userRemoteService.searchJobs(cityId);
     if(response.statusCode == 200)
       return response.body;
 

@@ -17,7 +17,7 @@ class UserProvider with ChangeNotifier {
   String token;
   UserType userType;
   AppAction neededAction= AppAction.signUp;
-
+bool completed ;
 //usecases
   final CheckForAvailableUsersUseCase checkForAvailableUsersUseCase;
 
@@ -57,16 +57,17 @@ class UserProvider with ChangeNotifier {
     userType = userInfo['userType'];
     token = userInfo['jwt'];
     user = userInfo['user'];
+    completed = userInfo['completed'];
     userType == UserType.company ? company = user : jobSeeker = user;
     if (token != null) {
       if (company != null) {
-        if (company.companyName == null) {
+        if (!completed) {
           neededAction = AppAction.CompleteCompanyInfo;
         } else {
           neededAction = AppAction.CompanyDashBoard;
         }
       } else if (jobSeeker != null) {
-        if (jobSeeker.name == null) {
+        if (!completed) {
           neededAction = AppAction.CompleteJobSeekerInfo;
         } else {
           neededAction = AppAction.JobSeekerDashBoard;

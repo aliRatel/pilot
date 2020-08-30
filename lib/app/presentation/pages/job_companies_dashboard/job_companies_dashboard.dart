@@ -4,6 +4,8 @@ import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/add
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/job_list/job_list.dart';
 import 'package:pilot/app/presentation/pages/Job_seeker_dashboard/components/title.dart';
 import 'package:pilot/app/presentation/pages/job_companies_dashboard/components/job_list/company_job_list.dart';
+import 'package:pilot/core/util/consts.dart';
+import 'package:pilot/app/presentation/widgets/custom_shape_border.dart';
 
 class JobCompaniesDashboard extends StatelessWidget {
 final key = GlobalKey();
@@ -12,10 +14,16 @@ final key = GlobalKey();
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return Scaffold(backgroundColor:Colors.white,appBar: PreferredSize(
+        preferredSize: Size.fromHeight(160),
+        child: AppBar(
+          backgroundColor: mainColor,
+          title: Text('My DashBoard'),
+          centerTitle: true,
+          shape: CustomShapeBorder(),
+        )),
       body: Column(
         children: [
-          getDashboardTitle(height, width, 'dashboard for job companies'),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.1),
           ),

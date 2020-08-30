@@ -43,7 +43,6 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   TextEditingController _companyNameController = TextEditingController();
 
   COU.Country _selectedCountry;
-  City _selectedCity;
 
   @override
   void initState() {
@@ -63,9 +62,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
     String companyName = _companyNameController.text.trim();
     String zipCode = _zipController.text.trim();
     String street = _streetController.text.trim();
-    String mobileNumber = _mobileController.text.trim();
-    String phoneNumber = _phoneController.text.trim();
-    String buildingNumber = _buildingNumberController.text.trim();
+    String mobileNumber ='+'+ _mobileController.text.trim();
+    String phoneNumber = '+'+_phoneController.text.trim();
+    int buildingNumber = int.parse(_buildingNumberController.text.trim());
     int cityId = locationProvider.selectedCity
         .id;
     int countryId = locationProvider.selectedCountry
@@ -73,14 +72,14 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
     Provider.of<CompleteCompanyRegistrationProvider>(context, listen: false)
         .completeProfile(
-            companyName: 'asdfas',
-            cityId: 8,
-            countryId: 4,
-            zipCode: 'asdfas',
-            street: 'street',
-            mobileNumber: '54561',
-            phoneNumber: '54154',
-            buildingNumber: 4)
+            companyName: companyName,
+            cityId: cityId,
+            countryId: countryId,
+            zipCode: zipCode,
+            street: street,
+            mobileNumber: mobileNumber,
+            phoneNumber: phoneNumber,
+            buildingNumber: buildingNumber)
         .then((value) {
       if (value) {
         print(value);
@@ -238,7 +237,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
               MyTextFormField(
                 validator: (value) => validateRequiredTextField(value),
                 controller: _buildingNumberController,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
                 onFieldSubmitted: (input) => fieldFocusChange(
                   context,
                   _buildingNumberFocus,

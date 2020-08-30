@@ -93,14 +93,9 @@ class _$UserRemoteService extends UserRemoteService {
   }
 
   @override
-  Future<Response<dynamic>> searchJobs(int page, int cityId, int countryId) {
-    final $url = '//search-jobs';
-    final $params = <String, dynamic>{
-      'int': page,
-      'int': cityId,
-      'int': countryId
-    };
-    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+  Future<Response<dynamic>> searchJobs(int cityId) {
+    final $url = '/jobs/api/job/city/$cityId';
+    final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 

@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:pilot/app/domain/entities/company.dart';
 import 'package:pilot/app/domain/entities/enums/user_type.dart';
 import 'package:pilot/app/domain/entities/job_seeker.dart';
@@ -11,6 +10,8 @@ const CACHED_LOCAl_USER = 'CACHED_LOCAL_USER';
 const CACHED_TOKEN = 'CACHED_TOKEN';
 const CACHED_CREDENTIALS = 'CACHED_CREDENTIALS';
 const CACHED_USER_TYPE = 'CACHED_USER_TYPE';
+const CACHED_USER_STATE = 'CACHED_USER_STATE';
+
 
 abstract class SharedPreferencesDataSource {
   Future<JobSeeker> fetchCachedJobSeeker();
@@ -41,6 +42,9 @@ abstract class SharedPreferencesDataSource {
 
   Future<bool> cacheUserByType(
       {int id, String email, String password, UserType userType});
+
+  Future<bool>cacheUserState(bool completed) ;
+  Future<bool> fetchUserState();
 }
 
 class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
@@ -61,6 +65,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
 
   @override
   Future<bool> cacheJobSeeker(JobSeeker jobSeeker) async {
+    jobSeeker.birthday= DateTime.now();
     var result = await sharedPreferences.setString(
         CACHED_LOCAl_USER, json.encode(jobSeeker.toJson()));
     if (result) return result;
@@ -170,5 +175,28 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
       return userType;
 
       throw CacheException();
+  }
+
+  @override
+  Future<bool> cacheUserState(bool completed) async {
+    var result = await sharedPreferences.setString(
+        CACHED_USER_STATE, completed.toString());
+    if (result) {
+      return Future.value(result);
+    }
+
+    throw CacheException;
+  }
+  @override
+  Future<bool> fetchUserState() async {
+    var result = sharedPreferences.getString(CACHED_USER_STATE);
+    print(result.toLowerCase());
+    var completed = result.toLowerCase() == 'true';
+    if (completed) {
+      return Future.value(completed);
+    }else if(!completed)
+return Future.value(completed);
+    else
+    throw CacheException;
   }
 }

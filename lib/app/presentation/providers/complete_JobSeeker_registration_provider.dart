@@ -1,9 +1,7 @@
+
 import 'package:flutter/widgets.dart';
-import 'package:pilot/app/domain/entities/company.dart';
 import 'package:pilot/app/domain/entities/job_seeker.dart';
-import 'package:pilot/app/domain/usecases/complete_company_profile_usecase.dart';
 import 'package:pilot/app/domain/usecases/complete_user_profile_usecase.dart';
-import 'package:provider/provider.dart';
 import 'package:meta/meta.dart';
 
 class CompleteJobSeekerRegistrationProvider extends ChangeNotifier {
@@ -18,11 +16,13 @@ class CompleteJobSeekerRegistrationProvider extends ChangeNotifier {
   Future<bool> completeProfile(
       {name,
       surname,
+        gender,
       nationality,
       countryId,
       cityId,
       zipCode,
       street,
+
       houseNumber,
       phoneNumber,
       mobileNumber,
@@ -41,11 +41,10 @@ class CompleteJobSeekerRegistrationProvider extends ChangeNotifier {
         street: street,
         houseNumber: 1,
         phoneNumber: phoneNumber,
-        gender: 'M',
-        mobileNumber: '64546',
+        gender: gender,
+        mobileNumber: mobileNumber,
         coverLetter: coverLetter,
         birthday: birthday);
-
     var result = await completeJobSeekerProfileUseCase(
         CompleteJobSeekerProfileParams(
             jobSeeker: jobSeeker, cv: cv, personalPhoto: personalPhoto));

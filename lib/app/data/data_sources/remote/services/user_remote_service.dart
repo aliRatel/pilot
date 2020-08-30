@@ -1,7 +1,4 @@
 import 'package:chopper/chopper.dart';
-import 'package:pilot/app/domain/entities/country.dart';
-import 'package:http/http.dart' as http;
-import 'package:pilot/app/domain/entities/city.dart';
 
 part  'user_remote_service.chopper.dart';
 
@@ -9,7 +6,7 @@ part  'user_remote_service.chopper.dart';
 abstract class UserRemoteService extends ChopperService {
   static UserRemoteService create() {
     final client = ChopperClient(
-        baseUrl: 'http://192.168.43.5:8000',
+        baseUrl: 'http://aliaskar1333.pythonanywhere.com/',
         services: [
           _$UserRemoteService(),
         ],
@@ -43,8 +40,8 @@ abstract class UserRemoteService extends ChopperService {
   @Get(path: 'jobs/api/job/allJobs/')
   Future<Response> getRecentJobs( @Query('int') int page, );
 
-  @Get(path: '/search-jobs')
-  Future<Response> searchJobs( @Query('int') int page, @Query('int') int cityId,@Query('int') int countryId,);
+  @Get(path: 'jobs/api/job/city/{cityId}')
+  Future<Response> searchJobs(  @Path() int cityId);
 
   @Get(path: 'accounts/api/CitiesOfCountry/{id}/')
   Future<Response> getCitiesByCountry( @Path('id')  int countryId,);

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -40,29 +39,36 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, UserType>> logIn(
+  Future<Either<Failure, Map<String, dynamic>>> logIn(
       {String email, String password}) async {
     try {
-      var credential = await apiDataSource.postLogIn(
-          email: email, password: password);
-      print(credential);
+      var credential =
+          await apiDataSource.postLogIn(email: email, password: password);
       await sharedPreferencesDataSource.cacheToken(credential['jwt']);
+      print(credential);
       int index = credential['userType'];
-      UserType responseUserType= userTypeFromIndex(index);
+      print(credential['completed']);
+      bool completed = credential['completed'];
+      UserType responseUserType = userTypeFromIndex(index);
       await sharedPreferencesDataSource.cacheUserType(responseUserType);
       await sharedPreferencesDataSource.cacheUserByType(
           id: credential['id'],
           email: email,
           password: password,
-          userType: responseUserType);
-      return Right(responseUserType);
+          userType: responseUserType
+      );
+      await sharedPreferencesDataSource.cacheUserState(completed);
+      var map = {
+        'userType': responseUserType,
+        'completed': credential['completed']
+      };
+      return Right(map);
     } on ServerException {
       return Left(ServerFailure());
     } on CacheException {
       return Left(CacheFailure());
-    } catch (e) {
-      print(e);
-      return left(UnknownFailure());
+    }catch(e){
+      return Left(UnknownFailure());
     }
   }
 
@@ -77,10 +83,9 @@ class UserRepositoryImpl extends UserRepository {
       await sharedPreferencesDataSource.cacheUserType(userType);
 
       await sharedPreferencesDataSource.cacheUserByType(
+          email: email, password: password, userType: userType);
+      await sharedPreferencesDataSource.cacheUserState(false);
 
-          email: email,
-          password: password,
-          userType: userType);
       return Right(true);
     } on ServerException {
       return Left(ServerFailure());
@@ -99,16 +104,20 @@ class UserRepositoryImpl extends UserRepository {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 
       var userType = await sharedPreferencesDataSource.fetchCachedUserType();
+      print('asdfasdfasdfasdfasdfasdf');
+      var completed = await sharedPreferencesDataSource.fetchUserState();
+      print(completed);
       var user = (userType == UserType.company)
           ? await sharedPreferencesDataSource.fetchCachedCompany()
           : await sharedPreferencesDataSource.fetchCachedJobSeeker();
       values['jwt'] = jwt;
       values['userType'] = userType;
       values['user'] = user;
+      values['completed'] = completed;
       return Right(values);
     } on CacheException {
       return Left(CacheFailure());
-    }catch(e){
+    } catch (e) {
       print(e);
       return Left(UnknownFailure());
     }
@@ -126,14 +135,12 @@ class UserRepositoryImpl extends UserRepository {
       company.email = user.email;
       company.id = user.id;
       await sharedPreferencesDataSource.cacheCompany(company);
+      await sharedPreferencesDataSource.cacheUserState(true);
       return Right(true);
     } on CacheException {
       return Left(CacheFailure());
     } on ServerException {
       return Left(ServerFailure());
-    } catch (e) {
-      print(e);
-      return Left(UnknownFailure());
     }
   }
 
@@ -151,6 +158,7 @@ class UserRepositoryImpl extends UserRepository {
       jobSeeker.email = user.email;
       jobSeeker.personalPhoto = result['personalPhoto'];
       await sharedPreferencesDataSource.cacheJobSeeker(jobSeeker);
+      await sharedPreferencesDataSource.cacheUserState(true);
       return Right(true);
     } on CacheException {
       return Left(CacheFailure());
@@ -165,13 +173,12 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<Either<Failure, bool>> addNewJob({Job job}) async {
     try {
-
-       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
+      var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
 //      var jwt = 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTgsInVzZXJuYW1lIjoiQWRtaW5AZXhhbXBsZS5jb20iLCJleHAiOjE2MDEwMzE0MDMsImVtYWlsIjoiQWRtaW5AZXhhbXBsZS5jb20ifQ.ayKykGPdXGLBn2JO_l5RnyniTPosfwa-BuhmCGljLug';
 
       var result = await apiDataSource.postNewJob(job: job, jwt: jwt);
-print('-*-*-*-*--**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
-print(result);
+      print('-*-*-*-*--**-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
+      print(result);
       return Right(result);
     } on CacheException {
       return Left(CacheFailure());
@@ -187,9 +194,9 @@ print(result);
   Future<Either<Failure, List<Job>>> getJobsByCompany() async {
     try {
       var jwt = await sharedPreferencesDataSource.fetchCachedJwt();
-       var comp = await sharedPreferencesDataSource.fetchCachedCompany();
-       var id = comp.id;
-print(id);
+      var comp = await sharedPreferencesDataSource.fetchCachedCompany();
+      var id = comp.id;
+      print(id);
       var result = await apiDataSource.getJobsByCompany(jwt: jwt);
       var jobs =
           ((result['jobs']) as List).map((i) => Job.fromJson(i)).toList();

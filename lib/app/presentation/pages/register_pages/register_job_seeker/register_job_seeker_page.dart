@@ -36,31 +36,30 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
 
   final FocusNode _zipFocus = FocusNode();
   final FocusNode _streetFocus = FocusNode();
-  final FocusNode _buildingNumberFocus = FocusNode();
+  final FocusNode _houseNumberFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
   final FocusNode _mobileFocus = FocusNode();
-  final FocusNode _emailFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();
+  final FocusNode _surnameFocus = FocusNode();
   final FocusNode _countryRegionFocus = FocusNode();
   final FocusNode _cityFocus = FocusNode();
-
+final FocusNode _coverLetterFocus = FocusNode();
   TextEditingController _zipController = TextEditingController();
   TextEditingController _streetController = TextEditingController();
-  TextEditingController _buildingNumberController = TextEditingController();
+  TextEditingController _houseNumberController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
-
-  UserGender _userGender = UserGender.male;
+  TextEditingController _surnameController = TextEditingController();
+  TextEditingController _coverLetterController = TextEditingController();
+  UserGender _userGender = UserGender.M;
   final format = DateFormat("yyyy-MM-dd");
 
   File _userImage;
   File _cvFile;
-  COU.Country _selectedCountry;
-  City _selectedCity;
 
-  DateTime _birthday;
+
+  DateTime _birthday = DateTime(1995,1,1);
 
   @override
   void initState() {
@@ -75,41 +74,46 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
   }
 
   void _submit() {
-    // if (!_formKey.currentState.validate()) return;
+     if (!_formKey.currentState.validate()) return;
 
-    print(_userImage.path);
 
-    String name = _nameController.text.trim();
+    String name = _surnameController.text.trim();
+    String surname = _surnameController.text.trim();
     String zipCode = _zipController.text.trim();
     String street = _streetController.text.trim();
-    String mobileNumber = _mobileController.text.trim();
-    String phoneNumber = _phoneController.text.trim();
-    String buildingNumber = _buildingNumberController.text.trim();
+    String mobileNumber = '+'+_mobileController.text.trim();
+    String phoneNumber = '+'+_phoneController.text.trim();
+    String houseNumber = _houseNumberController.text.trim();
+     String coverLetter = _coverLetterController.text.trim();
     int cityId = Provider.of<LocationProvider>(this.context, listen: false)
         .selectedCity
         .id;
     int countryId = Provider.of<LocationProvider>(this.context, listen: false)
         .selectedCountry
         .id;
-
+String nationality = Provider.of<LocationProvider>(this.context, listen: false)
+    .selectedCountry
+    .name;
     Provider.of<CompleteJobSeekerRegistrationProvider>(
       this.context,
       listen: false,
     )
         .completeProfile(
             name: name,
-            surname: 'asfdasdfa',
+            surname: surname,
+            gender:_userGender.toShortString(),
             cityId: cityId,
             countryId: countryId,
-            nationality: "sssssss",
-            zipCode: 'zipCode',
-            street: 'street',
-            mobileNumber: '6546546533',
-            phoneNumber: '46858464',
-            houseNumber: '4664635846',
-            birthday: format.format(DateTime.now()),
+            nationality: nationality,
+            zipCode: zipCode,
+            street: street,
+            mobileNumber: mobileNumber,
+            phoneNumber: phoneNumber,
+            houseNumber: houseNumber,
+            birthday: _birthday,
             cv: _userImage,
-            personalPhoto: _userImage)
+            personalPhoto: _cvFile,
+    coverLetter: coverLetter)
         .then((value) {
       if (value) {
         Navigator.pushReplacement(
@@ -222,7 +226,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                     ),
                     Positioned(
                       child: Text(
-                        '${_nameController.text}',
+                        '${_surnameController.text}',
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -231,7 +235,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                     ),
                     Positioned(
                       child: Text(
-                        '${_emailController.text}',
+                        '${_nameController.text}',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -244,20 +248,20 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
               ),
               SizedBox(height: ScreenUtil().setHeight(20)),
               MyTextFormField(
-                hint: 'user@example.com',
-                controller: _emailController,
-                title: 'Email',
+                hint: 'ex : jack',
+                controller: _nameController,
+                title: 'Name',
                 onTextChange: (String input) {
                   setState(() {});
                 },
                 validator: (value) => validateRequiredTextField(value),
                 onFieldSubmitted: (input) => fieldFocusChange(
                   context,
-                  _emailFocus,
                   _nameFocus,
+                  _surnameFocus,
                 ),
                 textInputAction: TextInputAction.next,
-                focusNode: _emailFocus,
+                focusNode: _nameFocus,
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: ScreenUtil().setHeight(8)),
@@ -266,13 +270,13 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                   setState(() {});
                 },
                 hint: 'ex: Max',
-                controller: _nameController,
+                controller: _surnameController,
                 title: 'Sur name',
                 validator: (value) => validateRequiredTextField(value),
                 onFieldSubmitted: (input) =>
-                    fieldFocusChange(context, _nameFocus, null),
+                    fieldFocusChange(context, _surnameFocus, null),
                 textInputAction: TextInputAction.done,
-                focusNode: _nameFocus,
+                focusNode: _surnameFocus,
               ),
               SizedBox(height: ScreenUtil().setHeight(8)),
               Padding(
@@ -333,8 +337,8 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                         color: mainColor,
                       ),
                     ),
-                    hintText: 'ex: 27-5-1998',
-                    labelText: 'Birth of date',
+                    hintText: '1995-1-1',
+                    labelText: 'birthday 1995-1-1',
                     hintStyle: TextStyle(
                       color: Colors.grey,
                     ),
@@ -469,10 +473,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 items: locationProvider.countries,
                 initialValue: locationProvider.selectedCountry,
                 valueChanged: (dynamic newCountry) async {
-                  print(newCountry.name);
                   locationProvider.setSelectedCountry(newCountry);
-                  print('==================================');
-                  print(_selectedCountry.name);
                   await locationProvider
                       .getCities(locationProvider.selectedCountry.id);
 
@@ -533,7 +534,7 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
                 onFieldSubmitted: (input) => fieldFocusChange(
                   context,
                   _streetFocus,
-                  _buildingNumberFocus,
+                  _houseNumberFocus,
                 ),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.text,
@@ -544,17 +545,32 @@ class _RegisterJobSeekerPageState extends State<RegisterJobSeekerPage> {
               SizedBox(height: ScreenUtil().setHeight(8)),
               MyTextFormField(
                 validator: (value) => validateRequiredTextField(value),
-                controller: _buildingNumberController,
+                controller: _houseNumberController,
+                keyboardType: TextInputType.number,
+                onFieldSubmitted: (input) => fieldFocusChange(
+                  context,
+                  _houseNumberFocus,
+                  _coverLetterFocus,
+                ),
+                textInputAction: TextInputAction.done,
+                focusNode: _houseNumberFocus,
+                hint: 'House Number',
+                title: 'House Number',
+              ),
+              SizedBox(height: ScreenUtil().setHeight(8)),
+              MyTextFormField(maxLines: 5,
+                validator: (value) => validateRequiredTextField(value),
+                controller: _coverLetterController,
                 keyboardType: TextInputType.text,
                 onFieldSubmitted: (input) => fieldFocusChange(
                   context,
-                  _buildingNumberFocus,
+                  _coverLetterFocus,
                   null,
                 ),
                 textInputAction: TextInputAction.done,
-                focusNode: _buildingNumberFocus,
-                hint: 'Building Number',
-                title: 'Building Number',
+                focusNode: _coverLetterFocus,
+                hint: 'Cover Letter',
+                title: 'Cover Letter',
               ),
               Padding(
                 padding: EdgeInsets.all(12.0),
