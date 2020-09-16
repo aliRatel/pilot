@@ -19,7 +19,6 @@ import 'package:pilot/app/presentation/providers/complete_JobSeeker_registration
 import 'package:pilot/app/presentation/providers/location_provider.dart';
 import 'package:pilot/app/presentation/widgets/my_drop_down_button.dart';
 import 'package:provider/provider.dart';
-
 import 'package:pilot/core/util/validators_and_focus_managers.dart';
 import '../../../../../core/util/consts.dart';
 import '../../../widgets/gender_type.dart';
@@ -64,7 +63,7 @@ final FocusNode _coverLetterFocus = FocusNode();
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      _selectedCountry =
+      //_selectedCountry =
           Provider.of<LocationProvider>(this.context, listen: false)
               .countries
               .last;

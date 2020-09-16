@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part '../generated/job_seeker.g.dart';
+//part '../generated/job_seeker.g.dart';
 
 @JsonSerializable()
 class JobSeeker extends Equatable {
@@ -51,9 +51,9 @@ class JobSeeker extends Equatable {
       this.surname,
       this.birthday});
 
-  factory JobSeeker.fromJson(Map<String, dynamic> json) => _$JobSeekerFromJson(json);
+ // factory JobSeeker.fromJson(Map<String, dynamic> json) => _$JobSeekerFromJson(json);
 
-  Map<String, dynamic> toJson() => _$JobSeekerToJson(this);
+  //Map<String, dynamic> toJson() => _$JobSeekerToJson(this);
 
   @override
   List<Object> get props => [

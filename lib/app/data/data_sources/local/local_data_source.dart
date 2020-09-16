@@ -67,7 +67,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   Future<bool> cacheJobSeeker(JobSeeker jobSeeker) async {
     jobSeeker.birthday= DateTime.now();
     var result = await sharedPreferences.setString(
-        CACHED_LOCAl_USER, json.encode(jobSeeker.toJson()));
+        CACHED_LOCAl_USER, json.encode(jobSeeker));
     if (result) return result;
 
     throw CacheException;
@@ -132,7 +132,7 @@ class SharedPreferencesDataSourceImpl extends SharedPreferencesDataSource {
   Future<JobSeeker> fetchCachedJobSeeker() {
     var result = sharedPreferences.getString(CACHED_LOCAl_USER);
     if (result != null) {
-      return Future.value(JobSeeker.fromJson(json.decode(result)));
+      //return Future.value(JobSeeker.fromJson(json.decode(result)));
     }
     throw CacheException();
   }

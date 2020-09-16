@@ -109,7 +109,7 @@ class ApiDataSourceImpl extends ApiDataSource {
   @override
   Future<Map<String,dynamic>> postCompleteJobSeekerProfile({JobSeeker jobSeeker, String jwt,File cv,File personalPhoto}) async{
 
-    var jobSeekerJson =  jobSeeker.toJson();
+    var jobSeekerJson =  jobSeeker;
     var header=jwt;
     print('start');
     var response = await userRemoteService.postCompleteJobSeekerProfile(json.encode(jobSeekerJson),header,cv.path,personalPhoto.path);
